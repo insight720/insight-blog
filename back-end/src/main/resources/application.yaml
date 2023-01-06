@@ -1,0 +1,61 @@
+server:
+  port:
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://域名:端口号/数据库名?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true&rewriteBatchedStatements=true
+    username:
+    password:
+    hikari:
+      # 连接池空闲连接的最小数量
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认 600000（ 10 分钟）
+      idle-timeout: 180000
+      # 连接池最大连接数，默认是 10
+      maximum-pool-size: 10
+      # 此属性控制从池返回的连接的默认自动提交行为，默认值：true
+      auto-commit: true
+      # 连接池名称
+      pool-name: hikariDataSource
+      # 此属性控制池中连接的最长生命周期，值 0 表示无限生命周期，默认 1800000，即 30 分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间，默认 30 秒，即 30000
+      connection-timeout: 30000
+  redis:
+    host:
+    port:
+
+blog:
+  asynchronous:
+    core-pool-size: 10
+    max-pool-size: 20
+    keep-alive-seconds: 30
+    queue-capacity: 15
+    await-for-tasks-to-complete-on-shutdown: true
+    await-termination-seconds: 30
+  upload:
+    strategy: cos
+    local:
+      upload-url:
+      access-url:
+    oss:
+      access-url:
+      endpoint:
+      bucket-name:
+      access-key-id:
+      access-key-secret:
+    cos:
+      access-url:
+      region:
+      bucket-name:
+      secret-id:
+      secret-key:
+
+logging:
+  level:
+    pers.project.blog: debug
+
+
+

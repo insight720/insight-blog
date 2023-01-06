@@ -1,0 +1,48 @@
+package pers.project.blog.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import pers.project.blog.dto.PageDTO;
+import pers.project.blog.dto.UserOnlineDTO;
+import pers.project.blog.entity.UserInfoEntity;
+import pers.project.blog.vo.ConditionVO;
+import pers.project.blog.vo.UserDisableVO;
+import pers.project.blog.vo.UserRoleVO;
+
+/**
+ * 针对表【tb_user_info】的数据库操作 Service
+ *
+ * @author Luo Fei
+ * @date 2022-12-25
+ */
+public interface UserInfoService extends IService<UserInfoEntity> {
+
+    /**
+     * 修改用户禁用状态
+     *
+     * @param userDisableVO 用户禁用信息
+     */
+    void updateUserDisable(UserDisableVO userDisableVO);
+
+    /**
+     * 修改用户权限角色
+     *
+     * @param userRoleVO 用户权限角色信息
+     */
+    void updateUserRole(UserRoleVO userRoleVO);
+
+    /**
+     * 查看在线用户列表
+     *
+     * @param conditionVO 查询条件
+     * @return 分页的在线用户列表
+     */
+    PageDTO<UserOnlineDTO> listOnlineUsers(ConditionVO conditionVO);
+
+    /**
+     * 下线用户
+     *
+     * @param userInfoId 用户信息 ID
+     */
+    void removeOnlineUser(Integer userInfoId);
+
+}
