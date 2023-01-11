@@ -1,8 +1,7 @@
-package pers.project.blog.strategy.impl;
+package pers.project.blog.strategy;
 
 import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.exception.FileUploadException;
-import pers.project.blog.strategy.UploadStrategy;
 import pers.project.blog.util.FileIoUtils;
 
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import java.io.InputStream;
  * @author Luo Fei
  * @date 2023/1/3
  */
-public abstract class AbstractUploadStrategyImpl implements UploadStrategy {
+public abstract class AbstractUploadStrategy implements UploadStrategy {
 
     @Override
     public String uploadFile(MultipartFile multipartFile, String directoryUri) {

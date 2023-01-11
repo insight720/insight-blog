@@ -17,16 +17,29 @@
     </sql>
 
     <select id="listCategoryDTOs" resultType="pers.project.blog.dto.CategoryDTO">
-        SELECT category.id,
-               category.category_name,
-               COUNT(subarticle.id) AS article_count
+        SELECT category.id, category.category_name, COUNT(subarticle.id) AS article_count
         FROM tb_category category
                  LEFT JOIN (SELECT id, category_id
-                            FROM tb_article article
+                            FROM tb_article
                             WHERE is_delete = 0
                               AND `status` = 1) subarticle
                            ON category.id = subarticle.category_id
         GROUP BY category.id
+    </select>
+
+    <select id="listAdminCategoryDTOs" resultType="pers.project.blog.dto.AdminCategoryDTO">
+        SELECT category.id, category.category_name,
+        COUNT(article.id) AS article_count, category.create_time
+        FROM tb_category category
+        LEFT JOIN tb_article article ON category.id = category_id
+        <where>
+            <if test="conditionVO.keywords != null">
+                category.category_name LIKE CONCAT('%', #{conditionVO.keywords}, '%')
+            </if>
+        </where>
+        GROUP BY category.id
+        ORDER BY category.id DESC
+        LIMIT #{offset}, #{size}
     </select>
 
 </mapper>

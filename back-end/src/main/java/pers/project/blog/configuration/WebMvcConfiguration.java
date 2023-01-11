@@ -5,7 +5,9 @@ import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.support.config.FastJsonConfig;
 import com.alibaba.fastjson2.support.spring.http.converter.FastJsonHttpMessageConverter;
 import com.alibaba.fastjson2.support.spring.webservlet.view.FastJsonJsonView;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,6 +25,7 @@ import java.util.List;
  * @date 2022/12/27
  */
 @Configuration
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private final PaginationHandlerInterceptor paginationHandlerInterceptor;
@@ -36,6 +39,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      *
      * @return <a href="https://github.com/alibaba/fastjson2/blob/main/docs/spring_support_cn.md">FastJson2 配置</a>
      */
+    @Bean
     public FastJsonConfig fastJsonConfig() {
         FastJsonConfig config = new FastJsonConfig();
         config.setReaderFeatures(JSONReader.Feature.FieldBased);

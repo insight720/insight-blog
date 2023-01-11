@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 分类
+ * 文章类别
  *
  * @author Luo Fei
- * @date 2022-12-29
+ * @date 2023-01-07
  */
 @Data
 @Builder

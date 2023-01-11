@@ -1,12 +1,12 @@
 package pers.project.blog.handler;
 
-import com.alibaba.fastjson2.JSON;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import pers.project.blog.constant.enumeration.ResultStatusEnum;
 import pers.project.blog.dto.Result;
+import pers.project.blog.util.ConversionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class SecurityAuthenticationFailureHandler implements AuthenticationFailu
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.getWriter().write(JSON.toJSONString(Result.of(ResultStatusEnum.AUTHENTICATION_FAILURE, exception)));
+        response.getWriter().write(ConversionUtils.getJson(Result.of(ResultStatusEnum.AUTHENTICATION_FAILURE)));
     }
 
 }

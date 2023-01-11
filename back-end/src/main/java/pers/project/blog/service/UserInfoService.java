@@ -1,11 +1,13 @@
 package pers.project.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.UserOnlineDTO;
 import pers.project.blog.entity.UserInfoEntity;
 import pers.project.blog.vo.ConditionVO;
 import pers.project.blog.vo.UserDisableVO;
+import pers.project.blog.vo.UserInfoVO;
 import pers.project.blog.vo.UserRoleVO;
 
 /**
@@ -44,5 +46,20 @@ public interface UserInfoService extends IService<UserInfoEntity> {
      * @param userInfoId 用户信息 ID
      */
     void removeOnlineUser(Integer userInfoId);
+
+    /**
+     * 更新用户头像
+     *
+     * @param multipartFile 头像图片
+     * @return 头像 URL
+     */
+    String updateUserAvatar(MultipartFile multipartFile);
+
+    /**
+     * 修改用户信息
+     *
+     * @param userInfoVO 用户信息
+     */
+    void updateUserInfo(UserInfoVO userInfoVO);
 
 }

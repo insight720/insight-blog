@@ -47,13 +47,13 @@ public class ConditionVO {
     private Integer categoryId;
 
     /**
-     * 标签id
+     * 标签 ID
      */
     @Schema(name = "tagId", title = "标签 ID", type = "Integer")
     private Integer tagId;
 
     /**
-     * 相册id
+     * 相册 ID
      */
     @Schema(name = "albumId", title = "相册 ID", type = "Integer")
     private Integer albumId;

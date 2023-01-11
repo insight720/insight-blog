@@ -1,9 +1,9 @@
 package pers.project.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import pers.project.blog.constant.BooleanConstant;
 import pers.project.blog.constant.FrontEndConstant;
@@ -108,7 +108,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
 
         // TODO: 2023/1/3 逻辑不明
         // 不属于任何目录的菜单
-        if (!CollectionUtils.isEmpty(catalogSubmenuMap)) {
+        if (CollectionUtils.isNotEmpty(catalogSubmenuMap)) {
             List<MenuDTO> unboundMenuList = catalogSubmenuMap.values()
                     .stream()
                     .flatMap(Collection::stream)

@@ -1,13 +1,11 @@
 package pers.project.blog.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
@@ -17,24 +15,29 @@ import pers.project.blog.constant.AddressConstant;
 import pers.project.blog.constant.BooleanConstant;
 import pers.project.blog.constant.RedisConstant;
 import pers.project.blog.constant.WebsiteConstant;
+import pers.project.blog.constant.enumeration.ArticleStatusEnum;
 import pers.project.blog.dto.*;
 import pers.project.blog.entity.ArticleEntity;
 import pers.project.blog.entity.WebsiteConfigEntity;
 import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.*;
 import pers.project.blog.service.BlogInfoService;
+import pers.project.blog.service.PageService;
 import pers.project.blog.service.UniqueViewService;
 import pers.project.blog.util.ConversionUtils;
 import pers.project.blog.util.IpUtils;
 import pers.project.blog.util.RedisUtils;
 import pers.project.blog.vo.InfoAboutMeVO;
+import pers.project.blog.vo.PageVO;
 import pers.project.blog.vo.WebsiteConfigVO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /**
@@ -46,39 +49,32 @@ import java.util.stream.Collectors;
 @Service
 public class BlogInfoServiceImpl implements BlogInfoService {
 
-    private final HttpServletRequest httpServletRequest;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
 
-    private final MessageMapper messageMapper;
+    @Autowired
+    private MessageMapper messageMapper;
 
-    private final UserInfoMapper userInfoMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
-    private final ArticleMapper articleMapper;
+    @Autowired
+    private ArticleMapper articleMapper;
 
-    private final CategoryMapper categoryMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
-    private final TagMapper tagMapper;
+    @Autowired
+    private TagMapper tagMapper;
 
-    private final UniqueViewService uniqueViewService;
+    @Autowired
+    private UniqueViewService uniqueViewService;
 
-    private final WebsiteConfigMapper websiteConfigMapper;
+    @Autowired
+    private WebsiteConfigMapper websiteConfigMapper;
 
-    public BlogInfoServiceImpl(HttpServletRequest httpServletRequest,
-                               MessageMapper messageMapper,
-                               UserInfoMapper userInfoMapper,
-                               ArticleMapper articleMapper,
-                               CategoryMapper categoryMapper,
-                               TagMapper tagMapper,
-                               UniqueViewService uniqueViewService,
-                               WebsiteConfigMapper websiteConfigMapper) {
-        this.httpServletRequest = httpServletRequest;
-        this.messageMapper = messageMapper;
-        this.userInfoMapper = userInfoMapper;
-        this.articleMapper = articleMapper;
-        this.categoryMapper = categoryMapper;
-        this.tagMapper = tagMapper;
-        this.uniqueViewService = uniqueViewService;
-        this.websiteConfigMapper = websiteConfigMapper;
-    }
+    @Autowired
+    private PageService pageService;
 
     @Override
     public void report() {
@@ -117,7 +113,7 @@ public class BlogInfoServiceImpl implements BlogInfoService {
     }
 
     @Autowired
-    ThreadPoolTaskExecutor executor;
+    Executor executor;
 
     @Override
     public AdminBlogInfoDTO getBlogBackInfo() {
@@ -176,7 +172,7 @@ public class BlogInfoServiceImpl implements BlogInfoService {
         stopWatch.start("访问量前五的文章");
 
         List<ArticleRankDTO> articleRankDTOList = listArticleRankDTOs
-                (RedisUtils.zRevRange(RedisConstant.ARTICLE_VIEWS_COUNT, 0, 4));
+                (RedisUtils.zRevRangeWithScores(RedisConstant.ARTICLE_VIEWS_COUNT, 0, 4));
 /*
         CompletableFuture<List<ArticleRankDTO>> articleRankDTOList =
                 CompletableFuture.supplyAsync(() -> listArticleRankDTOs
@@ -212,6 +208,7 @@ public class BlogInfoServiceImpl implements BlogInfoService {
     // TODO: 2023/1/3 库表只有一条数据，且网站必须有默认配置信息
 
     @Override
+    @NotNull
     public WebsiteConfigVO getWebSiteConfig() {
         // 从缓存获取配置信息，没有则从数据库查询并更新缓存
         String webSiteConfig
@@ -229,14 +226,14 @@ public class BlogInfoServiceImpl implements BlogInfoService {
                     }
                 });
 
-        return JSON.parseObject(webSiteConfig, WebsiteConfigVO.class);
+        return ConversionUtils.parseJson(webSiteConfig, WebsiteConfigVO.class);
     }
 
     @Override
     public void updateWebSizeConfig(WebsiteConfigVO websiteConfigVO) {
         new LambdaUpdateChainWrapper<>(websiteConfigMapper)
                 .eq(WebsiteConfigEntity::getId, WebsiteConstant.DEFAULT_CONFIG_ID)
-                .set(WebsiteConfigEntity::getConfig, JSON.toJSONString(websiteConfigVO))
+                .set(WebsiteConfigEntity::getConfig, ConversionUtils.getJson(websiteConfigVO))
                 .update();
 
         RedisUtils.del(RedisConstant.WEBSITE_CONFIG);
@@ -252,6 +249,37 @@ public class BlogInfoServiceImpl implements BlogInfoService {
     @Override
     public void updateInfoAboutMe(InfoAboutMeVO infoAboutMeVO) {
         RedisUtils.set(RedisConstant.ABOUT, infoAboutMeVO.getAboutContent());
+    }
+
+    @Override
+    public BlogInfoDTO getBlogInfo() {
+        // 查询文章数量
+        Long articleCount = new LambdaQueryChainWrapper<>(articleMapper)
+                .eq(ArticleEntity::getStatus, ArticleStatusEnum.PUBLIC.getStatus())
+                .eq(ArticleEntity::getIsDelete, BooleanConstant.FALSE)
+                .count();
+        // 查询分类数量
+        Long categoryCount = new LambdaQueryChainWrapper<>(categoryMapper).count();
+        // 查询标签数量
+        Long tagCount = new LambdaQueryChainWrapper<>(tagMapper).count();
+        // 查询访问量
+        String viewsCount = Optional
+                .ofNullable(RedisUtils.get(RedisConstant.BLOG_VIEWS_COUNT))
+                .map(String::valueOf)
+                .orElse("0");
+        // 查询网站配置
+        WebsiteConfigVO webSiteConfig = getWebSiteConfig();
+        // 查询页面图片
+        List<PageVO> pageList = pageService.listPages();
+        // 封装数据
+        return BlogInfoDTO.builder()
+                .articleCount(articleCount.intValue())
+                .categoryCount(categoryCount.intValue())
+                .tagCount(tagCount.intValue())
+                .viewsCount(viewsCount)
+                .websiteConfig(webSiteConfig)
+                .pageList(pageList)
+                .build();
     }
 
     /**

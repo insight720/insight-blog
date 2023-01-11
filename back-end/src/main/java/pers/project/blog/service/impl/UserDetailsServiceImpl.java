@@ -2,11 +2,11 @@ package pers.project.blog.service.impl;
 
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import eu.bitwalker.useragentutils.UserAgent;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import pers.project.blog.constant.RedisConstant;
 import pers.project.blog.dto.UserDetailsDTO;
 import pers.project.blog.entity.UserAuthEntity;
@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (!StringUtils.hasText(username)) {
+        if (StringUtils.isBlank(username)) {
             throw new UsernameNotFoundException("用户名不能为空！");
         }
 

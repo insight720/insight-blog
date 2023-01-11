@@ -1,8 +1,6 @@
 package pers.project.blog.handler;
 
-import com.alibaba.fastjson2.JSON;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -19,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 /**
  * Spring Security 认证成功处理程序
@@ -29,11 +28,11 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class SecurityAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final ThreadPoolTaskExecutor executor;
+    private final Executor executor;
 
     private final UserAuthMapper userAuthMapper;
 
-    public SecurityAuthenticationSuccessHandler(ThreadPoolTaskExecutor executor, UserAuthMapper userAuthMapper) {
+    public SecurityAuthenticationSuccessHandler(Executor executor, UserAuthMapper userAuthMapper) {
         this.executor = executor;
         this.userAuthMapper = userAuthMapper;
     }
@@ -46,7 +45,7 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
         UserDetailsDTO userDetailsDTO = SecurityUtils.getUserDetails();
         UserInfoDTO userInfoDTO = ConversionUtils.convertObject(userDetailsDTO, UserInfoDTO.class);
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.getWriter().write(JSON.toJSONString(Result.ok(userInfoDTO)));
+        response.getWriter().write(ConversionUtils.getJson(Result.ok(userInfoDTO)));
 
         // TODO: 2022/12/24 可能不适合异步执行
 

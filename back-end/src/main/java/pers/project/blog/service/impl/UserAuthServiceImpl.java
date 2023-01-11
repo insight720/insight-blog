@@ -1,8 +1,8 @@
 package pers.project.blog.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import pers.project.blog.constant.RedisConstant;
 import pers.project.blog.constant.enumeration.UserAreaTypeEnum;
@@ -10,11 +10,15 @@ import pers.project.blog.dto.AdminUserDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.UserAreaDTO;
 import pers.project.blog.entity.UserAuthEntity;
+import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.UserAuthMapper;
 import pers.project.blog.service.UserAuthService;
+import pers.project.blog.util.ConversionUtils;
 import pers.project.blog.util.PaginationUtils;
 import pers.project.blog.util.RedisUtils;
+import pers.project.blog.util.SecurityUtils;
 import pers.project.blog.vo.ConditionVO;
+import pers.project.blog.vo.PasswordVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +45,7 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
 
                 // TODO: 2022/12/29 未检查类型转换
                 if (Objects.nonNull(userArea)) {
-                    userAreaDTOList = JSON.parseObject(userArea.toString(), List.class);
+                    userAreaDTOList = ConversionUtils.parseJson(userArea.toString(), List.class);
                 }
                 return userAreaDTOList;
             case VISITOR:
@@ -67,11 +71,31 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
         if (count == 0) {
             return new PageDTO<>();
         }
+
         // 查询分页的后台用户列表
         IPage<?> page = PaginationUtils.getPage();
         List<AdminUserDTO> adminUserDTOList
                 = baseMapper.listBackgroundUserDTOs(page.offset(), page.getSize(), conditionVO);
         return PageDTO.of(adminUserDTOList, count);
+    }
+
+    // TODO: 2023/1/6 或许可以从 SecurityUtils 获取密码，可能需要登出逻辑
+    @Override
+    public void updateAdminPassword(PasswordVO passwordVO) {
+        // 验证旧密码是否正确
+        Integer userAuthId = SecurityUtils.getUserDetails().getId();
+        String hashedPassword = Objects.requireNonNull
+                (getById(userAuthId), "后台用户信息不存在").getPassword();
+        if (!BCrypt.checkpw(passwordVO.getOldPassword(), hashedPassword)) {
+            throw new ServiceException("旧密码不正确");
+        }
+
+        // 更新密码
+        String newHashedPassword = BCrypt.hashpw
+                (passwordVO.getNewPassword(), BCrypt.gensalt());
+        lambdaUpdate()
+                .eq(UserAuthEntity::getId, userAuthId)
+                .set(UserAuthEntity::getPassword, newHashedPassword);
     }
 
 }

@@ -2,11 +2,13 @@ package pers.project.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import pers.project.blog.constant.DirectoryUriConstant;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.UserDetailsDTO;
 import pers.project.blog.dto.UserOnlineDTO;
@@ -15,10 +17,13 @@ import pers.project.blog.entity.UserRoleEntity;
 import pers.project.blog.mapper.UserInfoMapper;
 import pers.project.blog.service.UserInfoService;
 import pers.project.blog.service.UserRoleService;
+import pers.project.blog.strategy.context.UploadContext;
 import pers.project.blog.util.ConversionUtils;
 import pers.project.blog.util.PaginationUtils;
+import pers.project.blog.util.SecurityUtils;
 import pers.project.blog.vo.ConditionVO;
 import pers.project.blog.vo.UserDisableVO;
+import pers.project.blog.vo.UserInfoVO;
 import pers.project.blog.vo.UserRoleVO;
 
 import java.util.Collection;
@@ -48,7 +53,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoEnt
 
     @Override
     public void updateUserDisable(UserDisableVO userDisableVO) {
-        lambdaUpdate().eq(UserInfoEntity::getId, userDisableVO.getId())
+        lambdaUpdate()
+                .eq(UserInfoEntity::getId, userDisableVO.getId())
                 .set(UserInfoEntity::getIsDisable, userDisableVO.getIsDisable())
                 .update();
     }
@@ -83,12 +89,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoEnt
                 .filter(principal -> sessionRegistry.getAllSessions
                         (principal, false).size() > 0)
                 .map(principal -> ConversionUtils.convertObject(principal, UserOnlineDTO.class))
-                .filter(userOnlineDTO -> !StringUtils.hasText(conditionVO.getKeywords()) ||
+                .filter(userOnlineDTO -> StringUtils.isBlank(conditionVO.getKeywords()) ||
                         userOnlineDTO.getNickname().contains(conditionVO.getKeywords()))
                 .sorted(Comparator.comparing(UserOnlineDTO::getLastLoginTime).reversed())
                 .collect(Collectors.toList());
 
-        // 分页
+        // 处理分页数据
         IPage<?> page = PaginationUtils.getPage();
         int fromIndex = (int) page.offset();
         int pageSize = (int) page.getSize();
@@ -110,6 +116,30 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoEnt
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList())
                 .forEach(SessionInformation::expireNow);
+    }
+
+    @Override
+    public String updateUserAvatar(MultipartFile multipartFile) {
+        String avatarUrl = UploadContext.executeStrategy
+                (multipartFile, DirectoryUriConstant.AVATAR);
+        lambdaUpdate()
+                .eq(UserInfoEntity::getId, SecurityUtils.getUserDetails().getUserInfoId())
+                .set(UserInfoEntity::getAvatar, avatarUrl)
+                .update();
+        return avatarUrl;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
+    public void updateUserInfo(UserInfoVO userInfoVO) {
+        Integer userInfoId = SecurityUtils.getUserDetails().getUserInfoId();
+        UserInfoEntity userInfo = UserInfoEntity.builder()
+                .id(userInfoId)
+                .nickname(userInfoVO.getNickname())
+                .intro(userInfoVO.getIntro())
+                .webSite(userInfoVO.getWebSite())
+                .build();
+        updateById(userInfo);
     }
 
 }

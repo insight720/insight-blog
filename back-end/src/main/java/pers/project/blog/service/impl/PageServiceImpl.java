@@ -1,6 +1,5 @@
 package pers.project.blog.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +29,13 @@ public class PageServiceImpl extends ServiceImpl<PageMapper, PageEntity> impleme
     public List<PageVO> listPages() {
         // 从缓存获取页面信息，没有则从数据库查询并更新缓存
         return Optional
-                .ofNullable(JSON.parseObject
+                .ofNullable(ConversionUtils.parseJson
                         ((String) RedisUtils.get(RedisConstant.PAGE_COVER), List.class))
                 .orElseGet(() -> {
                     List<PageVO> pageVOList
                             = ConversionUtils.covertList
                             (baseMapper.selectList(null), PageVO.class);
-                    RedisUtils.set(RedisConstant.PAGE_COVER, pageVOList);
+                    RedisUtils.set(RedisConstant.PAGE_COVER, ConversionUtils.getJson(pageVOList));
                     return pageVOList;
                 });
     }

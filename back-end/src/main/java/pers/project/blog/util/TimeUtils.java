@@ -24,7 +24,7 @@ public abstract class TimeUtils {
     /**
      * 获取当前时间日期
      *
-     * @return 使用系统时钟的当前日期时间
+     * @return 东八区的当前日期时间
      */
     public static LocalDateTime now() {
         return LocalDateTime.now(TimeConstant.ZONE_ID);
@@ -35,11 +35,23 @@ public abstract class TimeUtils {
      * <p>
      * <b>注意：传入 Mapper 方法的形参不必格式化为字符串</b>
      *
-     * @param time 日期时间
+     * @param dateTime 日期时间
      * @return 格式化的字符串，不为空
      */
-    public static String format(LocalDateTime time) {
-        return FORMATTER.format(time);
+    public static String format(LocalDateTime dateTime) {
+        return FORMATTER.format(dateTime);
+    }
+
+    /**
+     * 解析时间日期字符串为对象
+     * <p>
+     * <b>注意：字符串应为 yyyy-MM-dd HH:mm:ss 格式</b>
+     *
+     * @param dateTimeString 时间日期字符串
+     * @return 日期时间对象
+     */
+    public static LocalDateTime parse(String dateTimeString) {
+        return LocalDateTime.parse(dateTimeString, FORMATTER);
     }
 
     /**

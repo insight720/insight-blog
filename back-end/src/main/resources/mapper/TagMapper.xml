@@ -15,4 +15,26 @@
         id,tag_name,create_time,
         update_time
     </sql>
+
+    <select id="listTagNamesByArticleId" resultType="java.lang.String">
+        SELECT tag.tag_name
+        FROM tb_tag tag
+                 JOIN tb_article_tag article_tag ON tag.id = article_tag.tag_id
+        WHERE article_tag.article_id = #{articleId}
+    </select>
+
+    <select id="listAdminTags" resultType="pers.project.blog.dto.AdminTagDTO">
+        SELECT tag.id, tag.tag_name, COUNT(article_tag.article_id) article_count, tag.create_time
+        FROM tb_tag tag
+        LEFT JOIN tb_article_tag article_tag ON tag.id = article_tag.tag_id
+        <where>
+            <if test="conditionVO.keywords != null">
+                tag.tag_name LIKE CONCAT('%', #{conditionVO.keywords}, '%')
+            </if>
+        </where>
+        GROUP BY tag.id
+        ORDER BY tag.id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
 </mapper>

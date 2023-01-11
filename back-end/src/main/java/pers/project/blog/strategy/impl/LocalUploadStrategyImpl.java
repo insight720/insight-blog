@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import pers.project.blog.configuration.property.UploadProperties;
 import pers.project.blog.constant.enumeration.FileExtensionEnum;
 import pers.project.blog.exception.FileUploadException;
+import pers.project.blog.strategy.AbstractUploadStrategy;
 import pers.project.blog.util.FileIoUtils;
 
 import java.io.*;
@@ -22,7 +23,7 @@ import java.util.Objects;
 @Component
 @ConditionalOnProperty(prefix = "blog.upload", name = "strategy", havingValue = "local")
 @EnableConfigurationProperties(UploadProperties.LocalUpload.class)
-public class LocalUploadStrategyImpl extends AbstractUploadStrategyImpl {
+public class LocalUploadStrategyImpl extends AbstractUploadStrategy {
 
     private final UploadProperties.LocalUpload localUploadProperties;
 

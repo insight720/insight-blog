@@ -1,6 +1,7 @@
 package pers.project.blog.util;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -31,13 +32,6 @@ public abstract class ConversionUtils {
      * @return T 目标类对象
      */
     public static <T> T convertObject(Object source, @NotNull Class<T> targetClass) {
-
-        // TODO: 2023/1/2 两种不同的转换方式，JSON 转换慢很多
-/*
-        return JSON.parseObject(JSON.toJSONString
-                (source, JSONWriter.Feature.FieldBased), targetClass);
-*/
-
         T t = null;
         try {
             t = targetClass.newInstance();
@@ -48,12 +42,6 @@ public abstract class ConversionUtils {
             log.error("转换异常", e);
         }
         return t;
-    }
-
-    public static <T> T convertObjectByJson(Object source, @NotNull Class<T> targetClass) {
-        // TODO: 2023/1/2 两种不同的转换方式
-        return JSON.parseObject(JSON.toJSONString
-                (source, JSONWriter.Feature.FieldBased), targetClass);
     }
 
     /**
@@ -75,6 +63,26 @@ public abstract class ConversionUtils {
         return sourceList.stream()
                 .map(sourceElement -> ConversionUtils.convertObject(sourceElement, targetClass))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 使用基于字段的方式将对象序列化为 JSON 字符串
+     *
+     * @param object 要序列化为 JSON 的对象
+     * @return 对象的 JSON 字符串
+     */
+    public static String getJson(Object object) {
+        return JSON.toJSONString(object, JSONWriter.Feature.FieldBased);
+    }
+
+    /**
+     * 使用基于字段的方式将 JSON 字符串解析为对象
+     *
+     * @param jsonString 要解析的 JSON 字符串
+     * @return 解析出的对象
+     */
+    public static <T> T parseJson(String jsonString, Class<T> tClass) {
+        return JSON.parseObject(jsonString, tClass, JSONReader.Feature.FieldBased);
     }
 
 }

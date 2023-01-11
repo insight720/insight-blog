@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.CommentEntity">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="topicId" column="topic_id" jdbcType="INTEGER"/>
+        <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
+        <result property="replyUserId" column="reply_user_id" jdbcType="INTEGER"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="TINYINT"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+        <result property="isReview" column="is_review" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,topic_id,
+        comment_content,reply_user_id,parent_id,
+        type,is_delete,is_review,
+        create_time,update_time
+    </sql>
+
+    <select id="countAdminComments" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM tb_comment `comment`
+        LEFT JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        <where>
+            <if test="conditionVO.type != null">
+                `comment`.type =#{conditionVO.type}
+            </if>
+            <if test="conditionVO.isReview != null">
+                `comment`.is_review = #{conditionVO.isReview}
+            </if>
+            <if test="conditionVO.keywords != null">
+                user_info.nickname LIKE CONCAT('%', #{conditionVO.keywords}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="listAdminCategoryDTOs" resultType="pers.project.blog.dto.AdminCommentDTO">
+        SELECT `comment`.id, user_info.avatar, user_info.nickname,
+        reply_info.id reply_nickname,article.article_title,
+        `comment`.comment_content, `comment`.type, `comment`.is_review,
+        `comment`.create_time
+        FROM tb_comment `comment`
+        LEFT JOIN tb_article article ON `comment`.topic_id = article.id
+        LEFT JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        LEFT JOIN tb_user_info reply_info ON `comment`.reply_user_id = reply_info.id
+        <where>
+            <if test="conditionVO.type != null">
+                `comment`.type =#{conditionVO.type}
+            </if>
+            <if test="conditionVO.isReview != null">
+                `comment`.is_review = #{conditionVO.isReview}
+            </if>
+            <if test="conditionVO.keywords != null">
+                user_info.nickname LIKE CONCAT('%', #{conditionVO.keywords}, '%')
+            </if>
+        </where>
+        ORDER BY `comment`.id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="getTopicIdCommentsCountMap" resultType="java.util.Map">
+        SELECT topic_id, COUNT(*)
+        FROM tb_comment
+        WHERE topic_id IN
+        <foreach collection="talkIdList" item="talkId" separator="," open="(" close=")">
+            #{talkId}
+        </foreach>
+        AND parent_id IS NULL
+        GROUP BY topic_id
+    </select>
+
+</mapper>

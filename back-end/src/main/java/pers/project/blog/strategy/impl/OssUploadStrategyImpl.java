@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import pers.project.blog.configuration.property.UploadProperties;
+import pers.project.blog.strategy.AbstractUploadStrategy;
 
 import java.io.InputStream;
 
@@ -18,7 +19,7 @@ import java.io.InputStream;
 @Component
 @EnableConfigurationProperties(UploadProperties.OssUpload.class)
 @ConditionalOnProperty(prefix = "blog.upload", name = "strategy", havingValue = "oss")
-public class OssUploadStrategyImpl extends AbstractUploadStrategyImpl {
+public class OssUploadStrategyImpl extends AbstractUploadStrategy {
 
     private final UploadProperties.OssUpload ossUpload;
 

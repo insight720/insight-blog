@@ -1,6 +1,5 @@
 package pers.project.blog.annotation.aspect;
 
-import com.alibaba.fastjson2.JSON;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.aspectj.lang.JoinPoint;
@@ -15,6 +14,7 @@ import pers.project.blog.annotation.OperationLog;
 import pers.project.blog.dto.UserDetailsDTO;
 import pers.project.blog.entity.OperationLogEntity;
 import pers.project.blog.mapper.OperationLogMapper;
+import pers.project.blog.util.ConversionUtils;
 import pers.project.blog.util.IpUtils;
 import pers.project.blog.util.SecurityUtils;
 
@@ -76,9 +76,9 @@ public class OperationLogAspect {
                 .optUrl(Objects.requireNonNull(httpServletRequest).getRequestURI())
                 .optMethod(method.getName())
                 .optDesc(operation.summary())
-                .requestParam(JSON.toJSONString(joinPoint.getArgs()))
+                .requestParam(ConversionUtils.getJson(joinPoint.getArgs()))
                 .requestMethod(httpServletRequest.getMethod())
-                .responseData(JSON.toJSONString(result))
+                .responseData(ConversionUtils.getJson(result))
                 .userId(userDetailsDTO.getId())
                 .nickname(userDetailsDTO.getNickname())
                 .ipAddress(ipAddress)

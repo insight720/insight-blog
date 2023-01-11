@@ -1,7 +1,6 @@
 package pers.project.blog.util;
 
 
-import com.alibaba.fastjson2.JSON;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.http.HttpHeaders;
 
@@ -88,7 +87,7 @@ public abstract class IpUtils {
                 result.append(line);
             }
             reader.close();
-            Map map = JSON.parseObject(result.toString(), Map.class);
+            Map map = ConversionUtils.parseJson(result.toString(), Map.class);
             List<Map<String, String>> data = (List) map.get("data");
             return data.get(0).get("location");
         } catch (Exception e) {

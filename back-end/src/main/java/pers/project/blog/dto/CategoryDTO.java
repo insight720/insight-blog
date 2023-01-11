@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 后台目录分类
+ * 分类
  *
  * @author Luo Fei
  * @date 2022/12/29

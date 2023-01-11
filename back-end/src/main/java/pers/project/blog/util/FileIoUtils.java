@@ -1,6 +1,7 @@
 package pers.project.blog.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.FastByteArrayOutputStream;
@@ -8,6 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.constant.FileIoConstant;
 
 import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static pers.project.blog.constant.FileIoConstant.*;
 
 
 /**
@@ -31,7 +36,7 @@ public abstract class FileIoUtils {
     public static String getNewFileName(MultipartFile multipartFile) throws IOException {
         String md5DigestAsHex = DigestUtils.md5DigestAsHex(multipartFile.getInputStream());
         String extensionName = getExtensionName(multipartFile.getOriginalFilename());
-        return md5DigestAsHex + FileIoConstant.DOT + extensionName;
+        return md5DigestAsHex + DOT + extensionName;
     }
 
     /**
@@ -45,16 +50,32 @@ public abstract class FileIoUtils {
         if (fileName == null) {
             return null;
         }
-        int index = fileName.lastIndexOf(FileIoConstant.DOT);
+        int index = fileName.lastIndexOf(DOT);
         if (index == -1) {
             return null;
         } else {
             String extensionName = fileName.substring(index + 1);
             // 扩展名中不能包含路径相关的符号
-            return extensionName.contains(FileIoConstant.SEPARATOR)
-                    || extensionName.contains(FileIoConstant.WINDOWS_SEPARATOR) ?
+            return StringUtils.containsAny(extensionName, UNIX_SEPARATOR, WINDOWS_SEPARATOR) ?
                     null : extensionName;
         }
+    }
+
+    /**
+     * 获取主文件名
+     *
+     * @param fileName 完整文件名
+     * @return 主文件名，有可能为完整文件名或 null
+     */
+    @Nullable
+    public static String getMainName(String fileName) {
+        String extensionName = getExtensionName(fileName);
+        // 无法确定主文件名
+        if (extensionName == null) {
+            return StringUtils.isNotBlank(fileName) ? fileName : null;
+        }
+        int endIndex = fileName.length() - extensionName.length() - 1;
+        return fileName.substring(0, endIndex);
     }
 
     /**
@@ -90,7 +111,7 @@ public abstract class FileIoUtils {
     }
 
     /**
-     * 从流中缓冲读取字节数组，拷贝后关闭流
+     * 从流中缓冲读取字节数组，读取后关闭流
      *
      * @param in {@link InputStream}
      * @return 字节数组
@@ -101,6 +122,19 @@ public abstract class FileIoUtils {
              FastByteArrayOutputStream out = new FastByteArrayOutputStream()) {
             copyByteStream(bis, out);
             return out.toByteArrayUnsafe();
+        }
+    }
+
+    /**
+     * 从流中按行读取字符，读取后关闭流
+     *
+     * @param in {@link InputStream}
+     * @return 行数据列表
+     * @throws IOException IO异常
+     */
+    public static List<String> readLines(InputStream in) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+            return reader.lines().collect(Collectors.toList());
         }
     }
 

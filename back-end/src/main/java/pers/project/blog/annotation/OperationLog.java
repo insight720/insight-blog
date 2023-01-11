@@ -16,6 +16,6 @@ public @interface OperationLog {
     /**
      * 操作类型
      */
-    String type() default "";
+    String type();
 
 }

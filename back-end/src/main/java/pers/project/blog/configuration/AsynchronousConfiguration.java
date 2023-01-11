@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pers.project.blog.configuration.property.AsynchronousProperties;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -17,16 +18,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableConfigurationProperties(AsynchronousProperties.class)
 public class AsynchronousConfiguration {
-    // TODO: 2022/12/24 线程池参数要根据服务器设置
 
     /**
      * 提供异步调用使用的线程池
      *
      * @param properties 参数外部配置
-     * @return {@link ThreadPoolExecutor} 线程池执行器
+     * @return {@link Executor} 线程池执行器
      */
     @Bean
-    public ThreadPoolTaskExecutor executor(AsynchronousProperties properties) {
+    public Executor executor(AsynchronousProperties properties) {
+        // TODO: 2022/12/24 线程池参数要根据服务器设置
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(properties.getCorePoolSize());
         executor.setMaxPoolSize(properties.getMaxPoolSize());

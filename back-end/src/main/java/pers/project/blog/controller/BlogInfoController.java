@@ -10,6 +10,7 @@ import pers.project.blog.annotation.OperationLog;
 import pers.project.blog.constant.DirectoryUriConstant;
 import pers.project.blog.constant.LogConstant;
 import pers.project.blog.dto.AdminBlogInfoDTO;
+import pers.project.blog.dto.BlogInfoDTO;
 import pers.project.blog.dto.Result;
 import pers.project.blog.service.BlogInfoService;
 import pers.project.blog.strategy.context.UploadContext;
@@ -34,17 +35,23 @@ public class BlogInfoController {
         this.blogInfoService = blogInfoService;
     }
 
-    @Operation(summary = "统计访客信息")
-    @PostMapping("/report")
-    public Result<?> report() {
-        blogInfoService.report();
-        return Result.ok();
+    @Operation(summary = "查看博客信息")
+    @GetMapping("/")
+    public Result<BlogInfoDTO> getBlogInfoDTO() {
+        return Result.ok(blogInfoService.getBlogInfo());
     }
 
     @Operation(summary = "查看后台信息")
     @GetMapping("/admin")
     public Result<AdminBlogInfoDTO> getBlogBackInfo() {
         return Result.ok(blogInfoService.getBlogBackInfo());
+    }
+
+    @Operation(summary = "统计访客信息")
+    @PostMapping("/report")
+    public Result<?> report() {
+        blogInfoService.report();
+        return Result.ok();
     }
 
     @Operation(summary = "获取网站配置")
@@ -61,6 +68,7 @@ public class BlogInfoController {
         return Result.ok();
     }
 
+    @OperationLog(type = LogConstant.UPLOAD)
     @Operation(summary = "上传博客配置图片")
     @Parameter(name = "multipartFile", description = "配置图片",
             required = true, schema = @Schema(type = "MultipartFile"))

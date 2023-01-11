@@ -20,6 +20,22 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="listAdminArticlesResultMap" type="pers.project.blog.dto.AdminArticleDTO">
+        <id property="id" column="id"/>
+        <result property="articleCover" column="article_cover"/>
+        <result property="articleTitle" column="article_title"/>
+        <result property="createTime" column="create_time"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="type" column="type"/>
+        <result property="isTop" column="is_top"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="status" column="status"/>
+        <collection property="tagDTOList" ofType="pers.project.blog.dto.TagDTO">
+            <id property="id" column="tag_id"/>
+            <result property="tagName" column="tag_id"/>
+        </collection>
+    </resultMap>
+
     <sql id="Base_Column_List">
         id,user_id,category_id,
         article_cover,article_title,article_content,
@@ -34,6 +50,68 @@
         FROM tb_article
         GROUP BY `date`
         ORDER BY `date` DESC
+    </select>
+
+    <select id="countAdminArticles" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT article.id)
+        FROM tb_article article
+        LEFT JOIN tb_article_tag article_tag
+        ON article.id = article_tag.article_id
+        <where>
+            article.is_delete = #{condition.isDelete}
+            <if test="condition.keywords != null">
+                AND article.article_title LIKE CONCAT('%', #{condition.keywords}, '%')
+            </if>
+            <if test="condition.categoryId != null">
+                AND article.category_id = #{condition.categoryId}
+            </if>
+            <if test="condition.status != null">
+                AND article.status = #{condition.status}
+            </if>
+            <if test="condition.type != null">
+                AND article.type = #{condition.type}
+            </if>
+            <if test="condition.tagId != null">
+                AND article_tag.tag_id = #{condition.tagId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listAdminArticles" resultMap="listAdminArticlesResultMap">
+        SELECT info.id , info.article_cover, info.article_title, info.create_time,
+        category.category_name, tag.id AS tag_id, tag.tag_name, info.type, info.is_top,
+        info.is_delete, info.`status`
+        FROM
+        (SELECT id, article_cover, article_title, create_time, type,
+        is_top, is_delete,`status`, category_id
+        FROM tb_article
+        <where>
+            is_delete = #{condition.isDelete}
+            <if test="condition.keywords != null">
+                AND article_title LIKE CONCAT('%', #{condition.keywords}, '%')
+            </if>
+            <if test="condition.categoryId != null">
+                AND category_id = #{condition.categoryId}
+            </if>
+            <if test="condition.status != null">
+                AND `status` = #{condition.status}
+            </if>
+            <if test="condition.type != null">
+                AND type = #{condition.type}
+            </if>
+            <if test="condition.tagId != null">
+                AND id IN
+                (SELECT article_id
+                FROM tb_article_tag
+                WHERE tag_id = #{condition.tagId})
+            </if>
+            ORDER BY is_top DESC, id DESC
+            LIMIT #{offset}, #{size}) info
+        </where>
+        LEFT JOIN tb_category category ON info.category_id = category.id
+        LEFT JOIN tb_article_tag article_tag ON info.id = article_tag.article_id
+        LEFT JOIN tb_tag tag ON tag.id = article_tag.tag_id
+        /*ORDER BY info.is_top DESC, info.id desc*/
     </select>
 
 </mapper>

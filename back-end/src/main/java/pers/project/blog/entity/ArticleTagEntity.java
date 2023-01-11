@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 文章标签
+ * 文章和标签得映射
  *
  * @author Luo Fei
  * @date 2023-01-05

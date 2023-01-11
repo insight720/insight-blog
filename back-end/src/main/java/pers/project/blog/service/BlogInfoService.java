@@ -1,10 +1,12 @@
 package pers.project.blog.service;
 
 import pers.project.blog.dto.AdminBlogInfoDTO;
+import pers.project.blog.dto.BlogInfoDTO;
 import pers.project.blog.vo.InfoAboutMeVO;
 import pers.project.blog.vo.WebsiteConfigVO;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * 博客信息服务
@@ -31,6 +33,7 @@ public interface BlogInfoService {
      *
      * @return 网站配置信息
      */
+    @NotNull
     WebsiteConfigVO getWebSiteConfig();
 
     /**
@@ -53,5 +56,12 @@ public interface BlogInfoService {
      * @param infoAboutMeVO 关于我的信息
      */
     void updateInfoAboutMe(@Valid InfoAboutMeVO infoAboutMeVO);
+
+    /**
+     * 获取首页数据
+     *
+     * @return 博客首页信息
+     */
+    BlogInfoDTO getBlogInfo();
 
 }

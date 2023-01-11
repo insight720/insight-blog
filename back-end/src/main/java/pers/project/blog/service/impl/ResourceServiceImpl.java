@@ -1,9 +1,9 @@
 package pers.project.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import pers.project.blog.constant.BooleanConstant;
 import pers.project.blog.dto.LabelOptionDTO;
@@ -93,7 +93,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
 
         // TODO: 2023/1/3 逻辑不明
         // 不属于任何模块的接口资源
-        if (!CollectionUtils.isEmpty(moduleIdChildrenMap)) {
+        if (CollectionUtils.isNotEmpty(moduleIdChildrenMap)) {
             List<ResourceDTO> unboundResourceList = moduleIdChildrenMap.values()
                     .stream()
                     .flatMap(Collection::stream)

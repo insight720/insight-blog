@@ -1,11 +1,11 @@
 package pers.project.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import pers.project.blog.constant.BooleanConstant;
 import pers.project.blog.dto.PageDTO;
@@ -104,7 +104,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         }
 
         // 更新角色和资源的映射
-        if (!CollectionUtils.isEmpty(roleVO.getResourceIdList())) {
+        if (CollectionUtils.isNotEmpty(roleVO.getResourceIdList())) {
             if (originalRole != null) {
                 roleResourceService.lambdaUpdate()
                         .eq(RoleResourceEntity::getRoleId, originalRole.getId())
@@ -124,7 +124,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         }
 
         // 更新角色和菜单的映射
-        if (!CollectionUtils.isEmpty(roleVO.getMenuIdList())) {
+        if (CollectionUtils.isNotEmpty(roleVO.getMenuIdList())) {
             if (originalRole != null) {
                 roleMenuService.lambdaUpdate()
                         .eq(RoleMenuEntity::getRoleId, originalRole.getId())

@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import pers.project.blog.configuration.property.UploadProperties;
+import pers.project.blog.strategy.AbstractUploadStrategy;
 import pers.project.blog.util.FileIoUtils;
 
 import java.io.ByteArrayInputStream;
@@ -26,7 +27,7 @@ import java.io.InputStream;
 @Component
 @EnableConfigurationProperties(UploadProperties.CosUpload.class)
 @ConditionalOnProperty(prefix = "blog.upload", name = "strategy", havingValue = "cos")
-public class CosUploadStrategyImpl extends AbstractUploadStrategyImpl {
+public class CosUploadStrategyImpl extends AbstractUploadStrategy {
 
     private final UploadProperties.CosUpload cosUpload;
 

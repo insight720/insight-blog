@@ -3,14 +3,20 @@ package pers.project.blog.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pers.project.blog.annotation.OperationLog;
+import pers.project.blog.constant.LogConstant;
 import pers.project.blog.dto.AdminUserDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.Result;
 import pers.project.blog.dto.UserAreaDTO;
 import pers.project.blog.service.UserAuthService;
 import pers.project.blog.vo.ConditionVO;
+import pers.project.blog.vo.PasswordVO;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -39,6 +45,14 @@ public class UserAuthController {
     @GetMapping("/admin/users")
     public Result<PageDTO<AdminUserDTO>> listBackgroundUsers(ConditionVO conditionVO) {
         return Result.ok(userAuthService.listBackgroundUserDTOs(conditionVO));
+    }
+
+    @OperationLog(type = LogConstant.UPDATE)
+    @Operation(summary = "修改管理员密码")
+    @PutMapping("/admin/users/password")
+    public Result<?> updateAdminPassword(@Valid @RequestBody PasswordVO passwordVO) {
+        userAuthService.updateAdminPassword(passwordVO);
+        return Result.ok();
     }
 
 }

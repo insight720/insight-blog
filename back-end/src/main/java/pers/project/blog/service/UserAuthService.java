@@ -6,6 +6,7 @@ import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.UserAreaDTO;
 import pers.project.blog.entity.UserAuthEntity;
 import pers.project.blog.vo.ConditionVO;
+import pers.project.blog.vo.PasswordVO;
 
 import java.util.List;
 
@@ -32,5 +33,12 @@ public interface UserAuthService extends IService<UserAuthEntity> {
      * @return 分页的视图对象
      */
     PageDTO<AdminUserDTO> listBackgroundUserDTOs(ConditionVO conditionVO);
+
+    /**
+     * 修改管理员密码
+     *
+     * @param passwordVO 密码信息
+     */
+    void updateAdminPassword(PasswordVO passwordVO);
 
 }
