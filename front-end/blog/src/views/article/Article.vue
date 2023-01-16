@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 封面图 -->
-    <div class="banner" :style="articleCover">
+    <div :style="articleCover" class="banner">
       <div class="article-info-container">
         <!-- 文章标题 -->
         <div class="article-title">{{ article.articleTitle }}</div>
@@ -63,13 +63,13 @@
     </div>
     <!-- 内容 -->
     <v-row class="article-container">
-      <v-col md="9" cols="12">
+      <v-col cols="12" md="9">
         <v-card class="article-wrapper">
           <article
               id="write"
+              ref="article"
               class="article-content markdown-body"
               v-html="article.articleContent"
-              ref="article"
           />
           <!-- 版权声明 -->
           <div class="aritcle-copyright">
@@ -105,19 +105,19 @@
                 {{ item.tagName }}
               </router-link>
             </div>
-            <share style="margin-left:auto" :config="config"/>
+            <share :config="config" style="margin-left:auto"/>
           </div>
           <!-- 点赞打赏等 -->
           <div class="article-reward">
             <!-- 点赞按钮 -->
             <a :class="isLike" @click="like">
-              <v-icon size="14" color="#fff">mdi-thumb-up</v-icon>
+              <v-icon color="#fff" size="14">mdi-thumb-up</v-icon>
               点赞
               <span v-show="article.likeCount > 0">{{
                   article.likeCount
                 }}</span>
             </a>
-            <a class="reward-btn" v-if="blogInfo.websiteConfig.isReward == 1">
+            <a v-if="blogInfo.websiteConfig.isReward == 1" class="reward-btn">
               <!-- 打赏按钮 -->
               <i class="iconfont iconerweima"/> 打赏
               <!-- 二维码 -->
@@ -125,15 +125,15 @@
                 <ul class="reward-all">
                   <li class="reward-item">
                     <img
-                        class="reward-img"
                         :src="blogInfo.websiteConfig.weiXinQRCode"
+                        class="reward-img"
                     />
                     <div class="reward-desc">微信</div>
                   </li>
                   <li class="reward-item">
                     <img
-                        class="reward-img"
                         :src="blogInfo.websiteConfig.alipayQRCode"
+                        class="reward-img"
                     />
                     <div class="reward-desc">支付宝</div>
                   </li>
@@ -144,13 +144,13 @@
           <div class="pagination-post">
             <!-- 上一篇 -->
             <div
-                :class="isFull(article.lastArticle.id)"
                 v-if="article.lastArticle.id"
+                :class="isFull(article.lastArticle.id)"
             >
               <router-link :to="'/articles/' + article.lastArticle.id">
                 <img
-                    class="post-cover"
                     :src="article.lastArticle.articleCover"
+                    class="post-cover"
                 />
                 <div class="post-info">
                   <div class="label">上一篇</div>
@@ -162,13 +162,13 @@
             </div>
             <!-- 下一篇 -->
             <div
-                :class="isFull(article.nextArticle.id)"
                 v-if="article.nextArticle.id"
+                :class="isFull(article.nextArticle.id)"
             >
               <router-link :to="'/articles/' + article.nextArticle.id">
                 <img
-                    class="post-cover"
                     :src="article.nextArticle.articleCover"
+                    class="post-cover"
                 />
                 <div class="post-info" style="text-align: right">
                   <div class="label">下一篇</div>
@@ -181,21 +181,21 @@
           </div>
           <!-- 推荐文章 -->
           <div
-              class="recommend-container"
               v-if="article.recommendArticleList.length"
+              class="recommend-container"
           >
             <div class="recommend-title">
-              <v-icon size="20" color="#4c4948">mdi-thumb-up</v-icon>
+              <v-icon color="#4c4948" size="20">mdi-thumb-up</v-icon>
               相关推荐
             </div>
             <div class="recommend-list">
               <div
-                  class="recommend-item"
                   v-for="item of article.recommendArticleList"
                   :key="item.id"
+                  class="recommend-item"
               >
                 <router-link :to="'/articles/' + item.id">
-                  <img class="recommend-cover" :src="item.articleCover"/>
+                  <img :src="item.articleCover" class="recommend-cover"/>
                   <div class="recommend-info">
                     <div class="recommend-date">
                       <i class="iconfont iconrili"/>
@@ -214,7 +214,7 @@
         </v-card>
       </v-col>
       <!-- 侧边功能 -->
-      <v-col md="3" cols="12" class="d-md-block d-none">
+      <v-col class="d-md-block d-none" cols="12" md="3">
         <div style="position: sticky;top: 20px;">
           <!-- 文章目录 -->
           <v-card class="right-container">
@@ -232,9 +232,9 @@
             </div>
             <div class="article-list">
               <div
-                  class="article-item"
                   v-for="item of article.newestArticleList"
                   :key="item.id"
+                  class="article-item"
               >
                 <router-link :to="'/articles/' + item.id" class="content-cover">
                   <img :src="item.articleCover"/>

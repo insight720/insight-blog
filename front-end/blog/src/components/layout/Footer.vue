@@ -1,5 +1,5 @@
 <template>
-  <v-footer app padless absolute v-if="!this.isMessage">
+  <v-footer v-if="!this.isMessage" absolute app padless>
     <div class="footer-wrap">
       <div>
         ©{{ blogInfo.websiteConfig.websiteCreateTime | year }} -

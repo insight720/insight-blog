@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app :class="navClass" hide-on-scroll flat height="60">
+  <v-app-bar :class="navClass" app flat height="60" hide-on-scroll>
     <!-- 手机端导航栏 -->
     <div class="d-md-none nav-mobile-container">
       <div style="font-size:18px;font-weight:bold">
@@ -9,7 +9,7 @@
       </div>
       <div style="margin-left:auto">
         <a @click="openSearch"><i class="iconfont iconsousuo"/></a>
-        <a @click="openDrawer" style="margin-left:10px;font-size:20px">
+        <a style="margin-left:10px;font-size:20px" @click="openDrawer">
           <i class="iconfont iconhanbao"/>
         </a>
       </div>
@@ -90,16 +90,16 @@
         </div>
         <div class="menus-item">
           <a
-              class="menu-btn"
               v-if="!this.$store.state.avatar"
+              class="menu-btn"
               @click="openLogin"
           >
             <i class="iconfont icondenglu"/> 登录
           </a>
           <template v-else>
             <img
-                class="user-avatar"
                 :src="this.$store.state.avatar"
+                class="user-avatar"
                 height="30"
                 width="30"
             />

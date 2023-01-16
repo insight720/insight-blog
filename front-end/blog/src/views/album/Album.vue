@@ -1,15 +1,15 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">相册</h1>
     </div>
     <!-- 相册内容 -->
     <v-card class="blog-container">
       <v-row>
-        <v-col :md="6" v-for="item of photoAlbumList" :key="item.id">
+        <v-col v-for="item of photoAlbumList" :key="item.id" :md="6">
           <div class="album-item">
-            <v-img class="album-cover" :src="item.albumCover"/>
+            <v-img :src="item.albumCover" class="album-cover"/>
             <router-link :to="'/albums/' + item.id" class="album-wrapper">
               <div class="album-name">{{ item.albumName }}</div>
               <div class="album-desc">{{ item.albumDesc }}</div>

@@ -2,6 +2,7 @@ package pers.project.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.project.blog.dto.AdminCategoryDTO;
+import pers.project.blog.dto.CategoryDTO;
 import pers.project.blog.dto.CategoryOptionDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.entity.CategoryEntity;
@@ -47,5 +48,12 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @param categoryIdList 分类 ID 集合
      */
     void removeCategories(List<Integer> categoryIdList);
+
+    /**
+     * 查询分页的分类列表
+     *
+     * @return {@code PageDTO<CategoryDTO>} 分页的分类列表数据
+     */
+    PageDTO<CategoryDTO> listCategories();
 
 }

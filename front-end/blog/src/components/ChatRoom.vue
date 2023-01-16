@@ -2,17 +2,17 @@
   <div>
     <!-- 聊天界面 -->
     <div
-        class="chat-container animated bounceInUp"
         v-show="isShow"
+        class="chat-container animated bounceInUp"
         @click="closeAll"
         @contextmenu.prevent.stop="closeAll"
     >
       <!-- 标题 -->
       <div class="header">
         <img
-            width="32"
             height="32"
             src="https://static.talkxj.com/config/logo.png"
+            width="32"
         />
         <div style="margin-left:12px">
           <div>聊天室</div>
@@ -23,7 +23,7 @@
         </v-icon>
       </div>
       <!-- 对话内容 -->
-      <div class="message" id="message">
+      <div id="message" class="message">
         <!-- 录音遮罩层 -->
         <div
             v-show="voiceActive"
@@ -34,46 +34,46 @@
           <v-icon ref="voiceClose" class="close-voice">mdi-close</v-icon>
         </div>
         <div
-            :class="isMyMessage(item)"
             v-for="(item, index) of chatRecordList"
             :key="index"
+            :class="isMyMessage(item)"
         >
           <!-- 头像 -->
-          <img :src="item.avatar" :class="isleft(item)"/>
+          <img :class="isleft(item)" :src="item.avatar"/>
           <div>
-            <div class="nickname" v-if="!isSelf(item)">
+            <div v-if="!isSelf(item)" class="nickname">
               {{ item.nickname }}
               <span style="margin-left:12px">{{ item.createTime | hour }}</span>
             </div>
             <!-- 内容 -->
             <div
                 ref="content"
-                @contextmenu.prevent.stop="showBack(item, index, $event)"
                 :class="isMyContent(item)"
+                @contextmenu.prevent.stop="showBack(item, index, $event)"
             >
               <!-- 文字消息 -->
               <div v-if="item.type == 3" v-html="item.content"/>
               <!-- 语音消息 -->
               <div v-if="item.type == 5" @click.prevent.stop="playVoice(item)">
                 <audio
-                    @ended="endVoice(item)"
-                    @canplay="getVoiceTime(item)"
                     ref="voices"
                     :src="item.content"
                     style="display:none"
+                    @canplay="getVoiceTime(item)"
+                    @ended="endVoice(item)"
                 />
                 <!-- 播放 -->
                 <v-icon
-                    :color="isSelf(item) ? '#fff' : '#000'"
                     ref="plays"
+                    :color="isSelf(item) ? '#fff' : '#000'"
                     style="display:inline-flex;cursor: pointer;"
                 >
                   mdi-arrow-right-drop-circle
                 </v-icon>
                 <!-- 暂停 -->
                 <v-icon
-                    :color="isSelf(item) ? '#fff' : '#000'"
                     ref="pauses"
+                    :color="isSelf(item) ? '#fff' : '#000'"
                     style="display:none;cursor: pointer;"
                 >
                   mdi-pause-circle
@@ -81,7 +81,7 @@
                 <!-- 音频时长 -->
                 <span ref="voiceTimes"/>
               </div>
-              <div class="back-menu" ref="backBtn" @click="back(item, index)">
+              <div ref="backBtn" class="back-menu" @click="back(item, index)">
                 撤回
               </div>
             </div>
@@ -91,22 +91,22 @@
       <!-- 输入框 -->
       <div class="footer">
         <!-- 表情框 -->
-        <div class="emoji-box" v-show="isEmoji">
+        <div v-show="isEmoji" class="emoji-box">
           <Emoji :chooseEmoji="true" @addEmoji="addEmoji"/>
         </div>
-        <div class="emoji-border" v-show="isEmoji"/>
+        <div v-show="isEmoji" class="emoji-border"/>
         <!-- 切换输入方式 -->
         <v-icon
             v-show="!isVoice"
-            @click="isVoice = !isVoice"
             style="margin-right: 8px"
+            @click="isVoice = !isVoice"
         >
           mdi-microphone
         </v-icon>
         <v-icon
             v-show="isVoice"
-            @click="isVoice = !isVoice"
             style="margin-right: 8px"
+            @click="isVoice = !isVoice"
         >
           mdi-keyboard
         </v-icon>
@@ -115,13 +115,13 @@
             v-show="!isVoice"
             ref="chatInput"
             v-model="content"
-            @keydown.enter="saveMessage($event)"
             placeholder="请输入内容"
+            @keydown.enter="saveMessage($event)"
         />
         <!-- 语音输入 -->
         <button
-            class="voice-btn"
             v-show="isVoice"
+            class="voice-btn"
             @mousedown.prevent.stop="translationStart"
             @mouseup.prevent.stop="translationEnd($event)"
             @touchstart.prevent.stop="translationStart"
@@ -132,21 +132,21 @@
         </button>
         <!-- 表情 -->
         <i
-            class="iconfont iconbiaoqing emoji"
             :style="isEmoji ? 'color:#FFC83D' : ''"
+            class="iconfont iconbiaoqing emoji"
             @click.prevent.stop="openEmoji"
         />
         <!-- 发送按钮 -->
-        <i :class="isInput" @click="saveMessage" style="font-size: 1.5rem"/>
+        <i :class="isInput" style="font-size: 1.5rem" @click="saveMessage"/>
       </div>
     </div>
     <!-- 未读数量 -->
     <div class="chat-btn" @click="open">
-      <span class="unread" v-if="unreadCount > 0">{{ unreadCount }}</span>
+      <span v-if="unreadCount > 0" class="unread">{{ unreadCount }}</span>
       <img
-          width="100%"
           height="100%"
           src="https://static.talkxj.com/config/logo.png"
+          width="100%"
       />
     </div>
   </div>

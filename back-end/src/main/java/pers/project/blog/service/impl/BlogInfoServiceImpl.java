@@ -6,6 +6,7 @@ import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /**
@@ -50,29 +50,23 @@ import java.util.stream.Collectors;
 public class BlogInfoServiceImpl implements BlogInfoService {
 
     @Autowired
+    TaskExecutor taskExecutor;
+    @Autowired
     private HttpServletRequest httpServletRequest;
-
     @Autowired
     private MessageMapper messageMapper;
-
     @Autowired
     private UserInfoMapper userInfoMapper;
-
     @Autowired
     private ArticleMapper articleMapper;
-
     @Autowired
     private CategoryMapper categoryMapper;
-
     @Autowired
     private TagMapper tagMapper;
-
     @Autowired
     private UniqueViewService uniqueViewService;
-
     @Autowired
     private WebsiteConfigMapper websiteConfigMapper;
-
     @Autowired
     private PageService pageService;
 
@@ -111,9 +105,6 @@ public class BlogInfoServiceImpl implements BlogInfoService {
         // 保存访客唯一标识
         RedisUtils.sAdd(RedisConstant.UNIQUE_VISITOR, md5DigestAsHex);
     }
-
-    @Autowired
-    Executor executor;
 
     @Override
     public AdminBlogInfoDTO getBlogBackInfo() {

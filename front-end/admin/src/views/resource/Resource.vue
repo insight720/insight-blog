@@ -4,9 +4,9 @@
     <div class="title">{{ this.$route.name }}</div>
     <div class="operation-container">
       <el-button
-          type="primary"
-          size="small"
           icon="el-icon-plus"
+          size="small"
+          type="primary"
           @click="openModel(null)"
       >
         新增模块
@@ -15,17 +15,17 @@
       <div style="margin-left:auto">
         <el-input
             v-model="keywords"
+            placeholder="请输入资源名"
             prefix-icon="el-icon-search"
             size="small"
-            placeholder="请输入资源名"
             style="width:200px"
             @keyup.enter.native="listResources"
         />
         <el-button
-            type="primary"
-            size="small"
             icon="el-icon-search"
+            size="small"
             style="margin-left:1rem"
+            type="primary"
             @click="listResources"
         >
           搜索
@@ -36,60 +36,60 @@
     <el-table
         v-loading="loading"
         :data="resourceList"
-        row-key="id"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        row-key="id"
     >
-      <el-table-column prop="resourceName" label="资源名" width="220"/>
-      <el-table-column prop="url" label="资源路径" width="300"/>
-      <el-table-column prop="requetMethod" label="请求方式">
-        <template slot-scope="scope" v-if="scope.row.requestMethod">
+      <el-table-column label="资源名" prop="resourceName" width="220"/>
+      <el-table-column label="资源路径" prop="url" width="300"/>
+      <el-table-column label="请求方式" prop="requetMethod">
+        <template v-if="scope.row.requestMethod" slot-scope="scope">
           <el-tag :type="tagType(scope.row.requestMethod)">
             {{ scope.row.requestMethod }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="isAnonymous" label="匿名访问" align="center">
+      <el-table-column align="center" label="匿名访问" prop="isAnonymous">
         <template slot-scope="scope">
           <el-switch
               v-if="scope.row.url"
               v-model="scope.row.isAnonymous"
-              active-color="#13ce66"
-              inactive-color="#F4F4F5"
               :active-value="1"
               :inactive-value="0"
+              active-color="#13ce66"
+              inactive-color="#F4F4F5"
               @change="changeResource(scope.row)"
           />
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" align="center">
+      <el-table-column align="center" label="创建时间" prop="createTime">
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right:5px"/>
           {{ scope.row.createTime | date }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button
-              type="text"
-              size="mini"
-              @click="openAddResourceModel(scope.row)"
               v-if="scope.row.children"
+              size="mini"
+              type="text"
+              @click="openAddResourceModel(scope.row)"
           >
             <i class="el-icon-plus"/> 新增
           </el-button>
           <el-button
-              type="text"
               size="mini"
+              type="text"
               @click="openEditResourceModel(scope.row)"
           >
             <i class="el-icon-edit"/> 修改
           </el-button>
           <el-popconfirm
-              title="确定删除吗？"
               style="margin-left:10px"
+              title="确定删除吗？"
               @confirm="deleteResource(scope.row.id)"
           >
-            <el-button size="mini" type="text" slot="reference">
+            <el-button slot="reference" size="mini" type="text">
               <i class="el-icon-delete"/> 删除
             </el-button>
           </el-popconfirm>
@@ -98,8 +98,8 @@
     </el-table>
     <!-- 新增模态框 -->
     <el-dialog :visible.sync="addModule" width="30%">
-      <div class="dialog-title-container" slot="title" ref="moduleTitle"/>
-      <el-form label-width="80px" size="medium" :model="resourceForm">
+      <div ref="moduleTitle" slot="title" class="dialog-title-container"/>
+      <el-form :model="resourceForm" label-width="80px" size="medium">
         <el-form-item label="模块名">
           <el-input v-model="resourceForm.resourceName" style="width:220px"/>
         </el-form-item>
@@ -113,8 +113,8 @@
     </el-dialog>
     <!-- 新增模态框 -->
     <el-dialog :visible.sync="addResource" width="30%">
-      <div class="dialog-title-container" slot="title" ref="resourceTitle"/>
-      <el-form label-width="80px" size="medium" :model="resourceForm">
+      <div ref="resourceTitle" slot="title" class="dialog-title-container"/>
+      <el-form :model="resourceForm" label-width="80px" size="medium">
         <el-form-item label="资源名">
           <el-input v-model="resourceForm.resourceName" style="width:220px"/>
         </el-form-item>

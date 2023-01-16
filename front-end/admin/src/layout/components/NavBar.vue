@@ -38,15 +38,15 @@
     <div class="tabs-view-container">
       <div class="tabs-wrapper">
         <span
-            :class="isActive(item)"
             v-for="item of this.$store.state.tabList"
             :key="item.path"
+            :class="isActive(item)"
             @click="goTo(item)"
         >
           {{ item.name }}
           <i
-              class="el-icon-close"
               v-if="item.path != '/'"
+              class="el-icon-close"
               @click.stop="removeTab(item)"
           />
         </span>

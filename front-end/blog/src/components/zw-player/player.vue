@@ -1,9 +1,9 @@
 <template>
   <div>
     <transition name="dis_list">
-      <div class="list_box" v-if="listIsDis">
+      <div v-if="listIsDis" class="list_box">
         <transition name="music_alert">
-          <span class="music_alert" v-if="musicAlertState">{{
+          <span v-if="musicAlertState" class="music_alert">{{
               musicAlertVal
             }}</span>
         </transition>
@@ -14,8 +14,8 @@
               <li
                   v-for="(item, index) in musicTypeList"
                   :key="index"
-                  @click="_getMusicType(item.id)"
                   :class="{ type_active: item.id == thisMusicType }"
+                  @click="_getMusicType(item.id)"
               >
                 {{ item.name }}
               </li>
@@ -30,13 +30,13 @@
               />
               <div class="music_search_box">
                 <input
-                    type="text"
-                    class="music_search"
                     v-model="musicSearchVal"
+                    class="music_search"
                     placeholder="搜索歌曲"
+                    type="text"
                 />
                 <transition name="music_search">
-                  <ul class="search_list" v-if="musicSearchVal != ''">
+                  <ul v-if="musicSearchVal != ''" class="search_list">
                     <li
                         v-for="(item, index) in musicSearchList"
                         :key="index"
@@ -58,33 +58,33 @@
               <li
                   v-for="(item, index) in thisMusicList"
                   :key="index"
-                  @mouseover="ButtonActive(index)"
                   @dblclick="ListPlay((thisListPage - 1) * 10 + index)"
+                  @mouseover="ButtonActive(index)"
               >
                 <div
-                    class="this_music_shlter"
                     v-if="(thisListPage - 1) * 10 + index == thisMusicIndex"
+                    class="this_music_shlter"
                 ></div>
                 <span>{{ item.name }}</span
                 ><span>{{ item.ar[0].name }}</span
               ><span>{{ item.al.name }}</span>
                 <transition name="list_button">
                   <div
-                      class="music_button"
                       v-if="listButtonActiveIndex == index"
+                      class="music_button"
                   >
                     <div
+                        :style="{ backgroundImage: 'url(' + listPlay + ')' }"
                         class="list_play"
                         title="播放这首歌"
-                        :style="{ backgroundImage: 'url(' + listPlay + ')' }"
                         @click="ListPlay((thisListPage - 1) * 10 + index)"
                     ></div>
                     <div
+                        v-if="thisMusicType != -1"
+                        :style="{ backgroundImage: 'url(' + add + ')' }"
                         class="list_play"
                         title="添加到 My Songs"
-                        :style="{ backgroundImage: 'url(' + add + ')' }"
                         @click="ListAdd(item)"
-                        v-if="thisMusicType != -1"
                     ></div>
                   </div>
                 </transition>
@@ -92,15 +92,15 @@
             </ul>
             <div class="list_page">
               <div
-                  class="page_last"
                   v-if="thisListPage != 1"
+                  class="page_last"
                   @click="ListChange(true)"
               >
                 &lt;
               </div>
               <div
-                  class="page_next"
                   v-if="thisListPage != Math.ceil(musicList.length / 10)"
+                  class="page_next"
                   @click="ListChange(false)"
               >
                 >
@@ -108,10 +108,10 @@
             </div>
           </div>
           <div class="list_r">
-            <img class="music_list_bg" :src="musicImg"/>
+            <img :src="musicImg" class="music_list_bg"/>
             <div
-                class="music_list_shlter"
                 :style="{ backgroundImage: 'url(' + shlter + ')' }"
+                class="music_list_shlter"
             ></div>
             <ul class="music_talk_list">
               <li v-for="(item, index) in hotTalkList" :key="index">
@@ -124,9 +124,9 @@
                   <span class="talk_head_name">{{ item.user.nickname }}</span>
                 </div>
                 <p class="talk_content">
-                  <img class="talk_icon_l" :src="talkicon1"/>
+                  <img :src="talkicon1" class="talk_icon_l"/>
                   {{ item.content }}
-                  <img class="talk_icon_r" :src="talkicon2"/>
+                  <img :src="talkicon2" class="talk_icon_r"/>
                 </p>
               </li>
             </ul>
@@ -134,30 +134,30 @@
         </div>
       </div>
     </transition>
-    <div class="bbox" :class="{ bbox_active: disActive }">
+    <div :class="{ bbox_active: disActive }" class="bbox">
       <div
-          class="pan"
-          :style="{ backgroundImage: 'url(' + pan + ')' }"
           :class="{ pan_active: disActive }"
+          :style="{ backgroundImage: 'url(' + pan + ')' }"
+          class="pan"
           @click="DisActive"
       >
         <img :src="musicImg" alt="" class="pan_c"/>
       </div>
       <div
-          class="box"
-          :style="{ backgroundImage: 'url(' + musicImg + ')' }"
           :class="{ box_active: disActive }"
+          :style="{ backgroundImage: 'url(' + musicImg + ')' }"
+          class="box"
           @dblclick="DisList"
       >
         <div
-            class="music_shlter_2"
-            :style="{ backgroundImage: 'url(' + musicImg + ')' }"
             :class="{ shlter_active: disActive }"
+            :style="{ backgroundImage: 'url(' + musicImg + ')' }"
+            class="music_shlter_2"
         ></div>
         <div
-            class="music_shlter"
-            :style="{ backgroundImage: 'url(' + musicImg + ')' }"
             :class="{ shlter_active: disActive }"
+            :style="{ backgroundImage: 'url(' + musicImg + ')' }"
+            class="music_shlter"
         ></div>
         <div class="music_shlter_3"></div>
         <div class="music_dis">
@@ -165,12 +165,12 @@
           <p class="music_title">{{ musicTitle }}</p>
           <p class="music_intro">歌手: {{ musicName }}</p>
           <ul class="music_words">
-            <div class="music_words_box" :style="{ top: wordsTop + 'px' }">
+            <div :style="{ top: wordsTop + 'px' }" class="music_words_box">
               <li
                   v-for="(item, index) in musicWords"
                   :key="index"
-                  class="music_word"
                   :class="{ word_highlight: wordIndex == index }"
+                  class="music_word"
               >
                 {{ item }}
               </li>
@@ -182,7 +182,7 @@
             <img :src="playIcon" alt="" class="control_icon"/>
           </div>
           <div class="progress">
-            <div class="progress_c" :style="{ width: currentProgress }">
+            <div :style="{ width: currentProgress }" class="progress_c">
               <div class="progress_circle">
                 <div class="progress_circle_c"></div>
               </div>
@@ -192,8 +192,8 @@
       </div>
       <video
           id="music"
-          autoplay="autoplay"
           :src="musicUrl"
+          autoplay="autoplay"
           name="media"
       ></video>
     </div>

@@ -26,6 +26,20 @@ spring:
   redis:
     host:
     port:
+  elasticsearch:
+    uris:
+  # mq配置
+  rabbitmq:
+    host: 你的ip
+    port: 5672
+    username: rabbitmq用户名
+    password: rabbitmq密码
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3 #最大重试次数
+          initial-interval: 3000 #重试间隔时间（单位毫秒）
 
 blog:
   asynchronous:
@@ -53,9 +67,22 @@ blog:
       secret-id:
       secret-key:
 
-logging:
-  level:
-    pers.project.blog: debug
+search:
+  mode: mysql
 
+qq:
+  app-id: QQ APPID
+  check-token-url: https://graph.qq.com/oauth2.0/me?access_token={access_token}
+  user-info-url: https://graph.qq.com/user/get_user_info?openid={openid}&access_token={access_token}&oauth_consumer_key={oauth_consumer_key}
 
+weibo:
+  app-id: 微博APPID
+  app-secret: 微博APPSECRET
+  grant-type: authorization_code
+  redirect-url: 微博回调地址
+  access-token-url: https://api.weibo.com/oauth2/access_token
+  user-info-url: https://api.weibo.com/2/users/show.json?uid={uid}&access_token={access_token}
+
+website:
+  url: http://你的主域名或ip
 

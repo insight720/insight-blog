@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">归档</h1>
     </div>
     <!-- 归档列表 -->
@@ -22,9 +22,9 @@
       </timeline>
       <!-- 分页按钮 -->
       <v-pagination
-          color="#00C4B6"
           v-model="current"
           :length="Math.ceil(count / 10)"
+          color="#00C4B6"
           total-visible="7"
       />
     </v-card>

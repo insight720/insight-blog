@@ -13,11 +13,14 @@ import pers.project.blog.dto.AdminBlogInfoDTO;
 import pers.project.blog.dto.BlogInfoDTO;
 import pers.project.blog.dto.Result;
 import pers.project.blog.service.BlogInfoService;
+import pers.project.blog.service.ChatRecordService;
 import pers.project.blog.strategy.context.UploadContext;
 import pers.project.blog.vo.InfoAboutMeVO;
+import pers.project.blog.vo.VoiceVO;
 import pers.project.blog.vo.WebsiteConfigVO;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * 博客信息控制器
@@ -31,8 +34,12 @@ public class BlogInfoController {
 
     private final BlogInfoService blogInfoService;
 
-    public BlogInfoController(BlogInfoService blogInfoService) {
+    private final ChatRecordService chatRecordService;
+
+    public BlogInfoController(BlogInfoService blogInfoService,
+                              ChatRecordService chatRecordService) {
         this.blogInfoService = blogInfoService;
+        this.chatRecordService = chatRecordService;
     }
 
     @Operation(summary = "查看博客信息")
@@ -89,6 +96,14 @@ public class BlogInfoController {
     public Result<?> updateInfoAboutMe(@Valid @RequestBody InfoAboutMeVO infoAboutMeVO) {
         blogInfoService.updateInfoAboutMe(infoAboutMeVO);
         return Result.ok();
+    }
+
+    @Operation(summary = "发送语音")
+    @PostMapping("/voice")
+    public Result<String> sendVoice(VoiceVO voiceVO) throws IOException {
+        // TODO: 2023/1/13 可以不抛异常
+        chatRecordService.sendVoice(voiceVO);
+        return null;
     }
 
 }

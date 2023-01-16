@@ -16,16 +16,11 @@ import java.util.Optional;
  * @date 2023/1/8
  */
 @Component
-public class ArticleImportContext {
+public final class ArticleImportContext {
 
     private static Map<String, ArticleImportStrategy> importStrategyMap;
 
     private ArticleImportContext() {
-    }
-
-    @Autowired
-    public void setImportStrategyMap(Map<String, ArticleImportStrategy> importStrategyMap) {
-        ArticleImportContext.importStrategyMap = importStrategyMap;
     }
 
     /**
@@ -40,6 +35,11 @@ public class ArticleImportContext {
         Optional.of(strategyName).filter(importStrategyMap::containsKey)
                 .orElseThrow(() -> new FileUploadException("策略名不存在"));
         importStrategyMap.get(strategyName).importArticle(multipartFile);
+    }
+
+    @Autowired
+    public void setImportStrategyMap(Map<String, ArticleImportStrategy> importStrategyMap) {
+        ArticleImportContext.importStrategyMap = importStrategyMap;
     }
 
 }

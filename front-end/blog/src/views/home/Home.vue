@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="home-banner" :style="cover">
+    <div :style="cover" class="home-banner">
       <div class="banner-container">
         <!-- 联系方式 -->
         <h1 class="blog-title animated zoomIn">
@@ -15,56 +15,56 @@
         <div class="blog-contact">
           <a
               v-if="isShowSocial('qq')"
-              class="mr-5 iconfont iconqq"
-              target="_blank"
               :href="
               'http://wpa.qq.com/msgrd?v=3&uin=' +
                 blogInfo.websiteConfig.qq +
                 '&site=qq&menu=yes'
             "
+              class="mr-5 iconfont iconqq"
+              target="_blank"
           />
           <a
               v-if="isShowSocial('github')"
-              target="_blank"
               :href="blogInfo.websiteConfig.github"
               class="mr-5 iconfont icongithub"
+              target="_blank"
           />
           <a
               v-if="isShowSocial('gitee')"
-              target="_blank"
               :href="blogInfo.websiteConfig.gitee"
               class="iconfont icongitee-fill-round"
+              target="_blank"
           />
         </div>
       </div>
       <!-- 向下滚动 -->
       <div class="scroll-down" @click="scrollDown">
-        <v-icon color="#fff" class="scroll-down-effects">
+        <v-icon class="scroll-down-effects" color="#fff">
           mdi-chevron-down
         </v-icon>
       </div>
     </div>
     <!-- 主页文章 -->
     <v-row class="home-container">
-      <v-col md="9" cols="12">
+      <v-col cols="12" md="9">
         <!-- 说说轮播 -->
-        <v-card class="animated zoomIn" v-if="talkList.length > 0">
+        <v-card v-if="talkList.length > 0" class="animated zoomIn">
           <Swiper :list="talkList"/>
         </v-card>
         <v-card
-            class="animated zoomIn article-card"
-            style="border-radius: 12px 8px 8px 12px"
             v-for="(item, index) of articleList"
             :key="item.id"
+            class="animated zoomIn article-card"
+            style="border-radius: 12px 8px 8px 12px"
         >
           <!-- 文章封面图 -->
           <div :class="isRight(index)">
             <router-link :to="'/articles/' + item.id">
               <v-img
-                  class="on-hover"
-                  width="100%"
-                  height="100%"
                   :src="item.articleCover"
+                  class="on-hover"
+                  height="100%"
+                  width="100%"
               />
             </router-link>
           </div>
@@ -95,11 +95,11 @@
               <span class="separator">|</span>
               <!-- 文章标签 -->
               <router-link
-                  style="display:inline-block"
-                  :to="'/tags/' + tag.id"
-                  class="mr-1"
                   v-for="tag of item.tagDTOList"
                   :key="tag.id"
+                  :to="'/tags/' + tag.id"
+                  class="mr-1"
+                  style="display:inline-block"
               >
                 <v-icon size="14">mdi-tag-multiple</v-icon>
                 {{ tag.tagName }}
@@ -117,15 +117,15 @@
         </infinite-loading>
       </v-col>
       <!-- 博主信息 -->
-      <v-col md="3" cols="12" class="d-md-block d-none">
+      <v-col class="d-md-block d-none" cols="12" md="3">
         <div class="blog-wrapper">
           <v-card class="animated zoomIn blog-card mt-5">
             <div class="author-wrapper">
               <!-- 博主头像 -->
               <v-avatar size="110">
                 <img
-                    class="author-avatar"
                     :src="blogInfo.websiteConfig.websiteAvatar"
+                    class="author-avatar"
                 />
               </v-avatar>
               <div style="font-size: 1.375rem;margin-top:0.625rem">
@@ -162,32 +162,32 @@
             </div>
             <!-- 收藏按钮 -->
             <a class="collection-btn" @click="tip = true">
-              <v-icon color="#fff" size="18" class="mr-1">mdi-bookmark</v-icon>
+              <v-icon class="mr-1" color="#fff" size="18">mdi-bookmark</v-icon>
               加入书签
             </a>
             <!-- 社交信息 -->
             <div class="card-info-social">
               <a
                   v-if="isShowSocial('qq')"
-                  class="mr-5 iconfont iconqq"
-                  target="_blank"
                   :href="
                   'http://wpa.qq.com/msgrd?v=3&uin=' +
                     blogInfo.websiteConfig.qq +
                     '&site=qq&menu=yes'
                 "
+                  class="mr-5 iconfont iconqq"
+                  target="_blank"
               />
               <a
                   v-if="isShowSocial('github')"
-                  target="_blank"
                   :href="blogInfo.websiteConfig.github"
                   class="mr-5 iconfont icongithub"
+                  target="_blank"
               />
               <a
                   v-if="isShowSocial('gitee')"
-                  target="_blank"
                   :href="blogInfo.websiteConfig.gitee"
                   class="iconfont icongitee-fill-round"
+                  target="_blank"
               />
             </div>
           </v-card>
@@ -222,7 +222,7 @@
       </v-col>
     </v-row>
     <!-- 提示消息 -->
-    <v-snackbar v-model="tip" top color="#49b1f5" :timeout="2000">
+    <v-snackbar v-model="tip" :timeout="2000" color="#49b1f5" top>
       按CTRL+D 键将本页加入书签
     </v-snackbar>
   </div>

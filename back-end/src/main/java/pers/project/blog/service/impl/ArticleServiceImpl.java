@@ -7,22 +7,27 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pers.project.blog.constant.RedisConstant;
+import pers.project.blog.constant.*;
 import pers.project.blog.constant.enumeration.ArticelStatusEnum;
-import pers.project.blog.dto.AdminArticleDTO;
-import pers.project.blog.dto.ArticleDTO;
-import pers.project.blog.dto.PageDTO;
+import pers.project.blog.constant.enumeration.ArticleStatusEnum;
+import pers.project.blog.constant.enumeration.FileExtensionEnum;
+import pers.project.blog.dto.*;
 import pers.project.blog.entity.ArticleEntity;
 import pers.project.blog.entity.ArticleTagEntity;
 import pers.project.blog.entity.CategoryEntity;
 import pers.project.blog.entity.TagEntity;
+import pers.project.blog.exception.FileUploadException;
+import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.ArticleMapper;
 import pers.project.blog.mapper.CategoryMapper;
 import pers.project.blog.service.ArticleService;
 import pers.project.blog.service.ArticleTagService;
 import pers.project.blog.service.BlogInfoService;
+import pers.project.blog.strategy.context.SearchContext;
+import pers.project.blog.strategy.context.UploadContext;
 import pers.project.blog.util.ConversionUtils;
 import pers.project.blog.util.PaginationUtils;
 import pers.project.blog.util.RedisUtils;
@@ -32,7 +37,11 @@ import pers.project.blog.vo.ArticleVO;
 import pers.project.blog.vo.ConditionVO;
 import pers.project.blog.vo.TableLogicVO;
 
+import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -50,17 +59,24 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
 
     private final ArticleTagService articleTagService;
 
-
     private final TagServiceImpl tagService;
+
+    private final TaskExecutor taskExecutor;
+
+    private final HttpSession httpSession;
 
     public ArticleServiceImpl(CategoryMapper categoryMapper,
                               BlogInfoService blogInfoService,
                               ArticleTagService articleTagService,
-                              TagServiceImpl tagService) {
+                              TagServiceImpl tagService,
+                              TaskExecutor taskExecutor,
+                              HttpSession httpSession) {
         this.categoryMapper = categoryMapper;
         this.blogInfoService = blogInfoService;
         this.articleTagService = articleTagService;
         this.tagService = tagService;
+        this.taskExecutor = taskExecutor;
+        this.httpSession = httpSession;
     }
 
     @Override
@@ -104,7 +120,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
         // 查询并设置文章浏览量和点赞量
         Map<Object, Double> articleIdViewsCountMap = RedisUtils
                 .zRangeWithScores(RedisConstant.ARTICLE_VIEWS_COUNT, 0, -1);
-        Map<Object, Object> articleIdLikeCountMap = RedisUtils
+        Map<String, Object> articleIdLikeCountMap = RedisUtils
                 .hGetAll(RedisConstant.ARTICLE_LIKE_COUNT);
         adminArticleList.forEach(adminArticle -> {
             Integer articleId = adminArticle.getId();
@@ -112,7 +128,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
             if (viewsCount != null) {
                 adminArticle.setViewsCount(viewsCount.intValue());
             }
-            Integer likeCount = (Integer) articleIdLikeCountMap.get(articleId);
+            Integer likeCount = (Integer) articleIdLikeCountMap.get(articleId.toString());
             adminArticle.setLikeCount(likeCount);
         });
 
@@ -142,22 +158,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
     }
 
     @Override
-    public ArticleDTO getAdminArticleById(Integer articleId) {
+    public ArticleVO getAdminArticle(Integer articleId) {
         ArticleEntity articleEntity = baseMapper.selectById(articleId);
-        ArticleDTO articleDTO = ConversionUtils.convertObject
-                (articleEntity, ArticleDTO.class);
+        ArticleVO articleVO = ConversionUtils.convertObject
+                (articleEntity, ArticleVO.class);
 
         CategoryEntity category = categoryMapper.selectById
                 (articleEntity.getCategoryId());
         if (category != null) {
-            articleDTO.setCategoryName(category.getCategoryName());
+            articleVO.setCategoryName(category.getCategoryName());
         }
 
         List<String> tagNameList = tagService
                 .getBaseMapper().listTagNamesByArticleId(articleId);
-        articleDTO.setTagNameList(tagNameList);
+        articleVO.setTagNameList(tagNameList);
 
-        return articleDTO;
+        return articleVO;
     }
 
     @Override
@@ -168,6 +184,189 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
                 .remove();
 
         baseMapper.deleteBatchIds(articleIdList);
+    }
+
+    @Override
+    public List<HomePageArticleDTO> listHomePageArticles() {
+        IPage<ArticleEntity> page = PaginationUtils.getPage();
+        return baseMapper.listHomePageArticleDTOs(page.offset(), page.getSize());
+    }
+
+    @Override
+    public ArticleDTO getArticle(Integer articleId) {
+        // TODO: 2023/1/12 使用异步
+        // 查询 6 篇推荐文章
+        CompletableFuture<List<ArticleRecommendDTO>> recommendArticleList
+                = CompletableFuture.supplyAsync(() ->
+                baseMapper.listArticleRecommendArticles(articleId), taskExecutor);
+
+        // 查询 5 篇最新文章
+        CompletableFuture<List<ArticleRecommendDTO>> newestArticleList
+                = CompletableFuture.supplyAsync(() -> {
+            List<ArticleEntity> articleEntityList = lambdaQuery()
+                    .select(ArticleEntity::getId,
+                            ArticleEntity::getArticleTitle,
+                            ArticleEntity::getArticleCover,
+                            ArticleEntity::getCreateTime)
+                    .eq(ArticleEntity::getStatus, ArticleStatusEnum.PUBLIC.getStatus())
+                    .orderByDesc(ArticleEntity::getId)
+                    .last("LIMIT 5")
+                    .list();
+            return ConversionUtils.covertList(articleEntityList, ArticleRecommendDTO.class);
+        }, taskExecutor);
+
+        // 查询 ID 对应文章
+        ArticleDTO articleDTO = Optional.ofNullable(baseMapper.getArticleDTO(articleId))
+                .orElseThrow(() -> new ServiceException("文章不存在"));
+
+        // 更新文章浏览量
+        updateArticleViewsCount(articleId);
+
+        // 查询上一篇和下一篇文章
+        ArticleEntity previousArticle = lambdaQuery()
+                .select(ArticleEntity::getId,
+                        ArticleEntity::getArticleTitle,
+                        ArticleEntity::getArticleCover)
+                .eq(ArticleEntity::getIsDelete, BooleanConstant.FALSE)
+                .eq(ArticleEntity::getStatus, ArticleStatusEnum.PUBLIC.getStatus())
+                .lt(ArticleEntity::getId, articleId)
+                .orderByDesc(ArticleEntity::getId)
+                .last("LIMIT 1")
+                .one();
+        ArticleEntity nextArticle = lambdaQuery()
+                .select(ArticleEntity::getId,
+                        ArticleEntity::getArticleTitle,
+                        ArticleEntity::getArticleCover)
+                .eq(ArticleEntity::getIsDelete, BooleanConstant.FALSE)
+                .eq(ArticleEntity::getStatus, ArticleStatusEnum.PUBLIC.getStatus())
+                .gt(ArticleEntity::getId, articleId)
+                .last("LIMIT 1")
+                .one();
+        articleDTO.setLastArticle
+                (ConversionUtils.convertObject(previousArticle, ArticlePaginationDTO.class));
+        articleDTO.setNextArticle
+                (ConversionUtils.convertObject(nextArticle, ArticlePaginationDTO.class));
+
+        // 查询点赞量和浏览量
+        Integer viewsCount = Optional
+                .ofNullable(RedisUtils.zScore
+                        (RedisConstant.ARTICLE_VIEWS_COUNT, articleId))
+                .map(Double::intValue)
+                .orElse(null);
+        Integer likesCount = (Integer) RedisUtils.hGet
+                (RedisConstant.ARTICLE_LIKE_COUNT, articleId.toString());
+        articleDTO.setViewsCount(viewsCount);
+        articleDTO.setLikeCount(likesCount);
+
+        try {
+            articleDTO.setNewestArticleList(newestArticleList.get());
+            articleDTO.setRecommendArticleList(recommendArticleList.get());
+        } catch (Exception cause) {
+            // TODO: 2023/1/12 异常处理
+            throw new RuntimeException("异步任务异常", cause);
+        }
+
+        return articleDTO;
+    }
+
+    @Override
+    public List<String> exportArticles(List<Integer> articleIdList) {
+        // 查询文章信息，上传文章，并获取文章 URL 列表
+        return lambdaQuery()
+                .select(ArticleEntity::getArticleTitle, ArticleEntity::getArticleContent)
+                .in(ArticleEntity::getId, articleIdList)
+                .list()
+                .stream()
+                .map(article -> {
+                    byte[] contentBytes = article.getArticleContent().getBytes();
+                    String fileName = article.getArticleTitle() + FileIoConstant.DOT
+                            + FileExtensionEnum.MD.getExtensionName();
+                    try (ByteArrayInputStream inputStream
+                                 = new ByteArrayInputStream(contentBytes)) {
+                        return UploadContext.executeStrategy
+                                (inputStream, DirectoryUriConstant.MARKDOWN, fileName);
+                    } catch (IOException cause) {
+                        throw new FileUploadException("文章导出失败", cause);
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public PageDTO<ArticleArchiveDTO> listArticleArchives() {
+        IPage<ArticleEntity> page = lambdaQuery()
+                .select(ArticleEntity::getId,
+                        ArticleEntity::getArticleTitle,
+                        ArticleEntity::getCreateTime)
+                .eq(ArticleEntity::getIsDelete, BooleanConstant.FALSE)
+                .eq(ArticleEntity::getStatus, ArticelStatusEnum.PUBLIC.getStatus())
+                .orderByDesc(ArticleEntity::getCreateTime)
+                .page(PaginationUtils.getPage());
+        List<ArticleArchiveDTO> articleArchiveList
+                = ConversionUtils.covertList(page.getRecords(), ArticleArchiveDTO.class);
+        return PageDTO.of(articleArchiveList, (int) page.getTotal());
+    }
+
+    @Override
+    public ArticlePreviewDTO getArticlePreview(ConditionVO conditionVO) {
+        // 按条件查询文章数据
+        IPage<ArticleEntity> page = PaginationUtils.getPage();
+        List<PreviewDTO> previewList = baseMapper.listPreviewDTOs
+                (page.offset(), page.getSize(), conditionVO);
+
+        // 按对应条件搜索（分类名或标签名）
+        String name = Optional.ofNullable(conditionVO.getCategoryId())
+                .map(categoryId -> new LambdaQueryChainWrapper<>(categoryMapper)
+                        .select(CategoryEntity::getCategoryName)
+                        .eq(CategoryEntity::getId, conditionVO.getCategoryId())
+                        .one()
+                        .getCategoryName())
+                .orElseGet(() -> tagService.lambdaQuery()
+                        .select(TagEntity::getTagName)
+                        .eq(TagEntity::getId, conditionVO.getTagId())
+                        .one()
+                        .getTagName());
+
+        return ArticlePreviewDTO.builder()
+                .articlePreviewDTOList(previewList)
+                .name(name)
+                .build();
+    }
+
+    @Override
+    public List<ArticleSearchDTO> listArticlesBySearch(ConditionVO conditionVO) {
+        return SearchContext.executeStrategy(conditionVO.getKeywords());
+    }
+
+    @Override
+    public void saveArticleLike(Integer articleId) {
+        // 判断是否点过赞来区分点赞和取消赞
+        String articleLikeKey = RedisConstant.ARTICLE_USER_LIKE + SecurityUtils.getUserDetails().getUserInfoId();
+        if (RedisUtils.sIsMember(articleLikeKey, articleId)) {
+            RedisUtils.sRem(articleLikeKey, articleId);
+            RedisUtils.hIncrBy(RedisConstant.ARTICLE_LIKE_COUNT, articleId.toString(), -1L);
+        } else {
+            RedisUtils.sAdd(articleLikeKey, articleId);
+            RedisUtils.hIncrBy(RedisConstant.ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
+        }
+    }
+
+    /**
+     * 更新文章浏览量
+     *
+     * @param articleId 文章 ID
+     */
+    @SuppressWarnings("unchecked")
+    private void updateArticleViewsCount(Integer articleId) {
+        // TODO: 2023/1/12 逻辑不明
+        // 判断是否第一次访问，是则增加浏览量
+        Set<Integer> articleSet = (Set<Integer>) Optional
+                .ofNullable(httpSession.getAttribute(WebsiteConstant.ARTICLE_SET))
+                .orElseGet(HashSet::new);
+        if (articleSet.add(articleId)) {
+            httpSession.setAttribute(WebsiteConstant.ARTICLE_SET, articleSet);
+            RedisUtils.zIncyBy(RedisConstant.ARTICLE_VIEWS_COUNT, articleId, 1D);
+        }
     }
 
     /**

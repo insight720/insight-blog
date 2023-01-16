@@ -2,6 +2,7 @@ package pers.project.blog.configuration.property;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * 异步调用配置属性
@@ -10,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2022/12/24
  */
 @Data
+@Lazy
 @ConfigurationProperties(prefix = "blog.asynchronous")
 public class AsynchronousProperties {
 

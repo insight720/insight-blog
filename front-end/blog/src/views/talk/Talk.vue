@@ -1,46 +1,46 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">说说</h1>
     </div>
     <!-- 说说内容 -->
     <v-card class="blog-container">
-      <div class="talk-item" v-for="item of talkList" :key="item.id">
+      <div v-for="item of talkList" :key="item.id" class="talk-item">
         <router-link :to="'/talks/' + item.id">
           <!-- 用户信息 -->
           <div class="user-info-wrapper">
-            <v-avatar size="36" class="user-avatar">
+            <v-avatar class="user-avatar" size="36">
               <img :src="item.avatar"/>
             </v-avatar>
             <div class="user-detail-wrapper">
               <div class="user-nickname">
                 {{ item.nickname }}
-                <v-icon class="user-sign" size="20" color="#ffa51e">
+                <v-icon class="user-sign" color="#ffa51e" size="20">
                   mdi-check-decagram
                 </v-icon>
               </div>
               <!-- 发表时间 -->
               <div class="time">
                 {{ item.createTime | time }}
-                <span class="top" v-if="item.isTop == 1">
+                <span v-if="item.isTop == 1" class="top">
                   <i class="iconfont iconzhiding"/> 置顶
                 </span>
               </div>
               <!-- 说说信息 -->
               <div class="talk-content" v-html="item.content"/>
               <!-- 图片列表 -->
-              <v-row class="talk-images" v-if="item.imgList">
+              <v-row v-if="item.imgList" class="talk-images">
                 <v-col
-                    :md="4"
-                    :cols="6"
                     v-for="(img, index) of item.imgList"
                     :key="index"
+                    :cols="6"
+                    :md="4"
                 >
                   <v-img
-                      class="images-items"
                       :src="img"
                       aspect-ratio="1"
+                      class="images-items"
                       max-height="200"
                       @click.prevent="previewImg(img)"
                   />
@@ -50,9 +50,9 @@
               <div class="talk-operation">
                 <div class="talk-operation-item">
                   <v-icon
-                      size="16"
                       :color="isLike(item.id)"
                       class="like-btn"
+                      size="16"
                       @click.prevent="like(item)"
                   >
                     mdi-thumb-up
@@ -62,7 +62,7 @@
                   </div>
                 </div>
                 <div class="talk-operation-item">
-                  <v-icon size="16" color="#999">mdi-chat</v-icon>
+                  <v-icon color="#999" size="16">mdi-chat</v-icon>
                   <div class="operation-count">
                     {{ item.commentCount == null ? 0 : item.commentCount }}
                   </div>
@@ -73,8 +73,8 @@
         </router-link>
       </div>
       <div
-          class="load-wrapper"
           v-if="talkList && count > talkList.length"
+          class="load-wrapper"
           @click="listTalks"
       >
         <v-btn outlined>

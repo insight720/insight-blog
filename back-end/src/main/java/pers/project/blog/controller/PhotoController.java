@@ -34,10 +34,10 @@ public class PhotoController {
         this.photoService = photoService;
     }
 
-    @Operation(summary = "查看后台的分页相册列表")
-    @GetMapping("/admin/photos")
-    public Result<PageDTO<AdminPhotoDTO>> listAdminPhotos(ConditionVO conditionVO) {
-        return Result.ok(photoService.listAdminPhotos(conditionVO));
+    @Operation(summary = "根据相册 ID 获取照片列表")
+    @GetMapping("/albums/{albumId}/photos")
+    public Result<PhotoDTO> listPhotosInAlbum(@PathVariable("albumId") Integer albumId) {
+        return Result.ok(photoService.listPhotosInAlbum(albumId));
     }
 
     @OperationLog(type = LogConstant.SAVE)
@@ -80,10 +80,10 @@ public class PhotoController {
         return Result.ok();
     }
 
-    @Operation(summary = "根据相册 ID 获取照片列表")
-    @GetMapping("/albums/{albumId}/photos")
-    public Result<PhotoDTO> listPhotosInAlbum(@PathVariable("albumId") Integer albumId) {
-        return Result.ok(photoService.listPhotosInAlbum(albumId));
+    @Operation(summary = "查看后台的分页相册列表")
+    @GetMapping("/admin/photos")
+    public Result<PageDTO<AdminPhotoDTO>> listAdminPhotos(ConditionVO conditionVO) {
+        return Result.ok(photoService.listAdminPhotos(conditionVO));
     }
 
 }

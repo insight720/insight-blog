@@ -1,5 +1,6 @@
 package pers.project.blog.handler;
 
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -12,12 +13,10 @@ import pers.project.blog.mapper.UserAuthMapper;
 import pers.project.blog.util.ConversionUtils;
 import pers.project.blog.util.SecurityUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 /**
  * Spring Security 认证成功处理程序
@@ -28,19 +27,21 @@ import java.util.concurrent.Executor;
 @Component
 public class SecurityAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final Executor executor;
+    private final TaskExecutor taskExecutor;
 
     private final UserAuthMapper userAuthMapper;
 
-    public SecurityAuthenticationSuccessHandler(Executor executor, UserAuthMapper userAuthMapper) {
-        this.executor = executor;
+    public SecurityAuthenticationSuccessHandler(TaskExecutor taskExecutor,
+                                                UserAuthMapper userAuthMapper) {
+        this.taskExecutor = taskExecutor;
         this.userAuthMapper = userAuthMapper;
     }
+
 
     @Override
     @SuppressWarnings("deprecation")
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         // 返回用户登陆信息
         UserDetailsDTO userDetailsDTO = SecurityUtils.getUserDetails();
         UserInfoDTO userInfoDTO = ConversionUtils.convertObject(userDetailsDTO, UserInfoDTO.class);
@@ -58,7 +59,7 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
                     .lastLoginTime(userDetailsDTO.getLastLoginTime())
                     .build();
             userAuthMapper.updateById(userAuthEntity);
-        }, executor);
+        }, taskExecutor);
     }
 
 }

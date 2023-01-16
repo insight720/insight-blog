@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">{{ photoAlbumName }}</h1>
     </div>
     <!-- 相册列表 -->
@@ -9,9 +9,9 @@
       <div class="photo-wrap">
         <img
             v-for="(item, index) of photoList"
-            class="photo"
             :key="index"
             :src="item"
+            class="photo"
             @click="preview(index)"
         />
       </div>

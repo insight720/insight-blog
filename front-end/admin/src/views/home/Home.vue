@@ -51,7 +51,7 @@
     <el-card style="margin-top:1.25rem">
       <div class="e-title">一周访问量</div>
       <div style="height:350px">
-        <v-chart :options="viewCount" v-loading="loading"/>
+        <v-chart v-loading="loading" :options="viewCount"/>
       </div>
     </el-card>
     <!-- 文章贡献统计 -->
@@ -70,7 +70,7 @@
         <el-card>
           <div class="e-title">文章浏览量排行</div>
           <div style="height:350px">
-            <v-chart :options="ariticleRank" v-loading="loading"/>
+            <v-chart v-loading="loading" :options="ariticleRank"/>
           </div>
         </el-card>
       </el-col>
@@ -79,7 +79,7 @@
         <el-card>
           <div class="e-title">文章分类统计</div>
           <div style="height:350px">
-            <v-chart :options="category" v-loading="loading"/>
+            <v-chart v-loading="loading" :options="category"/>
           </div>
         </el-card>
       </el-col>
@@ -89,7 +89,7 @@
       <el-col :span="16">
         <el-card>
           <div class="e-title">用户地域分布</div>
-          <div style="height:350px" v-loading="loading">
+          <div v-loading="loading" style="height:350px">
             <div class="area-wrapper">
               <el-radio-group v-model="type">
                 <el-radio :label="1">用户</el-radio>
@@ -104,8 +104,8 @@
       <el-col :span="8">
         <el-card>
           <div class="e-title">文章标签统计</div>
-          <div style="height:350px;" v-loading="loading">
-            <tag-cloud style="margin-top:1.5rem" :data="tagDTOList"/>
+          <div v-loading="loading" style="height:350px;">
+            <tag-cloud :data="tagDTOList" style="margin-top:1.5rem"/>
           </div>
         </el-card>
       </el-col>

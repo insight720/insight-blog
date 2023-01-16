@@ -55,4 +55,11 @@ public interface PhotoAlbumService extends IService<PhotoAlbumEntity> {
      */
     AdminPhotoAlbumDTO getAdminPhotoAlbumDTO(Integer albumId);
 
+    /**
+     * 获取相册列表
+     *
+     * @return {@code  List<PhotoAlbumDTO>} 相册列表
+     */
+    List<PhotoAlbumDTO> listPhotoAlbums();
+
 }

@@ -4,16 +4,16 @@
     <div class="title">{{ this.$route.name }}</div>
     <div class="operation-container">
       <el-button
-          type="primary"
-          size="small"
           icon="el-icon-plus"
+          size="small"
+          type="primary"
           @click="openModel(null)"
       >
         新建页面
       </el-button>
     </div>
     <!-- 相册列表 -->
-    <el-row class="page-container" :gutter="12" v-loading="loading">
+    <el-row v-loading="loading" :gutter="12" class="page-container">
       <!-- 空状态 -->
       <el-empty v-if="pageList.length == 0" description="暂无页面"/>
       <el-col v-for="item of pageList" :key="item.id" :md="6">
@@ -32,40 +32,40 @@
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-          <el-image fit="cover" class="page-cover" :src="item.pageCover"/>
+          <el-image :src="item.pageCover" class="page-cover" fit="cover"/>
           <div class="page-name">{{ item.pageName }}</div>
         </div>
       </el-col>
     </el-row>
     <!-- 新增模态框 -->
-    <el-dialog :visible.sync="addOrEdit" width="35%" top="10vh">
-      <div class="dialog-title-container" slot="title" ref="pageTitle"/>
-      <el-form label-width="80px" size="medium" :model="pageForum">
+    <el-dialog :visible.sync="addOrEdit" top="10vh" width="35%">
+      <div ref="pageTitle" slot="title" class="dialog-title-container"/>
+      <el-form :model="pageForum" label-width="80px" size="medium">
         <el-form-item label="页面名称">
-          <el-input style="width:220px" v-model="pageForum.pageName"/>
+          <el-input v-model="pageForum.pageName" style="width:220px"/>
         </el-form-item>
         <el-form-item label="页面标签">
-          <el-input style="width:220px" v-model="pageForum.pageLabel"/>
+          <el-input v-model="pageForum.pageLabel" style="width:220px"/>
         </el-form-item>
         <el-form-item label="页面封面">
           <el-upload
-              class="upload-cover"
-              drag
-              :show-file-list="false"
-              action="/api/admin/config/images"
-              multiple
               :before-upload="beforeUpload"
               :on-success="uploadCover"
+              :show-file-list="false"
+              action="/api/admin/config/images"
+              class="upload-cover"
+              drag
+              multiple
           >
-            <i class="el-icon-upload" v-if="pageForum.pageCover == ''"/>
-            <div class="el-upload__text" v-if="pageForum.pageCover == ''">
+            <i v-if="pageForum.pageCover == ''" class="el-icon-upload"/>
+            <div v-if="pageForum.pageCover == ''" class="el-upload__text">
               将文件拖到此处，或<em>点击上传</em>
             </div>
             <img
                 v-else
                 :src="pageForum.pageCover"
-                width="360px"
                 height="180px"
+                width="360px"
             />
           </el-upload>
         </el-form-item>
@@ -79,7 +79,7 @@
     </el-dialog>
     <!-- 删除对话框 -->
     <el-dialog :visible.sync="isdeletePage" width="30%">
-      <div class="dialog-title-container" slot="title">
+      <div slot="title" class="dialog-title-container">
         <i class="el-icon-warning" style="color:#ff9900"/>提示
       </div>
       <div style="font-size:1rem">是否删除该页面？</div>

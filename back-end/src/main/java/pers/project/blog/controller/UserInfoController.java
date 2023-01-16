@@ -12,10 +12,7 @@ import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.Result;
 import pers.project.blog.dto.UserOnlineDTO;
 import pers.project.blog.service.UserInfoService;
-import pers.project.blog.vo.ConditionVO;
-import pers.project.blog.vo.UserDisableVO;
-import pers.project.blog.vo.UserInfoVO;
-import pers.project.blog.vo.UserRoleVO;
+import pers.project.blog.vo.*;
 
 import javax.validation.Valid;
 
@@ -44,18 +41,18 @@ public class UserInfoController {
         return Result.ok();
     }
 
+    @Operation(summary = "查看在线用户")
+    @GetMapping("/admin/users/online")
+    public Result<PageDTO<UserOnlineDTO>> listOnlineUsers(ConditionVO conditionVO) {
+        return Result.ok(userInfoService.listOnlineUsers(conditionVO));
+    }
+
     @OperationLog(type = LogConstant.UPDATE)
     @Operation(summary = "修改用户角色")
     @PutMapping("/admin/users/role")
     public Result<?> updateUserRole(@Valid @RequestBody UserRoleVO userRoleVO) {
         userInfoService.updateUserRole(userRoleVO);
         return Result.ok();
-    }
-
-    @Operation(summary = "查看在线用户")
-    @GetMapping("/admin/users/online")
-    public Result<PageDTO<UserOnlineDTO>> listOnlineUsers(ConditionVO conditionVO) {
-        return Result.ok(userInfoService.listOnlineUsers(conditionVO));
     }
 
     @Operation(summary = "下线用户")
@@ -71,6 +68,13 @@ public class UserInfoController {
     @PostMapping("/users/avatar")
     public Result<String> updateUserAvatar(@RequestParam("file") MultipartFile multipartFile) {
         return Result.ok(userInfoService.updateUserAvatar(multipartFile));
+    }
+
+    @Operation(summary = "绑定用户邮箱")
+    @PostMapping("/users/email")
+    public Result<?> saveUserEmail(@Valid @RequestBody EmailVO emailVO) {
+        userInfoService.saveUserEmail(emailVO);
+        return Result.ok();
     }
 
     @OperationLog(type = LogConstant.UPDATE)

@@ -14,14 +14,14 @@
               :src="this.$store.state.blogInfo.websiteConfig.touristAvatar"
           />
         </v-avatar>
-        <div style="width:100%" class="ml-3">
+        <div class="ml-3" style="width:100%">
           <div class="comment-input">
             <textarea
-                class="comment-textarea"
                 v-model="commentContent"
-                placeholder="留下点什么吧..."
                 auto-grow
+                class="comment-textarea"
                 dense
+                placeholder="留下点什么吧..."
             />
           </div>
           <!-- 操作按钮 -->
@@ -33,15 +33,15 @@
               <i class="iconfont iconbiaoqing"/>
             </span>
             <button
-                @click="insertComment"
                 class="upload-btn v-comment-btn"
                 style="margin-left:auto"
+                @click="insertComment"
             >
               提交
             </button>
           </div>
           <!-- 表情框 -->
-          <emoji @addEmoji="addEmoji" :chooseEmoji="chooseEmoji"/>
+          <emoji :chooseEmoji="chooseEmoji" @addEmoji="addEmoji"/>
         </div>
       </div>
     </div>
@@ -51,13 +51,13 @@
       <div class="count">{{ count }} 评论</div>
       <!-- 评论列表 -->
       <div
-          style="display:flex"
-          class="pt-5"
           v-for="(item, index) of commentList"
           :key="item.id"
+          class="pt-5"
+          style="display:flex"
       >
         <!-- 头像 -->
-        <v-avatar size="40" class="comment-avatar">
+        <v-avatar class="comment-avatar" size="40">
           <img :src="item.avatar"/>
         </v-avatar>
         <div class="comment-meta">
@@ -67,7 +67,7 @@
             <a v-else :href="item.webSite" target="_blank">
               {{ item.nickname }}
             </a>
-            <span class="blogger-tag" v-if="item.userId == 1">博主</span>
+            <span v-if="item.userId == 1" class="blogger-tag">博主</span>
           </div>
           <!-- 信息 -->
           <div class="comment-info">
@@ -87,15 +87,15 @@
             </span>
           </div>
           <!-- 评论内容 -->
-          <p v-html="item.commentContent" class="comment-content"></p>
+          <p class="comment-content" v-html="item.commentContent"></p>
           <!-- 回复人 -->
           <div
-              style="display:flex"
               v-for="reply of item.replyDTOList"
               :key="reply.id"
+              style="display:flex"
           >
             <!-- 头像 -->
-            <v-avatar size="36" class="comment-avatar">
+            <v-avatar class="comment-avatar" size="36">
               <img :src="reply.avatar"/>
             </v-avatar>
             <div class="reply-meta">
@@ -105,7 +105,7 @@
                 <a v-else :href="reply.webSite" target="_blank">
                   {{ reply.nickname }}
                 </a>
-                <span class="blogger-tag" v-if="reply.userId == 1">博主</span>
+                <span v-if="reply.userId == 1" class="blogger-tag">博主</span>
               </div>
               <!-- 信息 -->
               <div class="comment-info">
@@ -134,8 +134,8 @@
                   <a
                       v-else
                       :href="reply.replyWebSite"
-                      target="_blank"
                       class="comment-nickname ml-1"
+                      target="_blank"
                   >
                     @{{ reply.replyNickname }}
                   </a>
@@ -147,10 +147,10 @@
           </div>
           <!-- 回复数量 -->
           <div
-              class="mb-3"
-              style="font-size:0.75rem;color:#6d757a"
               v-show="item.replyCount > 3"
               ref="check"
+              class="mb-3"
+              style="font-size:0.75rem;color:#6d757a"
           >
             共
             <b>{{ item.replyCount }}</b>
@@ -164,28 +164,28 @@
           </div>
           <!-- 回复分页 -->
           <div
+              ref="paging"
               class="mb-3"
               style="font-size:0.75rem;color:#222;display:none"
-              ref="paging"
           >
             <span style="padding-right:10px">
               共{{ Math.ceil(item.replyCount / 5) }}页
             </span>
             <paging
                 ref="page"
-                :totalPage="Math.ceil(item.replyCount / 5)"
-                :index="index"
                 :commentId="item.id"
+                :index="index"
+                :totalPage="Math.ceil(item.replyCount / 5)"
                 @changeReplyCurrent="changeReplyCurrent"
             />
           </div>
           <!-- 回复框 -->
-          <Reply :type="type" ref="reply" @reloadReply="reloadReply"/>
+          <Reply ref="reply" :type="type" @reloadReply="reloadReply"/>
         </div>
       </div>
       <!-- 加载按钮 -->
       <div class="load-wrapper">
-        <v-btn outlined v-if="count > commentList.length" @click="listComments">
+        <v-btn v-if="count > commentList.length" outlined @click="listComments">
           加载更多...
         </v-btn>
       </div>

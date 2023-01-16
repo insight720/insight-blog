@@ -12,7 +12,7 @@
       <!-- 内容 -->
       <el-main style="background:#F7F9FB">
         <div class="fade-transform-box">
-          <transition name="fade-transform" mode="out-in">
+          <transition mode="out-in" name="fade-transform">
             <router-view :key="$route.fullPath"/>
           </transition>
         </div>

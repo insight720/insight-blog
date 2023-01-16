@@ -9,22 +9,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.constant.DirectoryUriConstant;
+import pers.project.blog.constant.RedisConstant;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.UserDetailsDTO;
 import pers.project.blog.dto.UserOnlineDTO;
 import pers.project.blog.entity.UserInfoEntity;
 import pers.project.blog.entity.UserRoleEntity;
+import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.UserInfoMapper;
 import pers.project.blog.service.UserInfoService;
 import pers.project.blog.service.UserRoleService;
 import pers.project.blog.strategy.context.UploadContext;
 import pers.project.blog.util.ConversionUtils;
 import pers.project.blog.util.PaginationUtils;
+import pers.project.blog.util.RedisUtils;
 import pers.project.blog.util.SecurityUtils;
-import pers.project.blog.vo.ConditionVO;
-import pers.project.blog.vo.UserDisableVO;
-import pers.project.blog.vo.UserInfoVO;
-import pers.project.blog.vo.UserRoleVO;
+import pers.project.blog.vo.*;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -140,6 +140,21 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoEnt
                 .webSite(userInfoVO.getWebSite())
                 .build();
         updateById(userInfo);
+    }
+
+    @Override
+    public void saveUserEmail(EmailVO emailVO) {
+        // TODO: 2023/1/14 验证码不知道哪里来的
+        if (!emailVO.getCode().equals
+                (RedisUtils.get(RedisConstant.USER_CODE_KEY + emailVO.getEmail()).toString())) {
+            throw new ServiceException("验证码错误");
+        }
+
+        UserInfoEntity userInfoEntity = UserInfoEntity.builder()
+                .id(SecurityUtils.getUserDetails().getUserInfoId())
+                .email(emailVO.getEmail())
+                .build();
+        updateById(userInfoEntity);
     }
 
 }

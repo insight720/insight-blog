@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pers.project.blog.dto.AdminCategoryDTO;
+import pers.project.blog.dto.CategoryDTO;
 import pers.project.blog.dto.CategoryOptionDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.entity.ArticleEntity;
@@ -95,6 +96,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         }
 
         removeBatchByIds(categoryIdList);
+    }
+
+    @Override
+    public PageDTO<CategoryDTO> listCategories() {
+        return PageDTO.of(baseMapper.listCategoryDTOs(),
+                baseMapper.selectCount(null).intValue());
     }
 
 }

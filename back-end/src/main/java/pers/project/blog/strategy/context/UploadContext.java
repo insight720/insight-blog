@@ -17,16 +17,11 @@ import java.io.InputStream;
  */
 @Component
 @EnableConfigurationProperties(UploadProperties.class)
-public class UploadContext {
+public final class UploadContext {
 
     private static UploadStrategy uploadStrategy;
 
     private UploadContext() {
-    }
-
-    @Autowired
-    public void setUploadStrategy(UploadStrategy uploadStrategy) {
-        UploadContext.uploadStrategy = uploadStrategy;
     }
 
     /**
@@ -52,6 +47,11 @@ public class UploadContext {
      */
     public static String executeStrategy(InputStream inputStream, String directoryUri, String fileName) {
         return uploadStrategy.uploadFile(inputStream, directoryUri, fileName);
+    }
+
+    @Autowired
+    public void setUploadStrategy(UploadStrategy uploadStrategy) {
+        UploadContext.uploadStrategy = uploadStrategy;
     }
 
 }

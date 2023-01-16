@@ -3,14 +3,14 @@
     <div class="title">{{ this.$route.name }}</div>
     <mavon-editor
         ref="md"
-        @imgAdd="uploadImg"
         v-model="aboutContent"
         style="height:calc(100vh - 250px);margin-top:2.25rem"
+        @imgAdd="uploadImg"
     />
     <el-button
-        type="danger"
-        size="medium"
         class="edit-btn"
+        size="medium"
+        type="danger"
         @click="updateAbout"
     >
       修改

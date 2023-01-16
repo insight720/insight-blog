@@ -7,17 +7,17 @@
       <div style="margin-left:auto">
         <el-input
             v-model="keywords"
+            placeholder="请输入用户昵称"
             prefix-icon="el-icon-search"
             size="small"
-            placeholder="请输入用户昵称"
             style="width:200px"
             @keyup.enter.native="listOnlineUsers"
         />
         <el-button
-            type="primary"
-            size="small"
             icon="el-icon-search"
+            size="small"
             style="margin-left:1rem"
+            type="primary"
             @click="listOnlineUsers"
         >
           搜索
@@ -26,31 +26,31 @@
     </div>
     <!-- 权限列表 -->
     <el-table v-loading="loading" :data="userList">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column prop="avatar" label="头像" align="center" width="100">
+      <el-table-column align="center" type="selection" width="55"/>
+      <el-table-column align="center" label="头像" prop="avatar" width="100">
         <template slot-scope="scope">
-          <img :src="scope.row.avatar" width="40" height="40"/>
+          <img :src="scope.row.avatar" height="40" width="40"/>
         </template>
       </el-table-column>
-      <el-table-column prop="nickname" label="昵称" align="center"/>
-      <el-table-column prop="ipAddress" label="ip地址" align="center"/>
+      <el-table-column align="center" label="昵称" prop="nickname"/>
+      <el-table-column align="center" label="ip地址" prop="ipAddress"/>
       <el-table-column
-          prop="ipSource"
-          label="登录地址"
           align="center"
+          label="登录地址"
+          prop="ipSource"
           width="200"
       />
       <el-table-column
-          prop="browser"
-          label="浏览器"
           align="center"
+          label="浏览器"
+          prop="browser"
           width="160"
       />
-      <el-table-column prop="os" label="操作系统" align="center"/>
+      <el-table-column align="center" label="操作系统" prop="os"/>
       <el-table-column
-          prop="lastLoginTime"
-          label="登录时间"
           align="center"
+          label="登录时间"
+          prop="lastLoginTime"
           width="200"
       >
         <template slot-scope="scope">
@@ -58,14 +58,14 @@
           {{ scope.row.lastLoginTime | dateTime }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="150">
+      <el-table-column align="center" label="操作" width="150">
         <template slot-scope="scope">
           <el-popconfirm
-              title="确定下线吗？"
               style="margin-left:10px"
+              title="确定下线吗？"
               @confirm="removeOnlineUser(scope.row)"
           >
-            <el-button size="mini" type="text" slot="reference">
+            <el-button slot="reference" size="mini" type="text">
               <i class="el-icon-delete"/> 下线
             </el-button>
           </el-popconfirm>
@@ -74,15 +74,15 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
-        class="pagination-container"
-        background
-        @size-change="sizeChange"
-        @current-change="currentChange"
         :current-page="current"
         :page-size="size"
-        :total="count"
         :page-sizes="[10, 20]"
+        :total="count"
+        background
+        class="pagination-container"
         layout="total, sizes, prev, pager, next, jumper"
+        @size-change="sizeChange"
+        @current-change="currentChange"
     />
   </el-card>
 </template>

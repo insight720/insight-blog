@@ -37,18 +37,18 @@ public class SecurityMetadataSourceHandler implements FilterInvocationSecurityMe
     }
 
     /**
+     * 清空接口角色信息，重新加载
+     */
+    public static void clearMetadataSource() {
+        resourceRoleList = null;
+    }
+
+    /**
      * 加载资源角色信息
      */
     @PostConstruct
     private void loadMetadataSource() {
         resourceRoleList = roleMapper.listResourceRoles();
-    }
-
-    /**
-     * 清空接口角色信息，重新加载
-     */
-    public static void clearMetadataSource() {
-        resourceRoleList = null;
     }
 
     @Override

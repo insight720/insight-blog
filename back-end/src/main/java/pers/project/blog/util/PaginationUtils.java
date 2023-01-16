@@ -17,13 +17,13 @@ public abstract class PaginationUtils {
      */
     private static final ThreadLocal<IPage<?>> PAGE_HOLDER = new ThreadLocal<>();
 
-    public static void setPage(IPage<?> currentPage) {
-        PAGE_HOLDER.set(currentPage);
-    }
-
     @SuppressWarnings("unchecked")
     public static <T> IPage<T> getPage() {
         return (IPage<T>) PAGE_HOLDER.get();
+    }
+
+    public static void setPage(IPage<?> currentPage) {
+        PAGE_HOLDER.set(currentPage);
     }
 
     public static void removePage() {

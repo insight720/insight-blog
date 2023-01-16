@@ -4,18 +4,18 @@
     <!-- 表格操作 -->
     <div class="operation-container">
       <el-button
-          type="primary"
-          size="small"
           icon="el-icon-plus"
+          size="small"
+          type="primary"
           @click="openMenuModel(null)"
       >
         新增
       </el-button>
       <el-button
-          type="danger"
-          size="small"
-          icon="el-icon-delete"
           :disabled="this.roleIdList.length == 0"
+          icon="el-icon-delete"
+          size="small"
+          type="danger"
           @click="isDelete = true"
       >
         批量删除
@@ -24,17 +24,17 @@
       <div style="margin-left:auto">
         <el-input
             v-model="keywords"
+            placeholder="请输入角色名"
             prefix-icon="el-icon-search"
             size="small"
-            placeholder="请输入角色名"
             style="width:200px"
             @keyup.enter.native="searchRoles"
         />
         <el-button
-            type="primary"
-            size="small"
             icon="el-icon-search"
+            size="small"
             style="margin-left:1rem"
+            type="primary"
             @click="searchRoles"
         >
           搜索
@@ -43,38 +43,38 @@
     </div>
     <!-- 表格展示 -->
     <el-table
-        border
-        :data="roleList"
-        @selection-change="selectionChange"
         v-loading="loading"
+        :data="roleList"
+        border
+        @selection-change="selectionChange"
     >
       <!-- 表格列 -->
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="roleName" label="角色名" align="center"/>
-      <el-table-column prop="roleLabel" label="权限标签" align="center">
+      <el-table-column align="center" label="角色名" prop="roleName"/>
+      <el-table-column align="center" label="权限标签" prop="roleLabel">
         <template slot-scope="scope">
           <el-tag>
             {{ scope.row.roleLabel }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="isDisable" label="禁用" align="center" width="100">
+      <el-table-column align="center" label="禁用" prop="isDisable" width="100">
         <template slot-scope="scope">
           <el-switch
               v-model="scope.row.isDisable"
-              active-color="#13ce66"
-              inactive-color="#F4F4F5"
               :active-value="1"
               :inactive-value="0"
+              active-color="#13ce66"
+              inactive-color="#F4F4F5"
               @change="changeDisable(scope.row)"
           />
         </template>
       </el-table-column>
       <el-table-column
-          prop="createTime"
-          label="创建时间"
-          width="150"
           align="center"
+          label="创建时间"
+          prop="createTime"
+          width="150"
       >
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right:5px"/>
@@ -82,24 +82,24 @@
         </template>
       </el-table-column>
       <!-- 列操作 -->
-      <el-table-column label="操作" align="center" width="220">
+      <el-table-column align="center" label="操作" width="220">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="openMenuModel(scope.row)">
+          <el-button size="mini" type="text" @click="openMenuModel(scope.row)">
             <i class="el-icon-edit"/> 菜单权限
           </el-button>
           <el-button
-              type="text"
               size="mini"
+              type="text"
               @click="openResourceModel(scope.row)"
           >
             <i class="el-icon-folder-checked"/> 资源权限
           </el-button>
           <el-popconfirm
-              title="确定删除吗？"
               style="margin-left:10px"
+              title="确定删除吗？"
               @confirm="deleteRoles(scope.row.id)"
           >
-            <el-button size="mini" type="text" slot="reference">
+            <el-button slot="reference" size="mini" type="text">
               <i class="el-icon-delete"/> 删除
             </el-button>
           </el-popconfirm>
@@ -108,20 +108,20 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
-        class="pagination-container"
-        background
-        @size-change="sizeChange"
-        @current-change="currentChange"
         :current-page="current"
         :page-size="size"
-        :total="count"
         :page-sizes="[10, 20]"
+        :total="count"
+        background
+        class="pagination-container"
         layout="total, sizes, prev, pager, next, jumper"
+        @size-change="sizeChange"
+        @current-change="currentChange"
     />
     <!-- 菜单对话框 -->
     <el-dialog :visible.sync="roleMenu" width="30%">
-      <div class="dialog-title-container" slot="title" ref="roleTitle"/>
-      <el-form label-width="80px" size="medium" :model="roleForm">
+      <div ref="roleTitle" slot="title" class="dialog-title-container"/>
+      <el-form :model="roleForm" label-width="80px" size="medium">
         <el-form-item label="角色名">
           <el-input v-model="roleForm.roleName" style="width:250px"/>
         </el-form-item>
@@ -130,12 +130,12 @@
         </el-form-item>
         <el-form-item label="菜单权限">
           <el-tree
+              ref="menuTree"
               :data="menuList"
               :default-checked-keys="roleForm.menuIdList"
               check-strictly
-              show-checkbox
               node-key="id"
-              ref="menuTree"
+              show-checkbox
           />
         </el-form-item>
       </el-form>
@@ -147,9 +147,9 @@
       </div>
     </el-dialog>
     <!-- 资源对话框 -->
-    <el-dialog :visible.sync="roleResource" width="30%" top="9vh">
-      <div class="dialog-title-container" slot="title">修改资源权限</div>
-      <el-form label-width="80px" size="medium" :model="roleForm">
+    <el-dialog :visible.sync="roleResource" top="9vh" width="30%">
+      <div slot="title" class="dialog-title-container">修改资源权限</div>
+      <el-form :model="roleForm" label-width="80px" size="medium">
         <el-form-item label="角色名">
           <el-input v-model="roleForm.roleName" style="width:250px"/>
         </el-form-item>
@@ -158,11 +158,11 @@
         </el-form-item>
         <el-form-item label="资源权限">
           <el-tree
+              ref="resourceTree"
               :data="resourceList"
               :default-checked-keys="roleForm.resourceIdList"
-              show-checkbox
               node-key="id"
-              ref="resourceTree"
+              show-checkbox
           />
         </el-form-item>
       </el-form>
@@ -175,7 +175,7 @@
     </el-dialog>
     <!-- 批量删除对话框 -->
     <el-dialog :visible.sync="isDelete" width="30%">
-      <div class="dialog-title-container" slot="title">
+      <div slot="title" class="dialog-title-container">
         <i class="el-icon-warning" style="color:#ff9900"/>提示
       </div>
       <div style="font-size:1rem">是否删除选中项？</div>

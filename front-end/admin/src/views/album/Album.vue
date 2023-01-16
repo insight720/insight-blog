@@ -4,36 +4,36 @@
     <div class="title">{{ this.$route.name }}</div>
     <div class="operation-container">
       <el-button
-          type="primary"
-          size="small"
           icon="el-icon-plus"
+          size="small"
+          type="primary"
           @click="openModel(null)"
       >
         新建相册
       </el-button>
       <div style="margin-left:auto">
         <el-button
-            type="text"
-            size="small"
             icon="el-icon-delete"
+            size="small"
             style="margin-right:1rem"
+            type="text"
             @click="checkDelete"
         >
           回收站
         </el-button>
         <el-input
             v-model="keywords"
+            placeholder="请输入相册名"
             prefix-icon="el-icon-search"
             size="small"
-            placeholder="请输入相册名"
             style="width:200px"
             @keyup.enter.native="searchAlbums"
         />
         <el-button
-            type="primary"
-            size="small"
             icon="el-icon-search"
+            size="small"
             style="margin-left:1rem"
+            type="primary"
             @click="searchAlbums"
         >
           搜索
@@ -41,7 +41,7 @@
       </div>
     </div>
     <!-- 相册列表 -->
-    <el-row class="album-container" :gutter="12" v-loading="loading">
+    <el-row v-loading="loading" :gutter="12" class="album-container">
       <!-- 空状态 -->
       <el-empty v-if="albumList == null" description="暂无相册"/>
       <el-col v-for="item of albumList" :key="item.id" :md="6">
@@ -64,51 +64,51 @@
             <div>{{ item.photoCount }}</div>
             <i v-if="item.status == 2" class="iconfont el-icon-mymima"/>
           </div>
-          <el-image fit="cover" class="album-cover" :src="item.albumCover"/>
+          <el-image :src="item.albumCover" class="album-cover" fit="cover"/>
           <div class="album-name">{{ item.albumName }}</div>
         </div>
       </el-col>
     </el-row>
     <!-- 分页 -->
     <el-pagination
-        :hide-on-single-page="true"
-        class="pagination-container"
-        @size-change="sizeChange"
-        @current-change="currentChange"
         :current-page="current"
+        :hide-on-single-page="true"
         :page-size="size"
         :total="count"
+        class="pagination-container"
         layout="prev, pager, next"
+        @size-change="sizeChange"
+        @current-change="currentChange"
     />
     <!-- 新增模态框 -->
-    <el-dialog :visible.sync="addOrEdit" width="35%" top="10vh">
-      <div class="dialog-title-container" slot="title" ref="albumTitle"/>
-      <el-form label-width="80px" size="medium" :model="albumForum">
+    <el-dialog :visible.sync="addOrEdit" top="10vh" width="35%">
+      <div ref="albumTitle" slot="title" class="dialog-title-container"/>
+      <el-form :model="albumForum" label-width="80px" size="medium">
         <el-form-item label="相册名称">
-          <el-input style="width:220px" v-model="albumForum.albumName"/>
+          <el-input v-model="albumForum.albumName" style="width:220px"/>
         </el-form-item>
         <el-form-item label="相册描述">
-          <el-input style="width:220px" v-model="albumForum.albumDesc"/>
+          <el-input v-model="albumForum.albumDesc" style="width:220px"/>
         </el-form-item>
         <el-form-item label="相册封面">
           <el-upload
+              :before-upload="beforeUpload"
+              :on-success="uploadCover"
+              :show-file-list="false"
+              action="/api/admin/photos/albums/cover"
               class="upload-cover"
               drag
-              :show-file-list="false"
-              :before-upload="beforeUpload"
-              action="/api/admin/photos/albums/cover"
               multiple
-              :on-success="uploadCover"
           >
-            <i class="el-icon-upload" v-if="albumForum.albumCover == ''"/>
-            <div class="el-upload__text" v-if="albumForum.albumCover == ''">
+            <i v-if="albumForum.albumCover == ''" class="el-icon-upload"/>
+            <div v-if="albumForum.albumCover == ''" class="el-upload__text">
               将文件拖到此处，或<em>点击上传</em>
             </div>
             <img
                 v-else
                 :src="albumForum.albumCover"
-                width="360px"
                 height="180px"
+                width="360px"
             />
           </el-upload>
         </el-form-item>
@@ -128,7 +128,7 @@
     </el-dialog>
     <!-- 删除对话框 -->
     <el-dialog :visible.sync="isdelete" width="30%">
-      <div class="dialog-title-container" slot="title">
+      <div slot="title" class="dialog-title-container">
         <i class="el-icon-warning" style="color:#ff9900"/>提示
       </div>
       <div style="font-size:1rem">是否删除该相册？</div>

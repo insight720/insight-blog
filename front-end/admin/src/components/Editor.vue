@@ -1,13 +1,13 @@
 <template>
   <div
       ref="editor"
-      class="edit-container"
-      v-html="innerText"
-      :placeholder="placeholder"
       :contenteditable="disable"
-      @focus="onFocus"
+      :placeholder="placeholder"
+      class="edit-container"
       @blur="onBlur"
+      @focus="onFocus"
       @input="onInput"
+      v-html="innerText"
   />
 </template>
 

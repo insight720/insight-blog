@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">说说</h1>
     </div>
     <!-- 说说内容 -->
@@ -9,13 +9,13 @@
       <div class="talk-wrapper">
         <!-- 用户信息 -->
         <div class="user-info-wrapper">
-          <v-avatar size="36" class="user-avatar">
+          <v-avatar class="user-avatar" size="36">
             <img :src="talkInfo.avatar"/>
           </v-avatar>
           <div class="user-detail-wrapper">
             <div class="user-nickname">
               {{ talkInfo.nickname }}
-              <v-icon class="user-sign" size="20" color="#ffa51e">
+              <v-icon class="user-sign" color="#ffa51e" size="20">
                 mdi-check-decagram
               </v-icon>
             </div>
@@ -24,17 +24,17 @@
             <!-- 说说信息 -->
             <div class="talk-content" v-html="talkInfo.content"/>
             <!-- 图片列表 -->
-            <v-row class="talk-images" v-if="talkInfo.imgList">
+            <v-row v-if="talkInfo.imgList" class="talk-images">
               <v-col
-                  :md="4"
-                  :cols="6"
                   v-for="(img, index) of talkInfo.imgList"
                   :key="index"
+                  :cols="6"
+                  :md="4"
               >
                 <v-img
-                    class="images-items"
                     :src="img"
                     aspect-ratio="1"
+                    class="images-items"
                     max-height="200"
                     @click="previewImg(img)"
                 />
@@ -44,9 +44,9 @@
             <div class="talk-operation">
               <div class="talk-operation-item">
                 <v-icon
-                    size="16"
                     :color="isLike(talkInfo.id)"
                     class="like-btn"
+                    size="16"
                     @click.prevent="like(talkInfo)"
                 >
                   mdi-thumb-up
@@ -56,7 +56,7 @@
                 </div>
               </div>
               <div class="talk-operation-item">
-                <v-icon size="16" color="#999">mdi-chat</v-icon>
+                <v-icon color="#999" size="16">mdi-chat</v-icon>
                 <div class="operation-count">
                   {{ commentCount == null ? 0 : commentCount }}
                 </div>

@@ -77,4 +77,85 @@
         GROUP BY topic_id
     </select>
 
+    <select id="listCommentDTOs" resultType="pers.project.blog.dto.CommentDTO">
+        SELECT
+        `comment`.id,
+        `comment`.user_id,
+        user_info.nickname,
+        user_info.avatar,
+        user_info.web_site,
+        `comment`.comment_content,
+        `comment`.create_time
+        FROM tb_comment `comment`
+        JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        <where>
+            <if test="commentVO.topicId != null">
+                `comment`.topic_id = #{commentVO.topicId}
+            </if>
+            AND `comment`.type = #{commentVO.type}
+            AND `comment`.is_review = 1
+            AND parent_id IS NULL
+        </where>
+        ORDER BY `comment`.id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="listReplyDTOs" resultType="pers.project.blog.dto.ReplyDTO">
+        SELECT *
+        FROM (SELECT
+        `comment`.id,
+        `comment`.parent_id,
+        `comment`.user_id,
+        user_info.nickname,
+        user_info.avatar,
+        user_info.web_site,
+        `comment`.reply_user_id,
+        reply_user_info.nickname AS reply_nickname,
+        reply_user_info.web_site AS reply_web_site,
+        `comment`.comment_content,
+        `comment`.create_time,
+        ROW_NUMBER() over (PARTITION BY `comment`.parent_id ORDER BY `comment`.create_time) AS row_num
+        FROM tb_comment `comment`
+        JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        JOIN tb_user_info reply_user_info ON `comment`.reply_user_id = reply_user_info.id
+        WHERE `comment`.is_review = 1
+        AND `comment`.parent_id IN
+        <foreach collection="commentIdList" item="commentId" separator="," open="(" close=")">
+            #{commentId}
+        </foreach>) main
+        WHERE 4 > main.row_num
+    </select>
+
+    <select id="listRepliesCounts" resultType="java.util.Map">
+        SELECT `comment`.parent_id AS comment_id, COUNT(*)
+        FROM tb_comment `comment`
+        WHERE `comment`.is_review = 1
+        AND `comment`.parent_id IN
+        <foreach collection="commentIdList" item="commentId" separator="," open="(" close=")">
+            #{commentId}
+        </foreach>
+        GROUP BY `comment`.parent_id
+    </select>
+
+    <select id="listRepliesByCommentId" resultType="pers.project.blog.dto.ReplyDTO">
+        SELECT `comment`.id,
+               `comment`.parent_id,
+               `comment`.user_id,
+               user_info.nickname,
+               user_info.avatar,
+               user_info.web_site,
+               `comment`.reply_user_id,
+               reply_user_info.nickname reply_nickname,
+               reply_user_info.web_site reply_web_site,
+               `comment`.comment_content,
+               `comment`.create_time
+        FROM tb_comment `comment`
+                 JOIN tb_user_info user_info on `comment`.user_id = user_info.id
+                 JOIN tb_user_info reply_user_info ON `comment`.reply_user_id = reply_user_info.id
+        WHERE `comment`.is_review = 1
+          AND `comment`.parent_id = #{commentId}
+        ORDER BY `comment`.id
+        LIMIT #{offset}, #{size}
+    </select>
+
 </mapper>

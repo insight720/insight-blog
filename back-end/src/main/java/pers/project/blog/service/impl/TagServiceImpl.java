@@ -92,6 +92,14 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, TagEntity> implements
         removeBatchByIds(tagIdList);
     }
 
+    @Override
+    public PageDTO<TagDTO> listTags() {
+        List<TagEntity> tagEntityList = lambdaQuery().list();
+        int tagCount = lambdaQuery().count().intValue();
+        List<TagDTO> tagDTOList = ConversionUtils.covertList(tagEntityList, TagDTO.class);
+        return PageDTO.of(tagDTOList, tagCount);
+    }
+
 }
 
 

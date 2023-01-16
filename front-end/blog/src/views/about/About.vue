@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">关于我</h1>
     </div>
     <!-- 关于我内容 -->
@@ -9,7 +9,7 @@
       <!-- 博主头像 -->
       <div class="my-wrapper">
         <v-avatar size="110">
-          <img class="author-avatar" :src="avatar"/>
+          <img :src="avatar" class="author-avatar"/>
         </v-avatar>
       </div>
       <!-- 介绍 -->

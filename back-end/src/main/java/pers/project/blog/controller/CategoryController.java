@@ -5,10 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import pers.project.blog.annotation.OperationLog;
 import pers.project.blog.constant.LogConstant;
-import pers.project.blog.dto.AdminCategoryDTO;
-import pers.project.blog.dto.CategoryOptionDTO;
-import pers.project.blog.dto.PageDTO;
-import pers.project.blog.dto.Result;
+import pers.project.blog.dto.*;
 import pers.project.blog.service.CategoryService;
 import pers.project.blog.vo.CategoryVO;
 import pers.project.blog.vo.ConditionVO;
@@ -58,6 +55,12 @@ public class CategoryController {
     public Result<?> removeCategories(@RequestBody List<Integer> categoryIdList) {
         categoryService.removeCategories(categoryIdList);
         return Result.ok();
+    }
+
+    @Operation(summary = "查看分类列表")
+    @GetMapping("/categories")
+    public Result<PageDTO<CategoryDTO>> listCategories() {
+        return Result.ok(categoryService.listCategories());
     }
 
 }

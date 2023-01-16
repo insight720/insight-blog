@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">分类</h1>
     </div>
     <!-- 分类列表 -->
@@ -9,9 +9,9 @@
       <div class="category-title">分类 - {{ count }}</div>
       <ul class="category-list">
         <li
-            class="category-list-item"
             v-for="item of categoryList"
             :key="item.id"
+            class="category-list-item"
         >
           <router-link :to="'/categories/' + item.id">
             {{ item.categoryName }}

@@ -1,22 +1,22 @@
 <template>
   <div>
     <!-- 标签或分类名 -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title animated fadeInDown">{{ title }} - {{ name }}</h1>
     </div>
     <div class="article-list-wrapper">
       <v-row>
-        <v-col md="4" cols="12" v-for="item of articleList" :key="item.id">
+        <v-col v-for="item of articleList" :key="item.id" cols="12" md="4">
           <!-- 文章 -->
           <v-card class="animated zoomIn article-item-card">
             <div class="article-item-cover">
               <router-link :to="'/articles/' + item.id">
                 <!-- 缩略图 -->
                 <v-img
-                    class="on-hover"
-                    width="100%"
-                    height="100%"
                     :src="item.articleCover"
+                    class="on-hover"
+                    height="100%"
+                    width="100%"
                 />
               </router-link>
             </div>
@@ -46,10 +46,10 @@
             <!-- 文章标签 -->
             <div class="tag-wrapper">
               <router-link
-                  :to="'/tags/' + tag.id"
-                  class="tag-btn"
                   v-for="tag of item.tagDTOList"
                   :key="tag.id"
+                  :to="'/tags/' + tag.id"
+                  class="tag-btn"
               >
                 {{ tag.tagName }}
               </router-link>

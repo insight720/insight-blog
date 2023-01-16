@@ -38,7 +38,17 @@ public enum ResultStatusEnum {
     /**
      * 没有授权
      */
-    ACCESS_DENIED(40300, "没有权限操作");
+    ACCESS_DENIED(40300, "没有权限操作"),
+
+    /**
+     * qq登录错误
+     */
+    QQ_LOGIN_ERROR(53001, "qq登录错误"),
+
+    /**
+     * 微博登录错误
+     */
+    WEIBO_LOGIN_ERROR(53002, "微博登录错误");
 
     /**
      * 状态码

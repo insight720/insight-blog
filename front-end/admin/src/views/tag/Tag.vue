@@ -4,18 +4,18 @@
     <!-- 表格操作 -->
     <div class="operation-container">
       <el-button
-          type="primary"
-          size="small"
           icon="el-icon-plus"
+          size="small"
+          type="primary"
           @click="openModel(null)"
       >
         新增
       </el-button>
       <el-button
-          type="danger"
-          size="small"
-          icon="el-icon-delete"
           :disabled="tagIdList.length == 0"
+          icon="el-icon-delete"
+          size="small"
+          type="danger"
           @click="isDelete = true"
       >
         批量删除
@@ -23,17 +23,17 @@
       <div style="margin-left:auto">
         <el-input
             v-model="keywords"
+            placeholder="请输入标签名"
             prefix-icon="el-icon-search"
             size="small"
-            placeholder="请输入标签名"
             style="width:200px"
             @keyup.enter.native="searchTags"
         />
         <el-button
-            type="primary"
-            size="small"
             icon="el-icon-search"
+            size="small"
             style="margin-left:1rem"
+            type="primary"
             @click="searchTags"
         >
           搜索
@@ -42,15 +42,15 @@
     </div>
     <!-- 表格展示 -->
     <el-table
-        border
-        :data="tagList"
         v-loading="loading"
+        :data="tagList"
+        border
         @selection-change="selectionChange"
     >
       <!-- 表格列 -->
       <el-table-column type="selection" width="55"/>
       <!-- 标签名 -->
-      <el-table-column prop="tagName" label="标签名" align="center">
+      <el-table-column align="center" label="标签名" prop="tagName">
         <template slot-scope="scope">
           <el-tag>
             {{ scope.row.tagName }}
@@ -58,26 +58,26 @@
         </template>
       </el-table-column>
       <!-- 文章量 -->
-      <el-table-column prop="articleCount" label="文章量" align="center"/>
+      <el-table-column align="center" label="文章量" prop="articleCount"/>
       <!-- 标签创建时间 -->
-      <el-table-column prop="createTime" label="创建时间" align="center">
+      <el-table-column align="center" label="创建时间" prop="createTime">
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right:5px"/>
           {{ scope.row.createTime | date }}
         </template>
       </el-table-column>
       <!-- 列操作 -->
-      <el-table-column label="操作" align="center" width="160">
+      <el-table-column align="center" label="操作" width="160">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="openModel(scope.row)">
+          <el-button size="mini" type="primary" @click="openModel(scope.row)">
             编辑
           </el-button>
           <el-popconfirm
-              title="确定删除吗？"
               style="margin-left:1rem"
+              title="确定删除吗？"
               @confirm="deleteTag(scope.row.id)"
           >
-            <el-button size="mini" type="danger" slot="reference">
+            <el-button slot="reference" size="mini" type="danger">
               删除
             </el-button>
           </el-popconfirm>
@@ -86,19 +86,19 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
-        class="pagination-container"
-        background
-        @size-change="sizeChange"
-        @current-change="currentChange"
         :current-page="current"
         :page-size="size"
-        :total="count"
         :page-sizes="[10, 20]"
+        :total="count"
+        background
+        class="pagination-container"
         layout="total, sizes, prev, pager, next, jumper"
+        @size-change="sizeChange"
+        @current-change="currentChange"
     />
     <!-- 批量删除对话框 -->
     <el-dialog :visible.sync="isDelete" width="30%">
-      <div class="dialog-title-container" slot="title">
+      <div slot="title" class="dialog-title-container">
         <i class="el-icon-warning" style="color:#ff9900"/>提示
       </div>
       <div style="font-size:1rem">是否删除选中项？</div>
@@ -111,10 +111,10 @@
     </el-dialog>
     <!-- 编辑对话框 -->
     <el-dialog :visible.sync="addOrEdit" width="30%">
-      <div class="dialog-title-container" slot="title" ref="tagTitle"/>
-      <el-form label-width="80px" size="medium" :model="tagForm">
+      <div ref="tagTitle" slot="title" class="dialog-title-container"/>
+      <el-form :model="tagForm" label-width="80px" size="medium">
         <el-form-item label="标签名">
-          <el-input style="width:220px" v-model="tagForm.tagName"/>
+          <el-input v-model="tagForm.tagName" style="width:220px"/>
         </el-form-item>
       </el-form>
       <div slot="footer">

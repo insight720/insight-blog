@@ -1,6 +1,6 @@
 <template>
   <!-- 搜索框 -->
-  <v-dialog v-model="searchFlag" max-width="600" :fullscreen="isMobile">
+  <v-dialog v-model="searchFlag" :fullscreen="isMobile" max-width="600">
     <v-card class="search-wrapper" style="border-radius:4px">
       <div class="mb-3">
         <span class="search-title">本地搜索</span>
@@ -18,7 +18,7 @@
       <div class="search-result-wrapper">
         <hr class="divider"/>
         <ul>
-          <li class="search-reslut" v-for="item of articleList" :key="item.id">
+          <li v-for="item of articleList" :key="item.id" class="search-reslut">
             <!-- 文章标题 -->
             <a @click="goTo(item.id)" v-html="item.articleTitle"/>
             <!-- 文章内容 -->

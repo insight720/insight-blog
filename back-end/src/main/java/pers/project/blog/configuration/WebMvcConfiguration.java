@@ -13,6 +13,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import pers.project.blog.handler.AccessLimitHandlerInterceptor;
 import pers.project.blog.handler.PaginationHandlerInterceptor;
 
 import java.util.Collections;
@@ -28,9 +29,13 @@ import java.util.List;
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
+    private final AccessLimitHandlerInterceptor accessLimitHandlerInterceptor;
+
     private final PaginationHandlerInterceptor paginationHandlerInterceptor;
 
-    public WebMvcConfiguration(PaginationHandlerInterceptor paginationHandlerInterceptor) {
+    public WebMvcConfiguration(AccessLimitHandlerInterceptor accessLimitHandlerInterceptor,
+                               PaginationHandlerInterceptor paginationHandlerInterceptor) {
+        this.accessLimitHandlerInterceptor = accessLimitHandlerInterceptor;
         this.paginationHandlerInterceptor = paginationHandlerInterceptor;
     }
 
@@ -64,6 +69,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(accessLimitHandlerInterceptor);
         registry.addInterceptor(paginationHandlerInterceptor);
     }
 

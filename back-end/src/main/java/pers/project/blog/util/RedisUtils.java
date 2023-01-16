@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -60,16 +61,18 @@ public abstract class RedisUtils {
      * @param increment 增量
      * @return 返回增加后的数据
      */
-    public static Long hIncrBy(String key, Object field, long increment) {
+    public static Long hIncrBy(String key, String field, long increment) {
         return redisTemplate.opsForHash().increment(key, field, increment);
     }
 
     /**
-     * String 结构的值按增量增加
+     * 为字符串键 key 储存的数字值加上增量 increment 。
+     * <p>
+     * 如果键 key 不存在， 那么键 key 的值会先被初始化为 0 ， 然后再执行 INCRBY 命令。
      *
      * @param key       key
      * @param increment 增量
-     * @return 返回增加后结果
+     * @return {@code Long} 在加上增量 increment 之后， 键 key 当前的值。
      */
     public static Long incrBy(String key, long increment) {
         return redisTemplate.opsForValue().increment(key, increment);
@@ -103,8 +106,9 @@ public abstract class RedisUtils {
      * @return 域和值的映射
      */
     @NotNull
-    public static Map<Object, Object> hGetAll(String key) {
-        return redisTemplate.opsForHash().entries(key);
+    public static Map<String, Object> hGetAll(String key) {
+        Map fieldValueMap = redisTemplate.opsForHash().entries(key);
+        return fieldValueMap;
     }
 
     /**
@@ -132,6 +136,21 @@ public abstract class RedisUtils {
      */
     public static void set(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
+    }
+
+    /**
+     * 将键 key 的值设置为 value ， 并将键 key 的生存时间设置为 seconds 秒钟。
+     * <p>
+     * 如果键 key 已经存在， 那么 SETEX 命令将覆盖已有的值。
+     * <p>
+     * SETEX 的不同之处在于 SETEX 是一个原子（atomic）操作，
+     * 它可以在同一时间内完成设置值和设置过期时间这两个操作， 因此 SETEX 命令在储存缓存的时候非常实用。
+     *
+     * @param key   键，不能为空
+     * @param value 值，不能为空
+     */
+    public static void setEx(String key, Object value, long timeout) {
+        redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
     }
 
     /**
@@ -179,7 +198,7 @@ public abstract class RedisUtils {
      * @return {@code Object} 哈希表给定域的值
      */
     @Nullable
-    public static Object hGet(String key, Integer hashKey) {
+    public static Object hGet(String key, String hashKey) {
         return redisTemplate.opsForHash().get(key, hashKey);
     }
 
@@ -194,6 +213,67 @@ public abstract class RedisUtils {
      */
     public static Long sRem(String key, Object... members) {
         return redisTemplate.opsForSet().remove(key, members);
+    }
+
+    /**
+     * 为有序集 key 的成员 member 的 score 值加上增量 increment 。
+     * <p>
+     * 可以通过传递一个负数值 increment ，让 score 减去相应的值，比如 ZINCRBY key -5 member ，就是让 member 的 score 值减去 5 。
+     * <p>
+     * 当 key 不存在，或 member 不是 key 的成员时， ZINCRBY key increment member 等同于 ZADD key increment member 。
+     * <p>
+     * 当 key 不是有序集类型时，返回一个错误。
+     * <p>
+     * score 值可以是整数值或双精度浮点数。
+     *
+     * @param key       键
+     * @param member    成员
+     * @param increment 增量
+     * @return {@code Double} member 成员的新 score 值。
+     */
+    public static Double zIncyBy(String key, Object member, double increment) {
+        return redisTemplate.opsForZSet().incrementScore(key, member, increment);
+    }
+
+    /**
+     * 返回有序集 key 中，成员 member 的 score 值。
+     * <p>
+     * 如果 member 元素不是有序集 key 的成员，或 key 不存在，返回 null 。
+     *
+     * @param key    键
+     * @param member 成员
+     * @return {@code Double} 成员 member 的 score 值
+     */
+    public static Double zScore(String key, Object member) {
+        return redisTemplate.opsForZSet().score(key, member);
+    }
+
+    /**
+     * 执行 {@link RedisUtils#incrBy(String, long)} 操作，并为字符串 key 设置过期时间，
+     * 这个操作不会刷新过期时间。
+     *
+     * @param key       字符串键
+     * @param increment 增量，不可以为负数
+     * @param timeout   过期时间量
+     * @param timeunit  时间单位
+     * @return {@code Long} 在加上增量 increment 之后， 键 key 当前的值。
+     */
+    public static Long incrByAndExpire(String key, long increment, long timeout, TimeUnit timeunit) {
+        Long count = incrBy(key, increment);
+        if (count == increment) {
+            redisTemplate.expire(key, timeout, timeunit);
+        }
+        return count;
+    }
+
+    /**
+     * 返回集合 key 中元素的数量。
+     *
+     * @param key 集合
+     * @return {@code Long} 集合中元素的数量。当 key 不存在时，返回 0。
+     */
+    public static Long sCard(String key) {
+        return redisTemplate.opsForSet().size(key);
     }
 
 }

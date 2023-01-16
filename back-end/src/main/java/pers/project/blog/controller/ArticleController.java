@@ -9,10 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.annotation.OperationLog;
 import pers.project.blog.constant.DirectoryUriConstant;
 import pers.project.blog.constant.LogConstant;
-import pers.project.blog.dto.AdminArticleDTO;
-import pers.project.blog.dto.ArticleDTO;
-import pers.project.blog.dto.PageDTO;
-import pers.project.blog.dto.Result;
+import pers.project.blog.dto.*;
 import pers.project.blog.service.ArticleService;
 import pers.project.blog.strategy.context.ArticleImportContext;
 import pers.project.blog.strategy.context.UploadContext;
@@ -40,23 +37,10 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @OperationLog(type = LogConstant.SAVE_OR_UPDATE)
-    @Operation(summary = "导入文章")
-    @PostMapping("/admin/articles/import")
-    public Result<?> importArticle(@RequestParam("file") MultipartFile multipartFile,
-                                   @RequestParam(name = "type", required = false)
-                                   String strategyName) {
-        ArticleImportContext.executeStrategy(multipartFile, strategyName);
-        return Result.ok();
-    }
-
-    @OperationLog(type = LogConstant.SAVE)
-    @Operation(summary = "上传文章图片")
-    @Parameter(name = "multipartFile", description = "文章",
-            required = true, schema = @Schema(type = "MultipartFile"))
-    @PostMapping("/admin/articles/images")
-    public Result<String> saveArticleImage(@RequestParam("file") MultipartFile multipartFile) {
-        return Result.ok(UploadContext.executeStrategy(multipartFile, DirectoryUriConstant.ARTICLE));
+    @Operation(summary = "查看后台文章")
+    @GetMapping("/admin/articles")
+    public Result<PageDTO<AdminArticleDTO>> listAdminArticles(ConditionVO conditionVO) {
+        return Result.ok(articleService.listAdminArticles(conditionVO));
     }
 
     @OperationLog(type = LogConstant.SAVE_OR_UPDATE)
@@ -65,12 +49,6 @@ public class ArticleController {
     public Result<?> saveOrUpdateArticle(@Valid @RequestBody ArticleVO articleVO) {
         articleService.saveOrUpdateArticle(articleVO);
         return Result.ok();
-    }
-
-    @Operation(summary = "查看后台文章")
-    @GetMapping("/admin/articles")
-    public Result<PageDTO<AdminArticleDTO>> listAdminArticles(ConditionVO conditionVO) {
-        return Result.ok(articleService.listAdminArticles(conditionVO));
     }
 
     @OperationLog(type = LogConstant.UPDATE)
@@ -89,6 +67,33 @@ public class ArticleController {
         return Result.ok();
     }
 
+    @Operation(summary = "导出文章")
+    @Parameter(name = "articleIdList", description = "文章 ID",
+            required = true, schema = @Schema(type = "List<Integer>"))
+    @PostMapping("/admin/articles/export")
+    public Result<List<String>> exportArticles(@RequestBody List<Integer> articleIdList) {
+        return Result.ok(articleService.exportArticles(articleIdList));
+    }
+
+    @OperationLog(type = LogConstant.SAVE)
+    @Operation(summary = "上传文章图片")
+    @Parameter(name = "multipartFile", description = "文章",
+            required = true, schema = @Schema(type = "MultipartFile"))
+    @PostMapping("/admin/articles/images")
+    public Result<String> saveArticleImage(@RequestParam("file") MultipartFile multipartFile) {
+        return Result.ok(UploadContext.executeStrategy(multipartFile, DirectoryUriConstant.ARTICLE));
+    }
+
+    @OperationLog(type = LogConstant.SAVE_OR_UPDATE)
+    @Operation(summary = "导入文章")
+    @PostMapping("/admin/articles/import")
+    public Result<?> importArticle(@RequestParam("file") MultipartFile multipartFile,
+                                   @RequestParam(name = "type", required = false)
+                                   String strategyName) {
+        ArticleImportContext.executeStrategy(multipartFile, strategyName);
+        return Result.ok();
+    }
+
     @OperationLog(type = LogConstant.UPDATE)
     @Operation(summary = "修改文章置顶状态")
     @PutMapping("/admin/articles/top")
@@ -98,12 +103,53 @@ public class ArticleController {
     }
 
     @Operation(summary = "根据 ID 查看后台文章")
-    @Parameter(name = "articleId", description = "文章ID",
+    @Parameter(name = "articleId", description = "文章 ID",
             required = true, schema = @Schema(type = "Integer"))
     @GetMapping("/admin/articles/{articleId}")
-    public Result<ArticleDTO> getAdminArticleById
+    public Result<ArticleVO> getAdminArticle
             (@PathVariable("articleId") Integer articleId) {
-        return Result.ok(articleService.getAdminArticleById(articleId));
+        return Result.ok(articleService.getAdminArticle(articleId));
+    }
+
+    @Operation(summary = "查看首页文章")
+    @GetMapping("/articles")
+    public Result<List<HomePageArticleDTO>> listHomePageArticles() {
+        return Result.ok(articleService.listHomePageArticles());
+    }
+
+    @Operation(summary = "查看文章归档")
+    @GetMapping("/articles/archives")
+    public Result<PageDTO<ArticleArchiveDTO>> listArticleArchives() {
+        return Result.ok(articleService.listArticleArchives());
+    }
+
+    @Operation(summary = "根据条件查询文章")
+    @GetMapping("/articles/condition")
+    public Result<ArticlePreviewDTO> getArticlePreview(ConditionVO conditionVO) {
+        return Result.ok(articleService.getArticlePreview(conditionVO));
+    }
+
+    @Operation(summary = "搜索文章")
+    @GetMapping("/articles/search")
+    public Result<List<ArticleSearchDTO>> listArticlesBySearch(ConditionVO conditionVO) {
+        return Result.ok(articleService.listArticlesBySearch(conditionVO));
+    }
+
+    @Operation(summary = "根据 ID 查看文章")
+    @Parameter(name = "articleId", description = "文章 ID",
+            required = true, schema = @Schema(type = "Integer"))
+    @GetMapping("/articles/{articleId}")
+    public Result<ArticleDTO> getArticle(@PathVariable("articleId") Integer articleId) {
+        return Result.ok(articleService.getArticle(articleId));
+    }
+
+    @Operation(summary = "点赞文章")
+    @Parameter(name = "articleId", description = "文章 ID",
+            required = true, schema = @Schema(type = "Integer"))
+    @PostMapping("/articles/{articleId}/like")
+    public Result<?> saveArticleLike(@PathVariable("articleId") Integer articleId) {
+        articleService.saveArticleLike(articleId);
+        return Result.ok();
     }
 
 }

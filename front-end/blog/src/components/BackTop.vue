@@ -1,12 +1,12 @@
 <template>
-  <div class="rightside" :style="isShow">
+  <div :style="isShow" class="rightside">
     <div :class="'rightside-config-hide ' + isOut">
       <i :class="'iconfont rightside-icon ' + icon" @click="check"/>
     </div>
     <div class="setting-container" @click="show">
       <i class="iconfont iconshezhi setting"/>
     </div>
-    <i @click="backTop" class="iconfont rightside-icon iconziyuanldpi"/>
+    <i class="iconfont rightside-icon iconziyuanldpi" @click="backTop"/>
   </div>
 </template>
 

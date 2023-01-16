@@ -32,12 +32,6 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @Operation(summary = "搜索文章标签")
-    @GetMapping("/admin/tags/search")
-    public Result<List<TagDTO>> listTagsBySearch(ConditionVO conditionVO) {
-        return Result.ok(tagService.listTagsBySearch(conditionVO));
-    }
-
     @Operation(summary = "查询后台标签列表")
     @GetMapping("/admin/tags")
     public Result<PageDTO<AdminTagDTO>> listAdminTags(ConditionVO conditionVO) {
@@ -58,6 +52,18 @@ public class TagController {
     public Result<?> removeTags(@RequestBody List<Integer> tagIdList) {
         tagService.removeTags(tagIdList);
         return Result.ok();
+    }
+
+    @Operation(summary = "搜索文章标签")
+    @GetMapping("/admin/tags/search")
+    public Result<List<TagDTO>> listTagsBySearch(ConditionVO conditionVO) {
+        return Result.ok(tagService.listTagsBySearch(conditionVO));
+    }
+
+    @Operation(summary = "查询标签列表")
+    @GetMapping("/tags")
+    public Result<PageDTO<TagDTO>> listTags() {
+        return Result.ok(tagService.listTags());
     }
 
 }

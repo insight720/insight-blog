@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-menu
-        class="side-nav-bar"
-        router
         :collapse="this.$store.state.collapse"
         :default-active="this.$route.path"
-        background-color="#304156"
-        text-color="#BFCBD9"
         active-text-color="#409EFF"
+        background-color="#304156"
+        class="side-nav-bar"
+        router
+        text-color="#BFCBD9"
     >
       <template v-for="route of this.$store.state.userMenuList">
         <!-- 二级菜单 -->
@@ -29,7 +29,7 @@
         </template>
         <!-- 一级菜单 -->
         <template v-else-if="!route.hidden">
-          <el-menu-item :index="route.path" :key="route.path">
+          <el-menu-item :key="route.path" :index="route.path">
             <i :class="route.children[0].icon"/>
             <span slot="title">{{ route.children[0].name }}</span>
           </el-menu-item>

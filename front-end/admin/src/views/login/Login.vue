@@ -4,18 +4,18 @@
       <div class="login-title">管理员登录</div>
       <!-- 登录表单 -->
       <el-form
-          status-icon
+          ref="ruleForm"
           :model="loginForm"
           :rules="rules"
-          ref="ruleForm"
           class="login-form"
+          status-icon
       >
         <!-- 用户名输入框 -->
         <el-form-item prop="username">
           <el-input
               v-model="loginForm.username"
-              prefix-icon="el-icon-user-solid"
               placeholder="用户名"
+              prefix-icon="el-icon-user-solid"
               @keyup.enter.native="login"
           />
         </el-form-item>
@@ -23,9 +23,9 @@
         <el-form-item prop="password">
           <el-input
               v-model="loginForm.password"
+              placeholder="密码"
               prefix-icon="iconfont el-icon-mymima"
               show-password
-              placeholder="密码"
               @keyup.enter.native="login"
           />
         </el-form-item>

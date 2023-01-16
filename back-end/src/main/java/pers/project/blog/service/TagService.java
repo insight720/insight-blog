@@ -48,4 +48,11 @@ public interface TagService extends IService<TagEntity> {
      */
     void removeTags(List<Integer> tagIdList);
 
+    /**
+     * 查询标签列表
+     *
+     * @return {@code PageDTO<TagDTO>} 标签数据列表
+     */
+    PageDTO<TagDTO> listTags();
+
 }

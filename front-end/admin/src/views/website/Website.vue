@@ -4,16 +4,16 @@
       <!-- 修改信息 -->
       <el-tab-pane label="网站信息" name="info">
         <el-form
-            label-width="100px"
             :model="websiteConfigForm"
             label-position="left"
+            label-width="100px"
         >
           <el-form-item label="网站头像">
             <el-upload
-                class="avatar-uploader"
-                action="/api/admin/config/images"
-                :show-file-list="false"
                 :on-success="handleWebsiteAvatarSuccess"
+                :show-file-list="false"
+                action="/api/admin/config/images"
+                class="avatar-uploader"
             >
               <img
                   v-if="websiteConfigForm.websiteAvatar"
@@ -46,20 +46,20 @@
           </el-form-item>
           <el-form-item label="网站创建日期">
             <el-date-picker
-                style="width:400px"
-                value-format="yyyy-MM-dd"
                 v-model="websiteConfigForm.websiteCreateTime"
-                type="date"
                 placeholder="选择日期"
+                style="width:400px"
+                type="date"
+                value-format="yyyy-MM-dd"
             />
           </el-form-item>
           <el-form-item label="网站公告">
             <el-input
                 v-model="websiteConfigForm.websiteNotice"
+                :rows="5"
                 placeholder="请输入公告内容"
                 style="width:400px"
                 type="textarea"
-                :rows="5"
             />
           </el-form-item>
           <el-form-item label="备案号">
@@ -76,9 +76,9 @@
             </el-checkbox-group>
           </el-form-item>
           <el-button
-              type="primary"
               size="medium"
               style="margin-left:6.3rem"
+              type="primary"
               @click="updateWebsiteConfig"
           >
             修改
@@ -87,7 +87,7 @@
       </el-tab-pane>
       <!-- 网站公告 -->
       <el-tab-pane label="社交信息" name="notice">
-        <el-form label-width="70px" :model="websiteConfigForm">
+        <el-form :model="websiteConfigForm" label-width="70px">
           <el-checkbox-group v-model="websiteConfigForm.socialUrlList">
             <el-form-item label="QQ">
               <el-input
@@ -114,9 +114,9 @@
               <el-checkbox label="gitee">是否展示</el-checkbox>
             </el-form-item>
             <el-button
-                type="primary"
                 size="medium"
                 style="margin-left:4.375rem"
+                type="primary"
                 @click="updateWebsiteConfig"
             >
               修改
@@ -127,18 +127,18 @@
       <!-- 修改密码 -->
       <el-tab-pane label="其他设置" name="password">
         <el-form
-            label-width="120px"
             :model="websiteConfigForm"
             label-position="left"
+            label-width="120px"
         >
           <el-row style="width:600px">
             <el-col :md="12">
               <el-form-item label="用户头像">
                 <el-upload
-                    class="avatar-uploader"
-                    action="/api/admin/config/images"
-                    :show-file-list="false"
                     :on-success="handleUserAvatarSuccess"
+                    :show-file-list="false"
+                    action="/api/admin/config/images"
+                    class="avatar-uploader"
                 >
                   <img
                       v-if="websiteConfigForm.userAvatar"
@@ -152,10 +152,10 @@
             <el-col :md="12">
               <el-form-item label="游客头像">
                 <el-upload
-                    class="avatar-uploader"
-                    action="/api/admin/config/images"
-                    :show-file-list="false"
                     :on-success="handleTouristAvatarSuccess"
+                    :show-file-list="false"
+                    action="/api/admin/config/images"
+                    class="avatar-uploader"
                 >
                   <img
                       v-if="websiteConfigForm.touristAvatar"
@@ -169,11 +169,11 @@
           </el-row>
           <el-form-item label="默认文章封面">
             <el-upload
-                class="cover-uploader"
-                action="/api/admin/config/images"
                 :before-upload="beforeUpload"
-                :show-file-list="false"
                 :on-success="handleArticleCoverSuccess"
+                :show-file-list="false"
+                action="/api/admin/config/images"
+                class="cover-uploader"
             >
               <img
                   v-if="websiteConfigForm.articleCover"
@@ -207,14 +207,14 @@
               <el-radio :label="1">开启</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-row style="width:600px" v-show="websiteConfigForm.isReward == 1">
+          <el-row v-show="websiteConfigForm.isReward == 1" style="width:600px">
             <el-col :md="12">
               <el-form-item label="微信收款码">
                 <el-upload
-                    class="avatar-uploader"
-                    action="/api/admin/config/images"
-                    :show-file-list="false"
                     :on-success="handleWeiXinSuccess"
+                    :show-file-list="false"
+                    action="/api/admin/config/images"
+                    class="avatar-uploader"
                 >
                   <img
                       v-if="websiteConfigForm.weiXinQRCode"
@@ -228,10 +228,10 @@
             <el-col :md="12">
               <el-form-item label="支付宝收款码">
                 <el-upload
-                    class="avatar-uploader"
-                    action="/api/admin/config/images"
-                    :show-file-list="false"
                     :on-success="handleAlipaySuccess"
+                    :show-file-list="false"
+                    action="/api/admin/config/images"
+                    class="avatar-uploader"
                 >
                   <img
                       v-if="websiteConfigForm.alipayQRCode"
@@ -250,8 +250,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item
-              label="Websocket地址"
               v-show="websiteConfigForm.isChatRoom == 1"
+              label="Websocket地址"
           >
             <el-input
                 v-model="websiteConfigForm.websocketUrl"
@@ -266,9 +266,9 @@
             </el-radio-group>
           </el-form-item>
           <el-button
-              type="primary"
               size="medium"
               style="margin-left:6.3rem"
+              type="primary"
               @click="updateWebsiteConfig"
           >
             修改

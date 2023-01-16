@@ -1,11 +1,11 @@
 <template>
-  <div class="reply-input-wrapper" style="display: none" ref="reply">
+  <div ref="reply" class="reply-input-wrapper" style="display: none">
     <textarea
-        class="comment-textarea"
+        v-model="commentContent"
         :placeholder="'回复 @' + nickname + '：'"
         auto-grow
+        class="comment-textarea"
         dense
-        v-model="commentContent"
     />
     <div class="emoji-container">
       <span
@@ -15,16 +15,16 @@
         <i class="iconfont iconbiaoqing"/>
       </span>
       <div style="margin-left:auto">
-        <button @click="cancleReply" class="cancle-btn v-comment-btn">
+        <button class="cancle-btn v-comment-btn" @click="cancleReply">
           取消
         </button>
-        <button @click="insertReply" class="upload-btn v-comment-btn">
+        <button class="upload-btn v-comment-btn" @click="insertReply">
           提交
         </button>
       </div>
     </div>
     <!-- 表情框 -->
-    <emoji @addEmoji="addEmoji" :chooseEmoji="chooseEmoji"/>
+    <emoji :chooseEmoji="chooseEmoji" @addEmoji="addEmoji"/>
   </div>
 </template>
 

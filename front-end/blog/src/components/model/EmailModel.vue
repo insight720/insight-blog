@@ -8,28 +8,28 @@
         <!-- 用户名 -->
         <v-text-field
             v-model="email"
+            clearable
             label="邮箱号"
             placeholder="请输入您的邮箱号"
-            clearable
             @keyup.enter="register"
         />
         <!-- 验证码 -->
         <div class="mt-7 send-wrapper">
           <v-text-field
-              maxlength="6"
               v-model="code"
               label="验证码"
+              maxlength="6"
               placeholder="请输入6位验证码"
               @keyup.enter="register"
           />
-          <v-btn text small :disabled="flag" @click="sendCode">
+          <v-btn :disabled="flag" small text @click="sendCode">
             {{ codeMsg }}
           </v-btn>
         </div>
         <!-- 按钮 -->
         <v-btn
-            class="mt-7"
             block
+            class="mt-7"
             color="blue"
             style="color:#fff"
             @click="saveUserEmail"

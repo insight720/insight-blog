@@ -1,35 +1,35 @@
 <template>
-  <router-link to="/talks" class="swiper-container">
-    <v-icon size="20" color="#4c4948">mdi-chat-outline</v-icon>
+  <router-link class="swiper-container" to="/talks">
+    <v-icon color="#4c4948" size="20">mdi-chat-outline</v-icon>
     <div
+        id="rollScreen_container"
         :style="{ height: height * lineNum + 'px' }"
         class="rollScreen_container"
-        id="rollScreen_container"
     >
       <ul
-          class="rollScreen_list"
-          :style="{ transform: transform }"
           :class="{ rollScreen_list_unanim: num === 0 }"
+          :style="{ transform: transform }"
+          class="rollScreen_list"
       >
         <li
-            class="rollScreen_once"
             v-for="(item, index) in list"
             :key="index"
             :style="{ height: height + 'px' }"
+            class="rollScreen_once"
         >
           <span class="item" v-html="item"/>
         </li>
         <li
-            class="rollScreen_once"
             v-for="(item, index) in list"
             :key="index + list.length"
             :style="{ height: height + 'px' }"
+            class="rollScreen_once"
         >
           <span class="item" v-html="item"/>
         </li>
       </ul>
     </div>
-    <v-icon size="20" color="#4c4948" class="arrow">
+    <v-icon class="arrow" color="#4c4948" size="20">
       mdi-chevron-double-right
     </v-icon>
   </router-link>

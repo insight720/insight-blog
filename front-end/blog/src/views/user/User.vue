@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">个人中心</h1>
     </div>
     <v-card class="blog-container">
@@ -8,19 +8,19 @@
         <span class="info-title">基本信息</span>
       </div>
       <v-row class="info-wrapper">
-        <v-col md="3" cols="12">
+        <v-col cols="12" md="3">
           <button id="pick-avatar">
             <v-avatar size="140">
               <img :src="this.$store.state.avatar"/>
             </v-avatar>
           </button>
           <avatar-cropper
-              @uploaded="uploadAvatar"
               trigger="#pick-avatar"
               upload-url="/api/users/avatar"
+              @uploaded="uploadAvatar"
           />
         </v-col>
-        <v-col md="7" cols="12">
+        <v-col cols="12" md="7">
           <v-text-field
               v-model="userInfo.nickname"
               label="昵称"
@@ -40,19 +40,19 @@
           />
           <div v-if="loginType != 0" class="mt-7 binding">
             <v-text-field
-                disabled
                 v-model="email"
+                disabled
                 label="邮箱号"
                 placeholder="请绑定邮箱"
             />
-            <v-btn v-if="email" text small @click="openEmailModel">
+            <v-btn v-if="email" small text @click="openEmailModel">
               修改绑定
             </v-btn>
-            <v-btn v-else text small @click="openEmailModel">
+            <v-btn v-else small text @click="openEmailModel">
               绑定邮箱
             </v-btn>
           </div>
-          <v-btn @click="updataUserInfo" outlined class="mt-5">修改</v-btn>
+          <v-btn class="mt-5" outlined @click="updataUserInfo">修改</v-btn>
         </v-col>
       </v-row>
     </v-card>

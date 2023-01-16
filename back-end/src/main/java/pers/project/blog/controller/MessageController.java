@@ -3,13 +3,16 @@ package pers.project.blog.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+import pers.project.blog.annotation.AccessLimit;
 import pers.project.blog.annotation.OperationLog;
 import pers.project.blog.constant.LogConstant;
 import pers.project.blog.dto.AdminMessageDTO;
+import pers.project.blog.dto.MessageDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.Result;
 import pers.project.blog.service.MessageService;
 import pers.project.blog.vo.ConditionVO;
+import pers.project.blog.vo.MessageVO;
 import pers.project.blog.vo.ReviewVO;
 
 import javax.validation.Valid;
@@ -37,6 +40,15 @@ public class MessageController {
         return Result.ok(messageService.listAdminMessages(conditionVO));
     }
 
+    //  TODO:  2023/1/10 留言和评论的删除都是物理删除
+    @OperationLog(type = LogConstant.REMOVE)
+    @Operation(summary = "删除留言")
+    @DeleteMapping("/admin/messages")
+    public Result<?> removeMessages(@RequestBody List<Integer> messageIdList) {
+        messageService.removeBatchByIds(messageIdList);
+        return Result.ok();
+    }
+
     @OperationLog(type = LogConstant.UPDATE)
     @Operation(summary = "审核留言")
     @PutMapping("/admin/messages/review")
@@ -45,12 +57,17 @@ public class MessageController {
         return Result.ok();
     }
 
-    // TODO: 2023/1/10 留言和评论的删除都是物理删除
-    @OperationLog(type = LogConstant.REMOVE)
-    @Operation(summary = "删除留言")
-    @DeleteMapping("/admin/messages")
-    public Result<?> removeMessages(@RequestBody List<Integer> messageIdList) {
-        messageService.removeBatchByIds(messageIdList);
+    @Operation(summary = "查看留言列表")
+    @GetMapping("/messages")
+    public Result<List<MessageDTO>> listMessages() {
+        return Result.ok(messageService.listMessages());
+    }
+
+    @AccessLimit(seconds = 30, maxCount = 1)
+    @Operation(summary = "添加留言")
+    @PostMapping("/messages")
+    public Result<?> saveMessage(@Valid @RequestBody MessageVO messageVO) {
+        messageService.saveMessage(messageVO);
         return Result.ok();
     }
 

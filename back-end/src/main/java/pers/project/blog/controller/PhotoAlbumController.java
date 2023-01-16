@@ -86,4 +86,10 @@ public class PhotoAlbumController {
         return Result.ok(photoAlbumService.getAdminPhotoAlbumDTO(albumId));
     }
 
+    @Operation(summary = "获取相册列表")
+    @GetMapping("/photos/albums")
+    public Result<List<PhotoAlbumDTO>> listPhotoAlbums() {
+        return Result.ok(photoAlbumService.listPhotoAlbums());
+    }
+
 }

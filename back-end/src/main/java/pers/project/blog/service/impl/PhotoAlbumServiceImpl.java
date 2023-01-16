@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pers.project.blog.constant.BooleanConstant;
+import pers.project.blog.constant.enumeration.PhotoAlbumStatusEnum;
 import pers.project.blog.dto.AdminPhotoAlbumDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.PhotoAlbumDTO;
@@ -118,6 +119,16 @@ public class PhotoAlbumServiceImpl extends ServiceImpl<PhotoAlbumMapper, PhotoAl
         adminPhotoAlbumDTO.setPhotoCount(photosCount.intValue());
 
         return adminPhotoAlbumDTO;
+    }
+
+    @Override
+    public List<PhotoAlbumDTO> listPhotoAlbums() {
+        List<PhotoAlbumEntity> photoAlbumEntityList = lambdaQuery()
+                .eq(PhotoAlbumEntity::getStatus, PhotoAlbumStatusEnum.PUBLIC.getStatus())
+                .eq(PhotoAlbumEntity::getIsDelete, BooleanConstant.FALSE)
+                .orderByDesc(PhotoAlbumEntity::getId)
+                .list();
+        return ConversionUtils.covertList(photoAlbumEntityList, PhotoAlbumDTO.class);
     }
 
 }

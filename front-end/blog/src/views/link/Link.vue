@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">友情链接</h1>
     </div>
     <!-- 链接列表 -->
@@ -12,14 +12,14 @@
       </div>
       <v-row class="link-container">
         <v-col
-            class="link-wrapper"
-            md="4"
-            cols="12"
             v-for="item of friendLinkList"
             :key="item.id"
+            class="link-wrapper"
+            cols="12"
+            md="4"
         >
           <a :href="item.linkAddress" target="_blank">
-            <v-avatar size="65" class="link-avatar">
+            <v-avatar class="link-avatar" size="65">
               <img :src="item.linkAvatar"/>
             </v-avatar>
             <div style="width:100%;z-index:10;">

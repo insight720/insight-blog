@@ -20,7 +20,7 @@ public class RedisConfiguration {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-
+        // TODO: 2023/1/12 可以全用 String 序列化，因为 FastJson2 序列化后有可能为 JSONArray 和 JSONObject
         // key 用 String 序列化
         template.setKeySerializer(RedisSerializer.string());
         template.setHashKeySerializer(RedisSerializer.string());

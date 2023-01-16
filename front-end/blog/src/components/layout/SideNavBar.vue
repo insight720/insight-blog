@@ -1,11 +1,11 @@
 <template>
   <v-navigation-drawer
-      app
       v-model="drawer"
-      width="250"
+      app
       disable-resize-watcher
-      right
       overlay-opacity="0.8"
+      right
+      width="250"
   >
     <!-- 博主介绍 -->
     <div class="blogger-info">
@@ -88,7 +88,7 @@
           <i class="iconfont iconpinglunzu"/> 留言
         </router-link>
       </div>
-      <div class="menus-item" v-if="!this.$store.state.avatar">
+      <div v-if="!this.$store.state.avatar" class="menus-item">
         <a @click="openLogin"><i class="iconfont icondenglu"/> 登录 </a>
       </div>
       <div v-else>

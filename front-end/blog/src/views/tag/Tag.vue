@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
+    <div :style="cover" class="banner">
       <h1 class="banner-title">标签</h1>
     </div>
     <!-- 标签列表 -->
@@ -9,9 +9,9 @@
       <div class="tag-cloud-title">标签 - {{ count }}</div>
       <div class="tag-cloud">
         <router-link
-            :style="{ 'font-size': Math.floor(Math.random() * 10) + 18 + 'px' }"
             v-for="item of tagList"
             :key="item.id"
+            :style="{ 'font-size': Math.floor(Math.random() * 10) + 18 + 'px' }"
             :to="'/tags/' + item.id"
         >
           {{ item.tagName }}

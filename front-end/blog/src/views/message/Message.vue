@@ -1,21 +1,21 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="message-banner" :style="cover">
+    <div :style="cover" class="message-banner">
       <!-- 弹幕输入框 -->
       <div class="message-container">
         <h1 class="message-title">留言板</h1>
         <div class="animated fadeInUp message-input-wrapper">
           <input
               v-model="messageContent"
+              placeholder="说点什么吧"
               @click="show = true"
               @keyup.enter="addToList"
-              placeholder="说点什么吧"
           />
           <button
+              v-show="show"
               class="ml-3 animated bounceInLeft"
               @click="addToList"
-              v-show="show"
           >
             发送
           </button>
@@ -28,9 +28,9 @@
             <span class="barrage-items">
               <img
                   :src="slotProps.item.avatar"
-                  width="30"
                   height="30"
                   style="border-radius:50%"
+                  width="30"
               />
               <span class="ml-2">{{ slotProps.item.nickname }} :</span>
               <span class="ml-2">{{ slotProps.item.messageContent }}</span>

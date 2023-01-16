@@ -5,10 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.UserOnlineDTO;
 import pers.project.blog.entity.UserInfoEntity;
-import pers.project.blog.vo.ConditionVO;
-import pers.project.blog.vo.UserDisableVO;
-import pers.project.blog.vo.UserInfoVO;
-import pers.project.blog.vo.UserRoleVO;
+import pers.project.blog.vo.*;
 
 /**
  * 针对表【tb_user_info】的数据库操作 Service
@@ -61,5 +58,12 @@ public interface UserInfoService extends IService<UserInfoEntity> {
      * @param userInfoVO 用户信息
      */
     void updateUserInfo(UserInfoVO userInfoVO);
+
+    /**
+     * 绑定用户邮箱
+     *
+     * @param emailVO 邮箱
+     */
+    void saveUserEmail(EmailVO emailVO);
 
 }

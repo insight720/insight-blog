@@ -31,12 +31,6 @@ public class ResourceController {
         this.resourceService = resourceService;
     }
 
-    @Operation(summary = "查看资源角色选项")
-    @GetMapping("/admin/role/resources")
-    public Result<List<LabelOptionDTO>> listResourceOptions() {
-        return Result.ok(resourceService.listResourceOptions());
-    }
-
     @Operation(summary = "查看资源列表")
     @GetMapping("/admin/resources")
     public Result<List<ResourceDTO>> listResources(ConditionVO conditionVO) {
@@ -57,6 +51,12 @@ public class ResourceController {
     public Result<?> removeResource(@PathVariable("resourceId") Integer resourceId) {
         resourceService.removeResource(resourceId);
         return Result.ok();
+    }
+
+    @Operation(summary = "查看资源角色选项")
+    @GetMapping("/admin/role/resources")
+    public Result<List<LabelOptionDTO>> listResourceOptions() {
+        return Result.ok(resourceService.listResourceOptions());
     }
 
 }

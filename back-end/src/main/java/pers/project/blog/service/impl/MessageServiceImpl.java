@@ -4,16 +4,23 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import pers.project.blog.constant.BooleanConstant;
 import pers.project.blog.dto.AdminMessageDTO;
+import pers.project.blog.dto.MessageDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.entity.MessageEntity;
 import pers.project.blog.mapper.MessageMapper;
+import pers.project.blog.service.BlogInfoService;
 import pers.project.blog.service.MessageService;
 import pers.project.blog.util.ConversionUtils;
+import pers.project.blog.util.IpUtils;
 import pers.project.blog.util.PaginationUtils;
+import pers.project.blog.util.SecurityUtils;
 import pers.project.blog.vo.ConditionVO;
+import pers.project.blog.vo.MessageVO;
 import pers.project.blog.vo.ReviewVO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,6 +33,15 @@ import java.util.stream.Collectors;
  */
 @Service
 public class MessageServiceImpl extends ServiceImpl<MessageMapper, MessageEntity> implements MessageService {
+
+    private final BlogInfoService blogInfoService;
+
+    private final HttpServletRequest httpServletRequest;
+
+    public MessageServiceImpl(BlogInfoService blogInfoService, HttpServletRequest httpServletRequest) {
+        this.blogInfoService = blogInfoService;
+        this.httpServletRequest = httpServletRequest;
+    }
 
     @Override
     public PageDTO<AdminMessageDTO> listAdminMessages(ConditionVO conditionVO) {
@@ -54,6 +70,40 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, MessageEntity
                         .build())
                 .collect(Collectors.toList());
         updateBatchById(messageEntityList);
+    }
+
+    @Override
+    public List<MessageDTO> listMessages() {
+        List<MessageEntity> messageList = lambdaQuery()
+                .select(MessageEntity::getId,
+                        MessageEntity::getNickname,
+                        MessageEntity::getAvatar,
+                        MessageEntity::getMessageContent,
+                        MessageEntity::getTime)
+                .eq(MessageEntity::getIsReview, BooleanConstant.TRUE)
+                .list();
+        return ConversionUtils.covertList(messageList, MessageDTO.class);
+    }
+
+    @Override
+    public void saveMessage(MessageVO messageVO) {
+        // 判断是否需要审核
+        Integer isMessageReview = blogInfoService.getWebSiteConfig().getIsMessageReview();
+
+        // 获取用户 IP
+        String ipAddress = IpUtils.getIpAddress(httpServletRequest);
+        String ipSource = IpUtils.getIpSource(ipAddress);
+
+        // 封装数据并保存
+        MessageEntity messageEntity = ConversionUtils
+                .convertObject(messageVO, MessageEntity.class);
+        messageEntity.setMessageContent
+                (SecurityUtils.filter(messageEntity.getMessageContent()));
+        messageEntity.setIpAddress(ipAddress);
+        messageEntity.setIpSource(ipSource);
+        messageEntity.setIsReview(isMessageReview.equals(BooleanConstant.TRUE) ?
+                BooleanConstant.FALSE : BooleanConstant.TRUE);
+        save(messageEntity);
     }
 
 }

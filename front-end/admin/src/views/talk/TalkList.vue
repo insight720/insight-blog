@@ -4,20 +4,20 @@
     <!-- 文章状态 -->
     <div class="status-menu">
       <span>状态</span>
-      <span @click="changeStatus(null)" :class="isActive(null)">全部</span>
-      <span @click="changeStatus(1)" :class="isActive(1)">
+      <span :class="isActive(null)" @click="changeStatus(null)">全部</span>
+      <span :class="isActive(1)" @click="changeStatus(1)">
         公开
       </span>
-      <span @click="changeStatus(2)" :class="isActive(2)">
+      <span :class="isActive(2)" @click="changeStatus(2)">
         私密
       </span>
     </div>
     <el-empty v-if="talkList == null" description="暂无说说"/>
     <!-- 说说列表 -->
-    <div class="talk-item" v-for="item of talkList" :key="item.id">
+    <div v-for="item of talkList" :key="item.id" class="talk-item">
       <!-- 用户信息 -->
       <div class="user-info-wrapper">
-        <el-avatar class="user-avatar" :src="item.avatar" :size="36"/>
+        <el-avatar :size="36" :src="item.avatar" class="user-avatar"/>
         <div class="user-detail-wrapper">
           <div class="user-nickname">
             <div>{{ item.nickname }}</div>
@@ -37,27 +37,27 @@
           <!-- 发表时间 -->
           <div class="time">
             {{ item.createTime | dateTime }}
-            <span class="top" v-if="item.isTop == 1">
+            <span v-if="item.isTop == 1" class="top">
               <i class="iconfont el-icon-myzhiding"/> 置顶
             </span>
-            <span class="secret" v-if="item.status == 2">
+            <span v-if="item.status == 2" class="secret">
               <i class="iconfont el-icon-mymima"/> 私密
             </span>
           </div>
           <!-- 说说信息 -->
           <div class="talk-content" v-html="item.content"/>
           <!-- 图片列表 -->
-          <el-row :gutter="4" class="talk-images" v-if="item.imgList">
+          <el-row v-if="item.imgList" :gutter="4" class="talk-images">
             <el-col
-                :md="8"
-                :cols="6"
                 v-for="(img, index) of item.imgList"
                 :key="index"
+                :cols="6"
+                :md="8"
             >
               <el-image
-                  class="images-items"
-                  :src="img"
                   :preview-src-list="previewList"
+                  :src="img"
+                  class="images-items"
               />
             </el-col>
           </el-row>
@@ -66,18 +66,18 @@
     </div>
     <!-- 分页 -->
     <el-pagination
-        :hide-on-single-page="false"
-        class="pagination-container"
-        @size-change="sizeChange"
-        @current-change="currentChange"
         :current-page="current"
+        :hide-on-single-page="false"
         :page-size="size"
         :total="count"
+        class="pagination-container"
         layout="prev, pager, next"
+        @size-change="sizeChange"
+        @current-change="currentChange"
     />
     <!-- 删除对话框 -->
     <el-dialog :visible.sync="isdelete" width="30%">
-      <div class="dialog-title-container" slot="title">
+      <div slot="title" class="dialog-title-container">
         <i class="el-icon-warning" style="color:#ff9900"/>提示
       </div>
       <div style="font-size:1rem">是否删除该说说？</div>

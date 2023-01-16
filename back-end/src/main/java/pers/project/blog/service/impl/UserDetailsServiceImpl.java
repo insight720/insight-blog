@@ -3,6 +3,8 @@ package pers.project.blog.service.impl;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,50 +30,16 @@ import java.util.Set;
  * @author Luo Fei
  * @date 2022/12/25
  */
+@Primary
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final HttpServletRequest httpServletRequest;
+    private static UserInfoMapper userInfoMapper;
+    private static RoleMapper roleMapper;
+    private HttpServletRequest httpServletRequest;
+    private UserAuthMapper userAuthMapper;
 
-    private final UserAuthMapper userAuthMapper;
-
-    private final UserInfoMapper userInfoMapper;
-
-    private final RoleMapper roleMapper;
-
-    public UserDetailsServiceImpl(HttpServletRequest httpServletRequest,
-                                  UserAuthMapper userAuthMapper,
-                                  UserInfoMapper userInfoMapper,
-                                  RoleMapper roleMapper) {
-        this.httpServletRequest = httpServletRequest;
-        this.userAuthMapper = userAuthMapper;
-        this.userInfoMapper = userInfoMapper;
-        this.roleMapper = roleMapper;
-    }
-
-    // TODO: 2022/12/25 抛出的异常可能需要 catch 逻辑
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (StringUtils.isBlank(username)) {
-            throw new UsernameNotFoundException("用户名不能为空！");
-        }
-
-        // 查询账号是否存在
-        UserAuthEntity userAuthEntity = new LambdaQueryChainWrapper<>(userAuthMapper)
-                .select(UserAuthEntity::getId, UserAuthEntity::getUserInfoId,
-                        UserAuthEntity::getUsername, UserAuthEntity::getPassword,
-                        UserAuthEntity::getLoginType)
-                .eq(UserAuthEntity::getUsername, username).one();
-
-        if (userAuthEntity == null) {
-            throw new UsernameNotFoundException("用户名不存在！");
-        }
-
-        // TODO: 2022/12/25 可能需要异步执行
-
-        return createUserDetails(userAuthEntity, httpServletRequest);
-    }
+    // TODO: 2023/1/15 注入问题
 
     /**
      * 创建 {@link UserDetailsDTO} 对象
@@ -80,7 +48,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @param request        用户请求
      * @return {@link UserDetailsDTO} Spring Security 使用的用户信息建模
      */
-    private UserDetailsDTO createUserDetails(UserAuthEntity userAuthEntity, HttpServletRequest request) {
+    public static UserDetailsDTO createUserDetails(UserAuthEntity userAuthEntity, HttpServletRequest request) {
         // 查询用户账号信息
         UserInfoEntity userInfoEntity = userInfoMapper.selectById(userAuthEntity.getUserInfoId());
 
@@ -91,7 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<Object> articleLikeSet = RedisUtils.sMembers(RedisConstant.ARTICLE_USER_LIKE + userInfoEntity.getId());
         Set<Object> commentLikeSet = RedisUtils.sMembers(RedisConstant.COMMENT_USER_LIKE + userInfoEntity.getId());
         Set<Object> talkLikeSet = RedisUtils.sMembers(RedisConstant.TALK_USER_LIKE + userInfoEntity.getId());
-
+// TODO: 2023/1/15 重复计算 IP
         // 获取设备信息
         String ipAddress = IpUtils.getIpAddress(request);
         String ipSource = IpUtils.getIpSource(ipAddress);
@@ -120,6 +88,50 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .os(userAgent.getOperatingSystem().getName())
                 .lastLoginTime(TimeUtils.now())
                 .build();
+    }
+
+    @Autowired
+    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
+        this.httpServletRequest = httpServletRequest;
+    }
+
+    @Autowired
+    public void setUserAuthMapper(UserAuthMapper userAuthMapper) {
+        this.userAuthMapper = userAuthMapper;
+    }
+
+    @Autowired
+    public void setUserInfoMapper(UserInfoMapper userInfoMapper) {
+        this.userInfoMapper = userInfoMapper;
+    }
+
+// TODO: 2022/12/25 抛出的异常可能需要 catch 逻辑
+
+    @Autowired
+    public void setRoleMapper(RoleMapper roleMapper) {
+        UserDetailsServiceImpl.roleMapper = roleMapper;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (StringUtils.isBlank(username)) {
+            throw new UsernameNotFoundException("用户名不能为空！");
+        }
+
+        // 查询账号是否存在
+        UserAuthEntity userAuthEntity = new LambdaQueryChainWrapper<>(userAuthMapper)
+                .select(UserAuthEntity::getId, UserAuthEntity::getUserInfoId,
+                        UserAuthEntity::getUsername, UserAuthEntity::getPassword,
+                        UserAuthEntity::getLoginType)
+                .eq(UserAuthEntity::getUsername, username).one();
+
+        if (userAuthEntity == null) {
+            throw new UsernameNotFoundException("用户名不存在！");
+        }
+
+        // TODO: 2022/12/25 可能需要异步执行
+
+        return createUserDetails(userAuthEntity, httpServletRequest);
     }
 
 }

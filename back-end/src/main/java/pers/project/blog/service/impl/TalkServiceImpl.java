@@ -117,12 +117,12 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, TalkEntity> impleme
                 .collect(Collectors.toList());
         Map<Integer, Integer> topicIdCommentsCountMap
                 = commentMapper.getTopicIdCommentsCountMap(talkIdList);
-        Map<Object, Object> topicIdLikesCountMap
+        Map<String, Object> topicIdLikesCountMap
                 = RedisUtils.hGetAll(RedisConstant.TALK_LIKE_COUNT);
         talkDTOList.forEach(talkDTO -> {
             Integer topicId = talkDTO.getId();
             talkDTO.setCommentCount(topicIdCommentsCountMap.get(topicId));
-            talkDTO.setLikeCount((Integer) topicIdLikesCountMap.get(talkDTO));
+            talkDTO.setLikeCount((Integer) topicIdLikesCountMap.get(topicId.toString()));
             // 转换格式（JSON 转为 List）
             talkDTO.setImgList(ConversionUtils.parseJson(talkDTO.getImages(), List.class));
         });
@@ -138,7 +138,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, TalkEntity> impleme
                 .orElseThrow(() -> new ServiceException("说说不存在"));
 
         // 查询说说点赞量
-        Integer likesCount = (Integer) RedisUtils.hGet(RedisConstant.TALK_LIKE_COUNT, talkId);
+        Integer likesCount = (Integer) RedisUtils.hGet(RedisConstant.TALK_LIKE_COUNT, talkId.toString());
         talkDTO.setLikeCount(likesCount);
         // 转换格式（JSON 转为 List）
         talkDTO.setImgList(ConversionUtils.parseJson(talkDTO.getImages(), List.class));
@@ -153,10 +153,10 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, TalkEntity> impleme
                 + SecurityUtils.getUserDetails().getUserInfoId();
         if (RedisUtils.sIsMember(talkLikeKey, talkId)) {
             RedisUtils.sRem(talkLikeKey, talkId);
-            RedisUtils.hIncrBy(RedisConstant.TALK_LIKE_COUNT, talkId, -1L);
+            RedisUtils.hIncrBy(RedisConstant.TALK_LIKE_COUNT, talkId.toString(), -1L);
         } else {
             RedisUtils.sAdd(talkLikeKey, talkId);
-            RedisUtils.hIncrBy(RedisConstant.TALK_LIKE_COUNT, talkId, 1L);
+            RedisUtils.hIncrBy(RedisConstant.TALK_LIKE_COUNT, talkId.toString(), 1L);
         }
     }
 
