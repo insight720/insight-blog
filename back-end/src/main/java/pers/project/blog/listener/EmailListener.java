@@ -28,7 +28,7 @@ public class EmailListener {
         this.javaMailSender = javaMailSender;
     }
 
-    // TODO: 2023/1/16 没开确认，可能会丢消息
+    //  TODO: 2023/1/16 没开确认，可能会丢消息
     @RabbitHandler
     public void process(byte[] data) {
         EmailDTO emailDTO = ConversionUtils.parseJson(new String(data), EmailDTO.class);

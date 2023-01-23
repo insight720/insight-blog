@@ -1,5 +1,6 @@
 package pers.project.blog.schedule;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pers.project.blog.entity.UniqueViewEntity;
@@ -20,6 +21,7 @@ import static pers.project.blog.constant.TimeConstant.BEIJING_TIME;
  * @author Luo Fei
  * @date 2023/1/16
  */
+@Async
 @Component
 public class UniqueViewSchedule {
 

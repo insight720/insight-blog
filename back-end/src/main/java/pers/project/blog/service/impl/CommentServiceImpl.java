@@ -58,7 +58,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentEntity
     private String websiteUrl;
 
     public CommentServiceImpl(BlogInfoService blogInfoService,
-                              TaskExecutor taskExecutor, ArticleMapper articleMapper, TalkMapper talkMapper, UserInfoMapper userInfoMapper) {
+                              TaskExecutor taskExecutor,
+                              ArticleMapper articleMapper,
+                              TalkMapper talkMapper,
+                              UserInfoMapper userInfoMapper) {
         this.blogInfoService = blogInfoService;
         this.taskExecutor = taskExecutor;
         this.articleMapper = articleMapper;
@@ -124,7 +127,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentEntity
 
         // 根据评论 ID 查询回复量
         Map<Integer, Integer> commentIdRepliesCountMap
-                = baseMapper.listRepliesCounts(commentIdList);
+                = baseMapper.listRepliesCounts(commentIdList)
+                .stream()
+                .collect(Collectors.toMap
+                        (ReplyCountDTO::getCommentId, ReplyCountDTO::getReplyCount));
 
         // 查询评论回复数据
         List<ReplyDTO> replyList = baseMapper.listReplyDTOs(commentIdList);
@@ -135,7 +141,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentEntity
 
         // 封装回复点赞量
         replyList.forEach(replyDTO -> replyDTO.setLikeCount
-                ((Integer) commentIdLikesCountMap.get(replyDTO.getId())));
+                ((Integer) commentIdLikesCountMap.get(replyDTO.getId().toString())));
 
         // 根据评论 ID 分组回复数据
         Map<Integer, List<ReplyDTO>> commentIdRepliesMap = replyList

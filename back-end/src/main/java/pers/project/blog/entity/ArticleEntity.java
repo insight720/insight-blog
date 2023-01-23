@@ -1,5 +1,6 @@
 package pers.project.blog.entity;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @TableName(value = "tb_article")
 public class ArticleEntity {
-
+// TODO: 2023/1/17 JSONField 指定了多种名称
     /**
      * 主键 ID
      */
@@ -30,26 +31,31 @@ public class ArticleEntity {
     /**
      * 作者
      */
+    @JSONField(alternateNames = {"userId", "user_id"})
     private Integer userId;
 
     /**
      * 文章分类
      */
+    @JSONField(alternateNames = {"categoryId", "category_id"})
     private Integer categoryId;
 
     /**
      * 文章缩略图
      */
+    @JSONField(alternateNames = {"articleCover", "article_cover"})
     private String articleCover;
 
     /**
      * 标题
      */
+    @JSONField(alternateNames = {"articleTitle", "article_title"})
     private String articleTitle;
 
     /**
      * 内容
      */
+    @JSONField(alternateNames = {"articleContent", "article_content"})
     private String articleContent;
 
     /**
@@ -60,16 +66,19 @@ public class ArticleEntity {
     /**
      * 原文链接
      */
+    @JSONField(alternateNames = {"originalUrl", "original_url"})
     private String originalUrl;
 
     /**
      * 是否置顶 0 否 1是
      */
+    @JSONField(alternateNames = {"isTop", "is_top"})
     private Integer isTop;
 
     /**
      * 是否删除  0 否 1 是
      */
+    @JSONField(alternateNames = {"isDelete", "is_delete"})
     private Integer isDelete;
 
     /**
@@ -81,12 +90,14 @@ public class ArticleEntity {
      * 发表时间
      */
     @TableField(fill = FieldFill.INSERT)
+    @JSONField(alternateNames = {"createTime", "create_time"})
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @TableField(fill = FieldFill.UPDATE)
+    @JSONField(alternateNames = {"updateTime", "update_time"})
     private LocalDateTime updateTime;
 
 }

@@ -55,8 +55,9 @@ public class ElasticSearchStrategyImpl implements SearchStrategy {
                             }
                             List<String> highLightContent
                                     = highlightFields.get("articleContent");
+                            // TODO: 2023/1/17 为什么是最后一个 ？
                             if (CollectionUtils.isNotEmpty(highLightContent)) {
-                                articleSearchDTO.setArticleContent(highLightContent.get(0));
+                                articleSearchDTO.setArticleContent(highLightContent.get(highLightContent.size() - 1));
                             }
                             return articleSearchDTO;
                         })
@@ -64,6 +65,7 @@ public class ElasticSearchStrategyImpl implements SearchStrategy {
                 // keywords 为空
                 .orElseGet(ArrayList::new);
     }
+// TODO: 2023/1/17 ES 实现有异常
 
     /**
      * 获取搜索查询

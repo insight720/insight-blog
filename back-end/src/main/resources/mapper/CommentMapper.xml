@@ -66,8 +66,8 @@
         LIMIT #{offset}, #{size}
     </select>
 
-    <select id="getTopicIdCommentsCountMap" resultType="java.util.Map">
-        SELECT topic_id, COUNT(*)
+    <select id="getTopicIdCommentsCountMap" resultType="pers.project.blog.dto.CommentCountDTO">
+        SELECT topic_id, COUNT(*) AS comment_count
         FROM tb_comment
         WHERE topic_id IN
         <foreach collection="talkIdList" item="talkId" separator="," open="(" close=")">
@@ -126,8 +126,8 @@
         WHERE 4 > main.row_num
     </select>
 
-    <select id="listRepliesCounts" resultType="java.util.Map">
-        SELECT `comment`.parent_id AS comment_id, COUNT(*)
+    <select id="listRepliesCounts" resultType="pers.project.blog.dto.ReplyCountDTO">
+        SELECT `comment`.parent_id AS comment_id, COUNT(*) AS reply_count
         FROM tb_comment `comment`
         WHERE `comment`.is_review = 1
         AND `comment`.parent_id IN

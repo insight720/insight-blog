@@ -21,7 +21,7 @@ public enum SearchModeEnum {
     /**
      * elasticsearch
      */
-    ELASTICSEARCH("elasticsearch", "esSearchStrategyImpl");
+    ELASTICSEARCH("elasticsearch", "elasticSearchStrategyImpl");
 
     /**
      * 模式

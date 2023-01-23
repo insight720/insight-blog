@@ -1,7 +1,6 @@
 package pers.project.blog.strategy.context;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pers.project.blog.constant.enumeration.SearchModeEnum;
 import pers.project.blog.dto.ArticleSearchDTO;
@@ -18,9 +17,9 @@ import java.util.Map;
  */
 @Component
 public final class SearchContext {
+    // TODO: 2023/1/17 改成属性
+    private static String searchMode = "elasticsearch";
 
-    @Value("${search.mode}")
-    private static String searchMode;
     private static Map<String, SearchStrategy> searchStrategyMap;
 
     private SearchContext() {

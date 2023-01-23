@@ -36,7 +36,7 @@ public class MaxwellListener {
         // 获取文章数据
         ArticleEntity articleEntity = ConversionUtils.parseJson
                 (ConversionUtils.getJson(maxwellDataDTO.getData()), ArticleEntity.class);
-
+// TODO: 2023/1/17 数据转了两次
         // 判断操作类型，进行操作
         switch (maxwellDataDTO.getType()) {
             case "insert":

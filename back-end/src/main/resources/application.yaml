@@ -44,6 +44,7 @@ spring:
 blog:
   asynchronous:
     core-pool-size: 10
+    schedule-pool-size: 2
     max-pool-size: 20
     keep-alive-seconds: 30
     queue-capacity: 15
@@ -85,4 +86,3 @@ weibo:
 
 website:
   url: http://你的主域名或ip
-

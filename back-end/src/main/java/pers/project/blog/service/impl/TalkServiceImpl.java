@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pers.project.blog.constant.RedisConstant;
 import pers.project.blog.constant.enumeration.TalkStatusEnum;
 import pers.project.blog.dto.AdminTalkDTO;
+import pers.project.blog.dto.CommentCountDTO;
 import pers.project.blog.dto.PageDTO;
 import pers.project.blog.dto.TalkDTO;
 import pers.project.blog.entity.TalkEntity;
@@ -116,7 +117,11 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, TalkEntity> impleme
                 .map(TalkDTO::getId)
                 .collect(Collectors.toList());
         Map<Integer, Integer> topicIdCommentsCountMap
-                = commentMapper.getTopicIdCommentsCountMap(talkIdList);
+                = commentMapper.getTopicIdCommentsCountMap(talkIdList)
+                .stream()
+                .collect(Collectors.toMap
+                        (CommentCountDTO::getTopicId, CommentCountDTO::getCommentCount));
+
         Map<String, Object> topicIdLikesCountMap
                 = RedisUtils.hGetAll(RedisConstant.TALK_LIKE_COUNT);
         talkDTOList.forEach(talkDTO -> {
