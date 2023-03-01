@@ -176,8 +176,6 @@
           <el-image
               :src="
               scope.row.articleCover
-                ? scope.row.articleCover
-                : 'https://static.talkxj.com/articles/c5cc2b2561bd0e3060a500198a4ad37d.png'
             "
               class="article-cover"
           />

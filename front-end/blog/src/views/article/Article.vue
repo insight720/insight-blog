@@ -55,7 +55,7 @@
             <span class="separator">|</span>
             <!-- 评论量 -->
             <span>
-              <i class="iconfont iconpinglunzu1"/>评论数: {{ commentCount }}
+              <i class="iconfont iconpinglunzu1"/>评论数: {{ commentCount || 0 }}
             </span>
           </div>
         </div>

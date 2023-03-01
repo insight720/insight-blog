@@ -1,10 +1,10 @@
 
 body {
-    cursor: url(https://static.talkxj.com/css/default.cur), default;
+    cursor: url(https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/css/default.cur), default;
 }
 
 a, button, img {
-    cursor: url(https://static.talkxj.com/css/pointer.cur), default;
+    cursor: url(https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/css/pointer.cur), default;
 }
 
 ul {
@@ -333,7 +333,6 @@ p {
     resize: none;
     width: 100%;
     border-radius: 4px;
-    background: url(https://static.talkxj.com/config/commentBack.webp) 100% 100% no-repeat;
 }
 
 .upload-btn {

@@ -134,29 +134,29 @@
         <i class="el-icon-more"/>详细信息
       </div>
 
-      <el-form ref="form" :model="operationLog" label-width="100px" size="mini">
+      <el-form ref="form" :model="operatingLog" label-width="100px" size="mini">
         <el-form-item label="操作模块：">
-          {{ operationLog.optModule }}
+          {{ operatingLog.optModule }}
         </el-form-item>
         <el-form-item label="请求地址：">
-          {{ operationLog.optUrl }}
+          {{ operatingLog.optUrl }}
         </el-form-item>
         <el-form-item label="请求方式：">
-          <el-tag :type="tagType(operationLog.requestMethod)">
-            {{ operationLog.requestMethod }}
+          <el-tag :type="tagType(operatingLog.requestMethod)">
+            {{ operatingLog.requestMethod }}
           </el-tag>
         </el-form-item>
         <el-form-item label="操作方法：">
-          {{ operationLog.optMethod }}
+          {{ operatingLog.optMethod }}
         </el-form-item>
         <el-form-item label="请求参数：">
-          {{ operationLog.requestParam }}
+          {{ operatingLog.requestParam }}
         </el-form-item>
         <el-form-item label="返回数据：">
-          {{ operationLog.responseData }}
+          {{ operatingLog.responseData }}
         </el-form-item>
         <el-form-item label="操作人员：">
-          {{ operationLog.nickname }}
+          {{ operatingLog.nickname }}
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -192,7 +192,7 @@ export default {
       count: 0,
       isCheck: false,
       isDelete: false,
-      operationLog: {}
+      operatingLog: {}
     };
   },
   methods: {
@@ -252,8 +252,8 @@ export default {
         this.isDelete = false;
       });
     },
-    check(operationLog) {
-      this.operationLog = JSON.parse(JSON.stringify(operationLog));
+    check(operatingLog) {
+      this.operatingLog = JSON.parse(JSON.stringify(operatingLog));
       this.isCheck = true;
     }
   },

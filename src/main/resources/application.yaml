@@ -1,0 +1,4 @@
+spring:
+  profiles:
+    # 选择使用配置文件 application-prod.yaml
+    active: prod

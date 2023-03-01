@@ -18,3 +18,11 @@ export default {
   }
 };
 </script>
+
+<style>
+@import './assets/css/front/PingFang.css';
+/* 全局字体 苹方 */
+body {
+  font-family: "PingFang", sans-serif;
+}
+</style>

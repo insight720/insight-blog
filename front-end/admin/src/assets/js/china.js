@@ -74,7 +74,7 @@
                         [[116462, 37237]]
                     ]
                 },
-                properties: {cp: [114.502461, 38.045474], name: "河北", childNum: 3}
+                properties: {cp: [114.502461, 38.045474], name: "河北省", childNum: 3}
             },
             {
                 id: "140000",
@@ -86,7 +86,7 @@
                     ],
                     encodeOffsets: [[116874, 41716]]
                 },
-                properties: {cp: [112.549248, 37.857014], name: "山西", childNum: 1}
+                properties: {cp: [112.549248, 37.857014], name: "山西省", childNum: 1}
             },
             {
                 id: "150000",
@@ -149,7 +149,7 @@
                         [[122731, 40949]]
                     ]
                 },
-                properties: {cp: [123.429096, 41.796767], name: "辽宁", childNum: 16}
+                properties: {cp: [123.429096, 41.796767], name: "辽宁省", childNum: 16}
             },
             {
                 id: "220000",
@@ -161,7 +161,7 @@
                     ],
                     encodeOffsets: [[130196, 42528]]
                 },
-                properties: {cp: [125.3245, 43.886841], name: "吉林", childNum: 1}
+                properties: {cp: [125.3245, 43.886841], name: "吉林省", childNum: 1}
             },
             {
                 id: "230000",
@@ -176,7 +176,7 @@
                     ],
                     encodeOffsets: [[[127123, 51780]], [[134456, 44547]]]
                 },
-                properties: {cp: [126.642464, 45.756967], name: "黑龙江", childNum: 2}
+                properties: {cp: [126.642464, 45.756967], name: "黑龙江省", childNum: 2}
             },
             {
                 id: "320000",
@@ -188,7 +188,7 @@
                     ],
                     encodeOffsets: [[121740, 32276]]
                 },
-                properties: {cp: [118.767413, 32.041544], name: "江苏", childNum: 1}
+                properties: {cp: [118.767413, 32.041544], name: "江苏省", childNum: 1}
             },
             {
                 id: "330000",
@@ -292,7 +292,7 @@
                         [[125192, 30787]]
                     ]
                 },
-                properties: {cp: [120.153576, 30.287459], name: "浙江", childNum: 45}
+                properties: {cp: [120.153576, 30.287459], name: "浙江省", childNum: 45}
             },
             {
                 id: "340000",
@@ -312,7 +312,7 @@
                         [[119168, 35472]]
                     ]
                 },
-                properties: {cp: [117.283042, 31.86119], name: "安徽", childNum: 3}
+                properties: {cp: [117.283042, 31.86119], name: "安徽省", childNum: 3}
             },
             {
                 id: "350000",
@@ -362,7 +362,7 @@
                         [[122439, 26024]]
                     ]
                 },
-                properties: {cp: [119.306239, 26.075302], name: "福建", childNum: 18}
+                properties: {cp: [119.306239, 26.075302], name: "福建省", childNum: 18}
             },
             {
                 id: "360000",
@@ -374,7 +374,7 @@
                     ],
                     encodeOffsets: [[116689, 26234]]
                 },
-                properties: {cp: [115.892151, 28.676493], name: "江西", childNum: 1}
+                properties: {cp: [115.892151, 28.676493], name: "江西省", childNum: 1}
             },
             {
                 id: "370000",
@@ -414,7 +414,7 @@
                         [[118260, 36742]]
                     ]
                 },
-                properties: {cp: [117.000923, 36.675807], name: "山东", childNum: 13}
+                properties: {cp: [117.000923, 36.675807], name: "山东省", childNum: 13}
             },
             {
                 id: "410000",
@@ -426,7 +426,7 @@
                     ],
                     encodeOffsets: [[118256, 37017]]
                 },
-                properties: {cp: [113.665412, 34.757975], name: "河南", childNum: 1}
+                properties: {cp: [113.665412, 34.757975], name: "河南省", childNum: 1}
             },
             {
                 id: "420000",
@@ -446,7 +446,7 @@
                         [[113649, 34054]]
                     ]
                 },
-                properties: {cp: [114.298572, 30.584355], name: "湖北", childNum: 3}
+                properties: {cp: [114.298572, 30.584355], name: "湖北省", childNum: 3}
             },
             {
                 id: "430000",
@@ -468,7 +468,7 @@
                         [[116690, 26230]]
                     ]
                 },
-                properties: {cp: [112.982279, 28.19409], name: "湖南", childNum: 3}
+                properties: {cp: [112.982279, 28.19409], name: "湖南省", childNum: 3}
             },
             {
                 id: "440000",
@@ -530,7 +530,7 @@
                         [[116285, 22746]]
                     ]
                 },
-                properties: {cp: [113.280637, 23.125178], name: "广东", childNum: 24}
+                properties: {cp: [113.280637, 23.125178], name: "广东省", childNum: 24}
             },
             {
                 id: "450000",
@@ -545,7 +545,7 @@
                     ],
                     encodeOffsets: [[[111707, 21520]], [[107619, 25527]]]
                 },
-                properties: {cp: [108.320004, 22.82402], name: "广西", childNum: 2}
+                properties: {cp: [108.320004, 22.82402], name: "广西省", childNum: 2}
             },
             {
                 id: "460000",
@@ -557,7 +557,7 @@
                     ],
                     encodeOffsets: [[112750, 20508]]
                 },
-                properties: {cp: [110.33119, 20.031971], name: "海南", childNum: 1}
+                properties: {cp: [110.33119, 20.031971], name: "海南省", childNum: 1}
             },
             {
                 id: "510000",
@@ -572,7 +572,7 @@
                     ],
                     encodeOffsets: [[[108815, 30935]], [[110617, 31811]]]
                 },
-                properties: {cp: [104.065735, 30.659462], name: "四川", childNum: 2}
+                properties: {cp: [104.065735, 30.659462], name: "四川省", childNum: 2}
             },
             {
                 id: "520000",
@@ -592,7 +592,7 @@
                         [[112095, 27476]]
                     ]
                 },
-                properties: {cp: [106.713478, 26.578343], name: "贵州", childNum: 3}
+                properties: {cp: [106.713478, 26.578343], name: "贵州省", childNum: 3}
             },
             {
                 id: "530000",
@@ -604,7 +604,7 @@
                     ],
                     encodeOffsets: [[104636, 22969]]
                 },
-                properties: {cp: [102.712251, 25.040609], name: "云南", childNum: 1}
+                properties: {cp: [102.712251, 25.040609], name: "云南省", childNum: 1}
             },
             {
                 id: "540000",
@@ -628,7 +628,7 @@
                     ],
                     encodeOffsets: [[110234, 38774]]
                 },
-                properties: {cp: [108.948024, 34.263161], name: "陕西", childNum: 1}
+                properties: {cp: [108.948024, 34.263161], name: "陕西省", childNum: 1}
             },
             {
                 id: "620000",
@@ -643,7 +643,7 @@
                     ],
                     encodeOffsets: [[[108619, 36299]], [[108589, 36341]]]
                 },
-                properties: {cp: [103.823557, 36.058039], name: "甘肃", childNum: 2}
+                properties: {cp: [103.823557, 36.058039], name: "甘肃省", childNum: 2}
             },
             {
                 id: "630000",
@@ -658,7 +658,7 @@
                     ],
                     encodeOffsets: [[[105308, 37219]], [[95370, 40081]]]
                 },
-                properties: {cp: [101.778916, 36.623178], name: "青海", childNum: 2}
+                properties: {cp: [101.778916, 36.623178], name: "青海省", childNum: 2}
             },
             {
                 id: "640000",

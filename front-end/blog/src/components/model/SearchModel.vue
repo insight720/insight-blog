@@ -3,7 +3,7 @@
   <v-dialog v-model="searchFlag" :fullscreen="isMobile" max-width="600">
     <v-card class="search-wrapper" style="border-radius:4px">
       <div class="mb-3">
-        <span class="search-title">本地搜索</span>
+        <span class="search-title">文章搜索</span>
         <!-- 关闭按钮 -->
         <v-icon class="float-right" @click="searchFlag = false">
           mdi-close

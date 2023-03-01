@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import {resetRouter} from "@/router";
+
 export default {
   data: function () {
     return {
@@ -150,7 +152,15 @@ export default {
               this.passwordForm.oldPassword = "";
               this.passwordForm.newPassword = "";
               this.passwordForm.confirmPassword = "";
-              this.$message.success(data.message);
+              this.$message.success("修改成功，已注销");
+              // 后端会注销
+              // 清空用户信息
+              this.$store.commit("logout");
+              this.$store.commit("resetTab");
+              // 清空用户菜单
+              resetRouter();
+              // 转到登录页面
+              this.$router.push({path: "/login"});
             } else {
               this.$message.error(data.message);
             }

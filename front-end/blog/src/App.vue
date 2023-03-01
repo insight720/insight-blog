@@ -82,3 +82,16 @@ export default {
   }
 };
 </script>
+
+<style>
+@import './assets/css/front/PingFang.css';
+/* 全局字体 苹方 */
+body {
+  font-family: 'PingFang SC', sans-serif;
+}
+
+/* 文章暗色模式字体 */
+.theme--dark.v-card article {
+  color: rgba(255, 255, 255, 0.8);
+}
+</style>

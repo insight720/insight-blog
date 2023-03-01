@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.UserAuthMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.UserAuth">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userInfoId" column="user_info_id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="loginType" column="login_type" jdbcType="TINYINT"/>
+        <result property="ipAddress" column="ip_address" jdbcType="VARCHAR"/>
+        <result property="ipSource" column="ip_source" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
+        <result property="browser" column="browser" jdbcType="VARCHAR"/>
+        <result property="os" column="os" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_info_id,username,
+        `password`,login_type,ip_address,
+        ip_source,create_time,update_time,
+        last_login_time,browser,os
+    </sql>
+
+    <select id="countUsers" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM tb_user_auth user_auth
+        LEFT JOIN tb_user_info user_info ON user_auth.user_info_id = user_info.id
+        <where>
+            <if test="userSearchVO.keywords != null">
+                user_info.nickname LIKE CONCAT('%', #{userSearchVO.keywords}, '%')
+            </if>
+            <if test="userSearchVO.loginType != null">
+                AND user_auth.login_type = #{userSearchVO.loginType}
+            </if>
+        </where>
+    </select>
+
+    <select id="listUsers" resultMap="listUsers">
+        SELECT
+        user_auth.id,
+        user_auth.user_info_id,
+        user_info.avatar,
+        user_info.nickname,
+        user_role.role_id,
+        `role`.role_name,
+        user_auth.login_type,
+        user_auth.ip_address,
+        user_auth.ip_source,
+        user_auth.create_time,
+        user_auth.last_login_time,
+        user_info.is_disable
+        FROM
+        (SELECT id, avatar, nickname, is_disable
+        FROM tb_user_info user_info
+        <where>
+            <if test="userSearchVO.loginType != null">
+                id IN
+                (SELECT user_info_id
+                FROM tb_user_auth
+                WHERE login_type = #{userSearchVO.loginType})
+            </if>
+            <if test="userSearchVO.keywords != null">
+                AND nickname LIKE CONCAT('%', #{userSearchVO.keywords}, '%')
+            </if>
+        </where>
+        LIMIT #{offset}, #{size}
+        ) user_info
+        LEFT JOIN tb_user_auth user_auth ON user_info.id = user_auth.user_info_id
+        LEFT JOIN tb_user_role user_role ON user_info.id = user_role.user_id
+        LEFT JOIN tb_role `role` ON user_role.role_id = `role`.id
+    </select>
+    <resultMap id="listUsers" type="pers.project.blog.dto.userauth.UserDTO">
+        <id property="id" column="id"/>
+        <result property="userInfoId" column="user_info_id"/>
+        <result property="avatar" column="avatar"/>
+        <result property="nickname" column="nickname"/>
+        <result property="loginType" column="login_type"/>
+        <result property="ipAddress" column="ip_address"/>
+        <result property="ipSource" column="ip_source"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="isDisable" column="is_disable"/>
+        <collection property="roleList" ofType="pers.project.blog.dto.role.UserRoleDTO">
+            <id property="id" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+        </collection>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.Comment">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="topicId" column="topic_id" jdbcType="INTEGER"/>
+        <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
+        <result property="replyUserId" column="reply_user_id" jdbcType="INTEGER"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="TINYINT"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+        <result property="isReview" column="is_review" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,topic_id,
+        comment_content,reply_user_id,parent_id,
+        type,is_delete,is_review,
+        create_time,update_time
+    </sql>
+
+    <select id="countAdminComments" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM tb_comment `comment`
+        LEFT JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        <where>
+            <if test="commentSearchVO.type != null">
+                `comment`.type =#{commentSearchVO.type}
+            </if>
+            <if test="commentSearchVO.isReview != null">
+                AND `comment`.is_review = #{commentSearchVO.isReview}
+            </if>
+            <if test="commentSearchVO.keywords != null">
+                AND user_info.nickname LIKE CONCAT('%', #{conditionVO.keywords}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="listAdminComments" resultType="pers.project.blog.dto.comment.AdminCommentDTO">
+        SELECT `comment`.id, user_info.avatar, user_info.nickname,
+        reply_info.id reply_nickname,article.article_title,
+        `comment`.comment_content, `comment`.type, `comment`.is_review,
+        `comment`.create_time
+        FROM tb_comment `comment`
+        LEFT JOIN tb_article article ON `comment`.topic_id = article.id
+        LEFT JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        LEFT JOIN tb_user_info reply_info ON `comment`.reply_user_id = reply_info.id
+        <where>
+            <if test="commentSearchVO.type != null">
+                `comment`.type =#{commentSearchVO.type}
+            </if>
+            <if test="commentSearchVO.isReview != null">
+                `comment`.is_review = #{commentSearchVO.isReview}
+            </if>
+            <if test="commentSearchVO.keywords != null">
+                user_info.nickname LIKE CONCAT('%', #{commentSearchVO.keywords}, '%')
+            </if>
+        </where>
+        ORDER BY `comment`.id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="getTopicIdAndCommentsCount" resultType="pers.project.blog.dto.talk.CommentCountDTO">
+        SELECT topic_id, COUNT(*) AS comment_count
+        FROM tb_comment
+        WHERE topic_id IN
+        <foreach collection="talkIdList" item="talkId" separator="," open="(" close=")">
+            #{talkId}
+        </foreach>
+        AND parent_id IS NULL
+        GROUP BY topic_id
+    </select>
+
+    <select id="listComments" resultType="pers.project.blog.dto.comment.CommentDTO">
+        SELECT
+        `comment`.id,
+        `comment`.user_id,
+        user_info.nickname,
+        user_info.avatar,
+        user_info.web_site,
+        `comment`.comment_content,
+        `comment`.create_time
+        FROM tb_comment `comment`
+        JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        <where>
+            <if test="viewCommentVO.topicId != null">
+                `comment`.topic_id = #{viewCommentVO.topicId}
+            </if>
+            AND `comment`.type = #{viewCommentVO.type}
+            AND `comment`.is_review = 1
+            AND parent_id IS NULL
+        </where>
+        ORDER BY `comment`.id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- ROW_NUMBER() 查询先经过 `comment`.parent_id 分组，然后组内按 `comment`.create_time 升序排序 -->
+    <select id="listReplies" resultType="pers.project.blog.dto.comment.ReplyDTO">
+        SELECT *
+        FROM (SELECT
+        `comment`.id,
+        `comment`.parent_id,
+        `comment`.user_id,
+        user_info.nickname,
+        user_info.avatar,
+        user_info.web_site,
+        `comment`.reply_user_id,
+        reply_user_info.nickname AS reply_nickname,
+        reply_user_info.web_site AS reply_web_site,
+        `comment`.comment_content,
+        `comment`.create_time,
+        ROW_NUMBER() OVER (PARTITION BY `comment`.parent_id ORDER BY `comment`.create_time) AS row_num
+        FROM tb_comment `comment`
+        JOIN tb_user_info user_info ON `comment`.user_id = user_info.id
+        JOIN tb_user_info reply_user_info ON `comment`.reply_user_id = reply_user_info.id
+        WHERE `comment`.is_review = 1
+        AND `comment`.parent_id IN
+        <foreach collection="commentIdList" item="commentId" separator="," open="(" close=")">
+            #{commentId}
+        </foreach>) main
+        WHERE 4 > main.row_num
+    </select>
+    <!-- 4 > main.row_num 只查询 ROW_NUMBER() 所分的前三组数据 -->
+
+    <select id="listRepliesCounts" resultType="pers.project.blog.dto.comment.ReplyCountDTO">
+        SELECT `comment`.parent_id AS comment_id, COUNT(*) AS reply_count
+        FROM tb_comment `comment`
+        WHERE `comment`.is_review = 1
+        AND `comment`.parent_id IN
+        <foreach collection="commentIdList" item="commentId" separator="," open="(" close=")">
+            #{commentId}
+        </foreach>
+        GROUP BY `comment`.parent_id
+    </select>
+
+    <select id="listRepliesUnderComment" resultType="pers.project.blog.dto.comment.ReplyDTO">
+        SELECT `comment`.id,
+               `comment`.parent_id,
+               `comment`.user_id,
+               user_info.nickname,
+               user_info.avatar,
+               user_info.web_site,
+               `comment`.reply_user_id,
+               reply_user_info.nickname reply_nickname,
+               reply_user_info.web_site reply_web_site,
+               `comment`.comment_content,
+               `comment`.create_time
+        FROM tb_comment `comment`
+                 JOIN tb_user_info user_info on `comment`.user_id = user_info.id
+                 JOIN tb_user_info reply_user_info ON `comment`.reply_user_id = reply_user_info.id
+        WHERE `comment`.is_review = 1
+          AND `comment`.parent_id = #{commentId}
+        ORDER BY `comment`.id
+        LIMIT #{offset}, #{size}
+    </select>
+
+</mapper>

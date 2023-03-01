@@ -11,7 +11,7 @@
       <div class="header">
         <img
             height="32"
-            src="https://static.talkxj.com/config/logo.png"
+            src="https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/config/chatroom.svg"
             width="32"
         />
         <div style="margin-left:12px">
@@ -145,7 +145,7 @@
       <span v-if="unreadCount > 0" class="unread">{{ unreadCount }}</span>
       <img
           height="100%"
-          src="https://static.talkxj.com/config/logo.png"
+          src="https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/config/chatroom.svg"
           width="100%"
       />
     </div>
@@ -193,11 +193,11 @@ export default {
   },
   methods: {
     open() {
+      this.isShow = !this.isShow;
       if (this.websocket == null) {
         this.connect();
       }
       this.unreadCount = 0;
-      this.isShow = !this.isShow;
     },
     openEmoji() {
       this.isEmoji = !this.isEmoji;
@@ -208,8 +208,8 @@ export default {
       this.websocket = new WebSocket(this.blogInfo.websiteConfig.websocketUrl);
       // 连接发生错误的回调方法
       this.websocket.onerror = function (event) {
+        console.log("聊天室连接错误: ");
         console.log(event);
-        alert("失败");
       };
       // 连接成功建立的回调方法
       this.websocket.onopen = function (event) {
@@ -220,6 +220,7 @@ export default {
             type: 6,
             data: "ping"
           };
+          // 消息间隔 30 s
           that.websocket.send(JSON.stringify(beatMessage));
         }, 30 * 1000);
       };
@@ -272,7 +273,9 @@ export default {
         }
       };
       //连接关闭的回调方法
-      this.websocket.onclose = function () {
+      this.websocket.onclose = function (event) {
+        console.log("聊天室连接关闭: ");
+        console.log(event);
       };
     },
     saveMessage(e) {

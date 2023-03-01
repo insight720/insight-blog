@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.Role">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+        <result property="roleLabel" column="role_label" jdbcType="VARCHAR"/>
+        <result property="isDisable" column="is_disable" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_name,role_label,
+        is_disable,create_time,update_time
+    </sql>
+
+    <select id="listAuthorityRoles" resultType="java.lang.String">
+        SELECT `role`.role_label
+        FROM tb_role `role`,
+             tb_user_role user_role
+        WHERE `role`.id = user_role.role_id
+          AND `role`.is_disable = 0
+          AND user_role.user_id = #{userInfoId}
+    </select>
+
+    <!-- 加上 `role`.is_disable IS NULL 条件是为了查出匿名资源 -->
+    <select id="listResourceRoles" resultMap="listResourceRoles">
+        SELECT resource.id,
+               resource.url,
+               resource.request_method,
+               resource.is_anonymous,
+               `role`.role_label
+        FROM tb_resource resource
+                 LEFT JOIN tb_role_resource role_resource
+                           ON resource.id = role_resource.resource_id
+                 LEFT JOIN tb_role `role`
+                           ON role_resource.role_id = `role`.id
+        WHERE resource.parent_id IS NOT NULL
+          AND (`role`.is_disable = 0 OR `role`.is_disable IS NULL);
+    </select>
+    <resultMap id="listResourceRoles" type="pers.project.blog.dto.role.ResourceRoleDTO">
+        <id property="id" column="id"/>
+        <result property="url" column="url"/>
+        <result property="requestMethod" column="request_method"/>
+        <result property="isAnonymous" column="is_anonymous"/>
+        <collection property="roleList" ofType="java.lang.String">
+            <constructor>
+                <arg column="role_label"/>
+            </constructor>
+        </collection>
+    </resultMap>
+
+    <select id="listManageRoles" resultMap="listManageRoles">
+        SELECT `role`.id, `role`.role_name, `role`.role_label,
+        `role`.is_disable, `role`.create_time,
+        role_resource.resource_id, role_menu.menu_id
+        FROM
+        (SELECT id, role_name, role_label, is_disable, create_time
+        FROM tb_role
+        <if test="keywords != null">
+            WHERE role_name LIKE CONCAT('%', #{keywords}, '%')
+        </if>
+        LIMIT #{offset}, #{size}
+        ) `role`
+        LEFT JOIN tb_role_resource role_resource ON `role`.id = role_resource.role_id
+        LEFT JOIN tb_role_menu role_menu on `role`.id = role_menu.role_id
+        ORDER BY `role`.id
+    </select>
+    <resultMap id="listManageRoles" type="pers.project.blog.dto.role.ManageRoleDTO">
+        <id property="id" column="id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleLabel" column="role_label"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isDisable" column="is_disable"/>
+        <collection property="resourceIdList" ofType="java.lang.Integer">
+            <constructor>
+                <arg column="resource_id"/>
+            </constructor>
+        </collection>
+        <collection property="menuIdList" ofType="java.lang.Integer">
+            <constructor>
+                <arg column="menu_id"/>
+            </constructor>
+        </collection>
+    </resultMap>
+
+</mapper>

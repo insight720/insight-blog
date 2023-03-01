@@ -20,8 +20,18 @@
 
 <script>
 import * as imageConversion from "image-conversion";
+import lang from "echarts/src/lang";
+import langEN from "echarts/src/langEN";
 
 export default {
+  computed: {
+    langEN() {
+      return langEN
+    },
+    lang() {
+      return lang
+    }
+  },
   created() {
     this.getAbout();
   },

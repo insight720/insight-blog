@@ -1,115 +1,141 @@
 export default {
-    "[微笑]": "https://static.talkxj.com/emoji/smile.jpg",
+    "[微笑]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/weixiao.png",
 
-    "[笑]": " https://static.talkxj.com/emoji/dx.jpg",
+    "[撇嘴]": " https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/piezui.png",
 
-    "[呲牙]": "https://static.talkxj.com/emoji/cy.jpg",
+    "[色]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/se.png",
 
-    "[OK]": "https://static.talkxj.com/emoji/ok.jpg",
+    "[流泪]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/liulei.png",
 
-    "[星星眼]": "https://static.talkxj.com/emoji/xxy.jpg",
+    "[害羞]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/haixiu.png",
 
-    "[哦呼]": "https://static.talkxj.com/emoji/oh.jpg",
+    "[傲慢]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/aoman.png",
 
-    "[嫌弃]": "https://static.talkxj.com/emoji/xq.jpg",
+    "[白眼]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/baiyan.png",
 
-    "[喜欢]": "https://static.talkxj.com/emoji/xh.jpg",
+    "[鄙视]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/bishi.png",
 
-    "[酸了]": "https://static.talkxj.com/emoji/sl.jpg",
+    "[闭嘴]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/bizui.png",
 
-    "[大哭]": "https://static.talkxj.com/emoji/dq.jpg?",
+    "[擦汗]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/cahan.png",
 
-    "[害羞]": "https://static.talkxj.com/emoji/hx.jpg",
+    "[吃瓜]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/chigua.png",
 
-    "[无语]": "https://static.talkxj.com/emoji/wy.jpg",
+    "[大哭]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/daku.png",
 
-    "[疑惑]": "https://static.talkxj.com/emoji/yh.jpg",
+    "[doge]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/doge.png",
 
-    "[调皮]": "https://static.talkxj.com/emoji/tiaopi.jpg",
+    "[发怒]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/fanu.png",
 
-    "[笑哭]": "https://static.talkxj.com/emoji/xiaoku.jpg",
+    "[奋斗]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/fendou.png",
 
-    "[奸笑]": "https://static.talkxj.com/emoji/jianxiao.jpg",
+    "[尴尬]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/ganga.png",
 
-    "[偷笑]": "https://static.talkxj.com/emoji/touxiao.jpg",
+    "[鼓掌]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/guzhang.png",
 
-    "[大笑]": "https://static.talkxj.com/emoji/daxiao.jpg",
+    "[憨笑]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/hanxiao.png",
 
-    "[阴险]": "https://static.talkxj.com/emoji/yinxian.jpg",
+    "[哈欠]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/haqian.png",
 
-    "[捂脸]": "https://static.talkxj.com/emoji/wulian.jpg",
+    "[坏笑]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/huaixiao.png",
 
-    "[呆]": "https://static.talkxj.com/emoji/dai.jpg",
+    "[饥饿]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/jie.png",
 
-    "[抠鼻]": "https://static.talkxj.com/emoji/koubi.jpg",
+    "[惊恐]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/jingkong.png",
 
-    "[惊喜]": "https://static.talkxj.com/emoji/jingxi.jpg",
+    "[惊喜]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/jingxi.png",
 
-    "[惊讶]": "https://static.talkxj.com/emoji/jingya.jpg",
+    "[惊讶]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/jingya.png",
 
-    "[捂脸哭]": "https://static.talkxj.com/emoji/wulianku.jpg",
+    "[快哭了]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/kauikule.png",
 
-    "[妙啊]": "https://static.talkxj.com/emoji/miaoa.jpg",
+    "[可爱]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/keai.png",
 
-    "[狗头]": "https://static.talkxj.com/emoji/goutou.jpg",
+    "[可怜]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/kelian.png",
 
-    "[滑稽]": "https://static.talkxj.com/emoji/huaji.jpg",
+    "[抠鼻]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/koubi.png",
 
-    "[吃瓜]": "https://static.talkxj.com/emoji/chigua.jpg",
+    "[酷]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/ku.png",
 
-    "[打call]": "https://static.talkxj.com/emoji/dacall.jpg",
+    "[狂笑]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/kuangxiao.png",
 
-    "[点赞]": "https://static.talkxj.com/emoji/dianzan.jpg",
+    "[骷髅]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/kulou.png",
 
-    "[鼓掌]": "https://static.talkxj.com/emoji/guzhang.jpg",
+    "[困]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/kun.png",
 
-    "[尴尬]": "https://static.talkxj.com/emoji/ganga.jpg",
+    "[泪奔]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/leiben.png",
 
-    "[冷]": "https://static.talkxj.com/emoji/leng.jpg",
+    "[冷汗]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/lenghan.png",
 
-    "[灵魂出窍]": "https://static.talkxj.com/emoji/linghunchuqiao.jpg",
+    "[流汗]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/liuhan.png",
 
-    "[委屈]": "https://static.talkxj.com/emoji/weiqu.jpg",
+    "[卖萌]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/maimeng.png",
 
-    "[傲娇]": "https://static.talkxj.com/emoji/aojiao.jpg",
+    "[难过]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/nanguo.png",
 
-    "[疼]": "https://static.talkxj.com/emoji/teng.jpg",
+    "[牛转乾坤]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/niuzhuanqiankun.png",
 
-    "[吓]": "https://static.talkxj.com/emoji/xia.jpg?",
+    "[喷血]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/penxue.png",
 
-    "[生病]": "https://static.talkxj.com/emoji/shengbing.jpg",
+    "[期待]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/qidai.png",
 
-    "[吐]": "https://static.talkxj.com/emoji/tu.jpg",
+    "[糗大了]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/qiudale.png",
 
-    "[嘘声]": "https://static.talkxj.com/emoji/xusheng.jpg",
+    "[骚扰]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/saorao.png",
 
-    "[捂眼]": "https://static.talkxj.com/emoji/wuyan.jpg",
+    "[衰]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/shuai.png",
 
-    "[思考]": "https://static.talkxj.com/emoji/sikao.jpg",
+    "[睡]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/shui.png",
 
-    "[再见]": "https://static.talkxj.com/emoji/zaijian.jpg",
+    "[淘气]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/tiaopi.png",
 
-    "[翻白眼]": "https://static.talkxj.com/emoji/fanbaiyan.jpg",
+    "[偷笑]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/touxiao.png",
 
-    "[哈欠]": "https://static.talkxj.com/emoji/haqian.jpg",
+    "[吐]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/tu.png",
 
-    "[奋斗]": "https://static.talkxj.com/emoji/fengdou.jpg",
+    "[托腮]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/tuosai.png",
 
-    "[墨镜]": "https://static.talkxj.com/emoji/mojing.jpg",
+    "[汪汪]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/wangwang.png",
 
-    "[撇嘴]": "https://static.talkxj.com/emoji/piezui.jpg",
+    "[委屈]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/weiqu.png",
 
-    "[难过]": "https://static.talkxj.com/emoji/nanguo.jpg",
+    "[我最美]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/wozuimei.png",
 
-    "[抓狂]": "https://static.talkxj.com/emoji/zhuakuang.jpg",
+    "[无奈]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/wunai.png",
 
-    "[生气]": "https://static.talkxj.com/emoji/shengqi.jpg",
+    "[吓]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/xia.png",
 
-    "[爱心]": "https://static.talkxj.com/emoji/aixin.jpg",
+    "[小纠结]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/xiaojiujie.png",
 
-    "[胜利]": "https://static.talkxj.com/emoji/shengli.jpg",
+    "[斜眼笑]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/xieyanxiao.png",
 
-    "[保佑]": "https://static.talkxj.com/emoji/baoyou.jpg",
+    "[嘘]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/xu.png",
 
-    "[支持]": "https://static.talkxj.com/emoji/zhichi.jpg"
+    "[阴险]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/yinxian.png",
+
+    "[疑问]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/yiwen.png",
+
+    "[右哼哼]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/youhengheng.png",
+
+    "[右亲亲]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/youqinqin.png",
+
+    "[晕]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/yun.png",
+
+    "[再见]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zaijian.png",
+
+    "[眨眼睛]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zhayanjing.png",
+
+    "[折磨]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zhemo.png",
+
+    "[睁眼]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zhengyan.png",
+
+    "[咒骂]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zhouma.png",
+
+    "[抓狂]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zhuakuang.png",
+
+    "[龇牙]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/ziya.png",
+
+    "[左哼哼]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zuohengheng.png",
+
+    "[左亲亲]": "https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/emoji/zuoqinqin.png",
 };

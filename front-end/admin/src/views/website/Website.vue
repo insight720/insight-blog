@@ -189,6 +189,29 @@
               <el-radio :label="1">开启</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="异常通知">
+            <el-radio-group v-model="websiteConfigForm.notifyError">
+              <el-radio :label="0">关闭</el-radio>
+              <el-radio :label="1">开启</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="博主邮箱"
+                        v-show="websiteConfigForm.isEmailNotice == 1
+                         || websiteConfigForm.notifyError == 1">
+            <el-input
+                v-model="websiteConfigForm.email"
+                size="small"
+                style="width:400px"
+            />
+          </el-form-item>
+          <el-form-item label="博客网址"
+          >
+            <el-input
+                v-model="websiteConfigForm.url"
+                size="small"
+                style="width:400px"
+            />
+          </el-form-item>
           <el-form-item label="评论审核">
             <el-radio-group v-model="websiteConfigForm.isCommentReview">
               <el-radio :label="0">关闭</el-radio>
@@ -312,7 +335,10 @@ export default {
         isMusicPlayer: 1,
         isEmailNotice: 1,
         isCommentReview: 0,
-        isMessageReview: 0
+        isMessageReview: 0,
+        notifyError: 0,
+        url: "",
+        email: ""
       },
       activeName: "info"
     };

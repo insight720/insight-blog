@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.UserInfoMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.UserInfo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="intro" column="intro" jdbcType="VARCHAR"/>
+        <result property="webSite" column="web_site" jdbcType="VARCHAR"/>
+        <result property="isDisable" column="is_disable" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,email,nickname,
+        avatar,intro,web_site,
+        is_disable,create_time,update_time
+    </sql>
+
+    <select id="listOnlineUsers" resultType="pers.project.blog.dto.userinfo.OnlineUserDTO">
+        SELECT user_auth.user_info_id,
+        user_info.nickname,
+        user_info.avatar,
+        user_auth.ip_address,
+        user_auth.ip_source,
+        user_auth.browser,
+        user_auth.os,
+        user_auth.last_login_time
+        FROM tb_user_info user_info
+        JOIN tb_user_auth user_auth ON user_info.id = user_auth.user_info_id
+        WHERE user_auth.username IN
+        <foreach collection="usernameSet" item="username" separator="," open="(" close=")">
+            #{username}
+        </foreach>
+        <if test="keywords != null">
+            AND user_info.nickname LIKE CONCAT('%', #{keywords}, '%')
+        </if>
+        ORDER BY user_auth.last_login_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.Menu">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="orderNum" column="order_num" jdbcType="TINYINT"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+        <result property="isHidden" column="is_hidden" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,`name`,`path`,
+        component,icon,create_time,
+        update_time,order_num,parent_id,
+        is_hidden
+    </sql>
+
+    <select id="listMenusByUserInfoId" resultType="pers.project.blog.entity.Menu">
+        SELECT DISTINCT menu.id,
+                        menu.`name`,
+                        menu.`path`,
+                        menu.component,
+                        menu.icon,
+                        menu.order_num,
+                        menu.parent_id,
+                        menu.is_hidden
+        FROM tb_menu menu
+                 JOIN tb_role_menu role_menu ON menu.id = role_menu.menu_id
+                 JOIN tb_user_role user_role ON role_menu.role_id = user_role.role_id
+        where user_role.user_id = #{userInfoId};
+    </select>
+
+</mapper>

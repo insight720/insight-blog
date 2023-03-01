@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex);
 
@@ -104,8 +104,7 @@ export default new Vuex.Store({
     actions: {},
     modules: {},
     plugins: [
-        createPersistedState({
-            storage: window.sessionStorage
-        })
+        // 保存登录状态，只有在用户手动注销、浏览器数据被清除或 Session 过期时登录才失效
+        createPersistedState()
     ]
 });

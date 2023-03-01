@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.PhotoMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.Photo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="albumId" column="album_id" jdbcType="INTEGER"/>
+        <result property="photoName" column="photo_name" jdbcType="VARCHAR"/>
+        <result property="photoDesc" column="photo_desc" jdbcType="VARCHAR"/>
+        <result property="photoSrc" column="photo_src" jdbcType="VARCHAR"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,album_id,photo_name,
+        photo_desc,photo_src,is_delete,
+        create_time,update_time
+    </sql>
+</mapper>

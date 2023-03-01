@@ -190,6 +190,7 @@
 </template>
 
 <script>
+
 export default {
   created() {
     this.listRoles();
@@ -209,8 +210,10 @@ export default {
       resourceList: [],
       menuList: [],
       roleForm: {
+        id: null,
         roleName: "",
         roleLabel: "",
+        isDisable: 0,
         resourceIdList: [],
         menuIdList: []
       }
@@ -350,7 +353,29 @@ export default {
         }
         this.roleMenu = false;
       });
-    }
+    },
+    // 改变用户禁用状态
+    changeDisable(role) {
+      this.axios.put("/api/admin/roles/disable", {
+        roleId: role.id,
+        isDisable: role.isDisable
+      }).then(({data}) => {
+        if (data.flag) {
+          this.$notify.success({
+            title: "成功",
+            message: "修改成功"
+          });
+          // 修改成功页面显示正确，无需刷新
+        } else {
+          this.$notify.error({
+            title: "失败",
+            message: data.message
+          });
+          // 刷新页面
+          this.listRoles();
+        }
+      });
+    },
   }
 };
 </script>

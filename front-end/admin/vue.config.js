@@ -1,4 +1,5 @@
 module.exports = {
+    lintOnSave: false,
     productionSourceMap: false,
     devServer: {
         proxy: {
@@ -14,7 +15,7 @@ module.exports = {
     },
     chainWebpack: config => {
         config.resolve.alias.set("@", resolve("src"));
-    }
+    },
 };
 
 const path = require("path");

@@ -310,8 +310,8 @@ export default {
         this.userCount = data.data.userCount;
         this.articleCount = data.data.articleCount;
         this.articleStatisticsList = data.data.articleStatisticsList;
-        if (data.data.uniqueViewDTOList != null) {
-          data.data.uniqueViewDTOList.forEach(item => {
+        if (data.data.dailyVisitDTOList != null) {
+          data.data.dailyVisitDTOList.forEach(item => {
             this.viewCount.xAxis.data.push(item.day);
             this.viewCount.series[0].data.push(item.viewsCount);
           });

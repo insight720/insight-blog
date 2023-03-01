@@ -54,6 +54,7 @@ export default {
     check() {
       const flag = this.icon == "iconyueliang";
       this.icon = flag ? "icontaiyang" : "iconyueliang";
+      // 切换暗色主题
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     }
   }

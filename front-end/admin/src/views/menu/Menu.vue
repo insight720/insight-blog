@@ -67,7 +67,7 @@
               :inactive-value="0"
               active-color="#13ce66"
               inactive-color="#F4F4F5"
-              @change="changeDisable(scope.row)"
+              @change="changeHidden(scope.row)"
           />
         </template>
       </el-table-column>
@@ -114,10 +114,10 @@
       <div ref="menuTitle" slot="title" class="dialog-title-container"/>
       <el-form :model="menuForm" label-width="80px" size="medium">
         <!-- 菜单类型 -->
-        <el-form-item v-if="show" label="菜单类型">
+        <el-form-item label="菜单类型" v-if="show">
           <el-radio-group v-model="isCatalog">
-            <el-radio :label="true">目录</el-radio>
             <el-radio :label="false">一级菜单</el-radio>
+            <el-radio :label="true">目录</el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- 菜单名称 -->
@@ -147,13 +147,13 @@
             />
           </el-popover>
         </el-form-item>
-        <!-- 组件路径 -->
-        <el-form-item v-show="!isCatalog" label="组件路径">
-          <el-input v-model="menuForm.component" style="width:220px"/>
-        </el-form-item>
         <!-- 路由地址 -->
         <el-form-item label="访问路径">
           <el-input v-model="menuForm.path" style="width:220px"/>
+        </el-form-item>
+        <!-- 组件路径 -->
+        <el-form-item label="组件路径 " v-show="!isCatalog">
+          <el-input v-model="menuForm.component" style="width:220px"/>
         </el-form-item>
         <!-- 显示排序 -->
         <el-form-item label="显示排序">
@@ -183,6 +183,8 @@
 </template>
 
 <script>
+import {generaMenu} from "@/assets/js/menu";
+
 export default {
   created() {
     this.listMenus();
@@ -192,7 +194,7 @@ export default {
       keywords: "",
       loading: true,
       addMenu: false,
-      isCatalog: true,
+      isCatalog: false,
       show: true,
       menuList: [],
       menuForm: {
@@ -248,6 +250,7 @@ export default {
               parentId: null,
               isHidden: 0
             };
+            // 新增 修改
             this.$refs.menuTitle.innerHTML = "新增菜单";
             this.menuForm.parentId = JSON.parse(JSON.stringify(menu.id));
             break;
@@ -257,13 +260,15 @@ export default {
             break;
         }
       } else {
+        // 新增目录
+        console.log(this.isCatalog);
         this.$refs.menuTitle.innerHTML = "新增菜单";
         this.show = true;
         this.menuForm = {
           id: null,
           name: "",
           icon: "",
-          component: "Layout",
+          component: "",
           path: "",
           orderNum: 1,
           parentId: null,
@@ -281,8 +286,12 @@ export default {
         return false;
       }
       if (this.menuForm.icon.trim() == "") {
-        this.$message.error("菜单icon不能为空");
+        this.$message.error("菜单图标不能为空");
         return false;
+      }
+      // 目录默认组件为 Layout
+      if (this.isCatalog) {
+        this.menuForm.component = "Layout";
       }
       if (this.menuForm.component.trim() == "") {
         this.$message.error("菜单组件路径不能为空");
@@ -323,7 +332,32 @@ export default {
           });
         }
       });
-    }
+    },
+    // 改变菜单隐藏状态
+    changeHidden(menu) {
+      this.axios.put("/api/admin/users/hidden", {
+        menuId: menu.id,
+        isHidden: menu.isHidden,
+        parentId: menu.parentId
+      }).then(({data}) => {
+        if (data.flag) {
+          this.$notify.success({
+            title: "成功",
+            message: "修改成功"
+          });
+          // 修改成功刷新用户菜单页面和菜单管理
+          this.listMenus();
+          generaMenu();
+        } else {
+          this.$notify.error({
+            title: "失败",
+            message: data.message
+          });
+          // 修改失败则重新显示菜单管理
+          this.listMenus();
+        }
+      });
+    },
   }
 };
 </script>

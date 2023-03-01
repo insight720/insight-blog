@@ -238,6 +238,22 @@ export default {
       this.axios.put("/api/admin/users/disable", {
         id: user.userInfoId,
         isDisable: user.isDisable
+      }).then(({data}) => {
+        if (data.flag) {
+          this.$notify.success({
+            title: "成功",
+            message: data.message
+          });
+          // 操作成功，页面内容正确，不需要刷新
+        } else {
+          this.$notify.error({
+            title: "失败",
+            message: data.message
+          });
+          // 操作失败，只需刷新用户
+          this.listUsers();
+        }
+        this.isEdit = false;
       });
     },
     openEditModel(user) {

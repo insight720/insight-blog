@@ -101,7 +101,7 @@ export default {
   bottom: 0;
   right: 0;
   left: 0;
-  background: url(https://static.talkxj.com/config/0w3pdr.jpg) center center /
+  background: url(https://insight-blog-1316431501.cos.ap-shanghai.myqcloud.com/static/config/background.png) center center /
     cover no-repeat;
 }
 
@@ -110,7 +110,7 @@ export default {
   top: 0;
   bottom: 0;
   right: 0;
-  background: #fff;
+  background: #C1CDCD;
   padding: 170px 60px 180px;
   width: 350px;
 }

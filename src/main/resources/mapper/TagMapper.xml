@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.project.blog.mapper.TagMapper">
+
+    <resultMap id="BaseResultMap" type="pers.project.blog.entity.Tag">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="tagName" column="tag_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,tag_name,create_time,
+        update_time
+    </sql>
+
+    <select id="listArticleTagNames" resultType="java.lang.String">
+        SELECT tag.tag_name
+        FROM tb_tag tag
+                 JOIN tb_article_tag article_tag ON tag.id = article_tag.tag_id
+        WHERE article_tag.article_id = #{articleId}
+    </select>
+
+    <select id="listAdminTags" resultType="pers.project.blog.dto.tag.ManageTagDTO">
+        SELECT tag.id, tag.tag_name, COUNT(article_tag.article_id) article_count, tag.create_time
+        FROM tb_tag tag
+        LEFT JOIN tb_article_tag article_tag ON tag.id = article_tag.tag_id
+        <where>
+            <if test="keywords != null">
+                tag.tag_name LIKE CONCAT('%', #{keywords}, '%')
+            </if>
+        </where>
+        GROUP BY tag.id
+        ORDER BY tag.id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+</mapper>

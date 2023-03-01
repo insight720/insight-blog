@@ -28,8 +28,10 @@ build/
 !**/src/test/**/build/
 
 ### Test ###
-/back-end/src/test/
+/src/test/
 
 ### Library ###
 /front-end/blog/node_modules/
+/front-end/blog/dist/
 /front-end/admin/node_modules/
+/front-end/admin/dist/

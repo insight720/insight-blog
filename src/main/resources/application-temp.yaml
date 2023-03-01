@@ -1,0 +1,103 @@
+server:
+  port: 8080
+
+spring:
+  session:
+    store-type: redis
+  cache:
+    type: redis
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://IP 地址:3306/数据库名?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true&rewriteBatchedStatements=true
+    username: root
+    password:
+    hikari:
+      # 连接池空闲连接的最小数量
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认 600000（ 10 分钟）
+      idle-timeout: 180000
+      # 连接池最大连接数，默认是 10
+      maximum-pool-size: 10
+      # 此属性控制从池返回的连接的默认自动提交行为，默认值：true
+      auto-commit: true
+      # 连接池名称
+      pool-name: hikariDataSource
+      # 此属性控制池中连接的最长生命周期，值 0 表示无限生命周期，默认 1800000，即 30 分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间，默认 30 秒，即 30000
+      connection-timeout: 30000
+  redis:
+    host: IP 地址
+    port: 6379
+    password:
+  rabbitmq:
+    host:
+    port: 5672
+    username:
+    password:
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+  elasticsearch:
+    uris: IP 地址:9200
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username:
+    password:
+
+blog:
+  session:
+    # 测试环境不要设置
+    domain-name:
+  search:
+    strategy: elasticsearch
+  upload:
+    strategy:
+    local:
+      upload-url:
+      access-url:
+    oss:
+      access-url:
+      endpoint:
+      bucket-name:
+      access-key-id:
+      access-key-secret:
+    cos:
+      access-url:
+      region:
+      bucket-name:
+      secret-id:
+      secret-key:
+  login:
+    qq:
+      app-id:
+      check-token-url: https://graph.qq.com/oauth2.0/me?access_token={access_token}
+      user-info-url: https://graph.qq.com/user/get_user_info?openid={openid}&access_token={access_token}&oauth_consumer_key={oauth_consumer_key}
+    weibo:
+      app-id:
+      app-secret:
+      grant-type: authorization_code
+      redirect-url: https://insightblog.cn/oauth/login/weibo
+      access-token-url: https://api.weibo.com/oauth2/access_token?client_id={client_id}&client_secret={client_secret}&grant_type={grant_type}&redirect_uri={redirect_uri}&code={code}
+      user-info-url: https://api.weibo.com/2/users/show.json?uid={uid}&access_token={access_token}
+  async-schedule:
+    core-pool-size: 4
+    schedule-pool-size: 1
+    max-pool-size: 12
+    keep-alive-seconds: 60
+    queue-capacity: 30
+    await-for-tasks-to-complete-on-shutdown: true
+    await-termination-seconds: 30
+
+logging:
+  level:
+    pers.project.blog: info
+    org.apache.ibatis: info
+  file:
+    path: /docker/blog/log

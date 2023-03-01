@@ -14,6 +14,7 @@
  Date: 11/03/2022 23:39:54
 */
 
+DROP DATABASE IF EXISTS blog;
 CREATE DATABASE IF NOT EXISTS blog;
 USE blog;
 
@@ -35,8 +36,8 @@ CREATE TABLE `tb_article`
     `type`            tinyint(1)                                                     NOT NULL DEFAULT 0 COMMENT '文章类型 1原创 2转载 3翻译',
     `original_url`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NULL     DEFAULT NULL COMMENT '原文链接',
     `is_top`          tinyint(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否置顶 0否 1是',
-    `is_delete`       tinyint(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否删除  0否 1是',
-    `status`          tinyint(1)                                                     NOT NULL DEFAULT 1 COMMENT '状态值 1公开 2私密 3评论可见',
+    `is_delete`       tinyint(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否删除 0否 1是',
+    `status`          tinyint(1)                                                     NOT NULL DEFAULT 1 COMMENT '状态值 1公开 2私密 3草稿',
     `create_time`     datetime                                                       NOT NULL COMMENT '发表时间',
     `update_time`     datetime                                                       NULL     DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
@@ -66,7 +67,7 @@ CREATE TABLE `tb_article_tag`
     INDEX `fk_article_tag_1` (`article_id`) USING BTREE,
     INDEX `fk_article_tag_2` (`tag_id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 857
+  AUTO_INCREMENT = 858
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -89,7 +90,7 @@ CREATE TABLE `tb_category`
     `update_time`   datetime                                                     NULL DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 187
+  AUTO_INCREMENT = 188
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -134,13 +135,13 @@ DROP TABLE IF EXISTS `tb_comment`;
 CREATE TABLE `tb_comment`
 (
     `id`              int                                                   NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `user_id`         int                                                   NOT NULL COMMENT '评论用户Id',
+    `user_id`         int                                                   NOT NULL COMMENT '评论用户id',
     `topic_id`        int                                                   NULL     DEFAULT NULL COMMENT '评论主题id',
     `comment_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '评论内容',
     `reply_user_id`   int                                                   NULL     DEFAULT NULL COMMENT '回复用户id',
     `parent_id`       int                                                   NULL     DEFAULT NULL COMMENT '父评论id',
-    `type`            tinyint                                               NOT NULL COMMENT '评论类型 1.文章 2.友链 3.说说',
-    `is_delete`       tinyint                                               NOT NULL DEFAULT 0 COMMENT '是否删除  0否 1是',
+    `type`            tinyint                                               NOT NULL COMMENT '评论类型 1文章 2友链 3说说',
+    `is_delete`       tinyint                                               NOT NULL DEFAULT 0 COMMENT '是否删除 0否 1是',
     `is_review`       tinyint(1)                                            NOT NULL DEFAULT 1 COMMENT '是否审核',
     `create_time`     datetime                                              NOT NULL COMMENT '评论时间',
     `update_time`     datetime                                              NULL     DEFAULT NULL COMMENT '更新时间',
@@ -148,7 +149,7 @@ CREATE TABLE `tb_comment`
     INDEX `fk_comment_user` (`user_id`) USING BTREE,
     INDEX `fk_comment_parent` (`parent_id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 724
+  AUTO_INCREMENT = 731
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -185,7 +186,7 @@ CREATE TABLE `tb_friend_link`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `fk_friend_link_user` (`link_name`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 26
+  AUTO_INCREMENT = 27
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -212,10 +213,10 @@ CREATE TABLE `tb_menu`
     `update_time` datetime                                                     NULL     DEFAULT NULL COMMENT '更新时间',
     `order_num`   tinyint(1)                                                   NOT NULL COMMENT '排序',
     `parent_id`   int                                                          NULL     DEFAULT NULL COMMENT '父id',
-    `is_hidden`   tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '是否隐藏  0否1是',
+    `is_hidden`   tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '是否隐藏 0否 1是',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 218
+  AUTO_INCREMENT = 219
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -339,7 +340,7 @@ CREATE TABLE `tb_message`
     `update_time`     datetime                                                      NULL     DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3938
+  AUTO_INCREMENT = 3939
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -374,7 +375,7 @@ CREATE TABLE `tb_operation_log`
     `update_time`    datetime                                                      NULL DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1083
+  AUTO_INCREMENT = 1084
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -403,7 +404,7 @@ CREATE TABLE `tb_page`
     `update_time` datetime                                                      NULL DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 904
+  AUTO_INCREMENT = 905
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT = '页面'
   ROW_FORMAT = DYNAMIC;
@@ -453,7 +454,7 @@ CREATE TABLE `tb_photo`
 (
     `id`          int                                                           NOT NULL AUTO_INCREMENT COMMENT '主键',
     `album_id`    int                                                           NOT NULL COMMENT '相册id',
-    `photo_name`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '照片名',
+    `photo_name`  varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '照片名',
     `photo_desc`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NULL     DEFAULT NULL COMMENT '照片描述',
     `photo_src`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '照片地址',
     `is_delete`   tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '是否删除',
@@ -463,7 +464,7 @@ CREATE TABLE `tb_photo`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 29
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT = '照片'
+  COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -488,7 +489,7 @@ CREATE TABLE `tb_photo_album`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 8
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT = '相册'
+  COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -511,7 +512,7 @@ CREATE TABLE `tb_resource`
     `update_time`    datetime                                                      NULL     DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 287
+  AUTO_INCREMENT = 288
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -771,12 +772,12 @@ CREATE TABLE `tb_role`
     `id`          int                                                          NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `role_name`   varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色名',
     `role_label`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色描述',
-    `is_disable`  tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '是否禁用  0否 1是',
+    `is_disable`  tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '是否禁用 0否 1是',
     `create_time` datetime                                                     NOT NULL COMMENT '创建时间',
     `update_time` datetime                                                     NULL     DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
+  AUTO_INCREMENT = 4
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -802,7 +803,7 @@ CREATE TABLE `tb_role_menu`
     `menu_id` int NULL DEFAULT NULL COMMENT '菜单id',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2526
+  AUTO_INCREMENT = 2527
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -1064,7 +1065,7 @@ CREATE TABLE `tb_role_resource`
     `resource_id` int NULL DEFAULT NULL COMMENT '权限id',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4885
+  AUTO_INCREMENT = 4886
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -1357,7 +1358,7 @@ CREATE TABLE `tb_tag`
     `update_time` datetime                                                     NULL DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 29
+  AUTO_INCREMENT = 30
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -1379,12 +1380,12 @@ CREATE TABLE `tb_talk`
     `content`     varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '说说内容',
     `images`      varchar(2500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL     DEFAULT NULL COMMENT '图片',
     `is_top`      tinyint(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否置顶',
-    `status`      tinyint(1)                                                     NOT NULL DEFAULT 1 COMMENT '状态 1.公开 2.私密',
+    `status`      tinyint(1)                                                     NOT NULL DEFAULT 1 COMMENT '状态 1公开 2私密',
     `create_time` datetime                                                       NOT NULL COMMENT '创建时间',
     `update_time` datetime                                                       NULL     DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 49
+  AUTO_INCREMENT = 50
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -1396,27 +1397,6 @@ INSERT INTO `tb_talk`
 VALUES (49, 1,
         '测试说说<img src=\"https://static.talkxj.com/emoji/goutou.jpg\" width=\"24\" height=\"24\" alt=\"[狗头]\" style=\"margin: 0 1px;vertical-align: text-bottom\">',
         NULL, 0, 1, '2022-01-24 23:34:59', NULL);
-
--- ----------------------------
--- Table structure for tb_unique_view
--- ----------------------------
-DROP TABLE IF EXISTS `tb_unique_view`;
-CREATE TABLE `tb_unique_view`
-(
-    `id`          int      NOT NULL AUTO_INCREMENT,
-    `views_count` int      NOT NULL COMMENT '访问量',
-    `create_time` datetime NOT NULL COMMENT '创建时间',
-    `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 534
-  CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci
-  ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of tb_unique_view
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_user_auth
@@ -1431,6 +1411,8 @@ CREATE TABLE `tb_user_auth`
     `login_type`      tinyint(1)                                                    NOT NULL COMMENT '登录类型',
     `ip_address`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NULL DEFAULT NULL COMMENT '用户登录ip',
     `ip_source`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NULL DEFAULT NULL COMMENT 'ip来源',
+    browser           varchar(30)                                                   NULL COMMENT '浏览器',
+    os                varchar(30)                                                   NULL COMMENT '操作系统',
     `create_time`     datetime                                                      NOT NULL COMMENT '创建时间',
     `update_time`     datetime                                                      NULL DEFAULT NULL COMMENT '更新时间',
     `last_login_time` datetime                                                      NULL DEFAULT NULL COMMENT '上次登录时间',
@@ -1446,11 +1428,11 @@ CREATE TABLE `tb_user_auth`
 -- Records of tb_user_auth
 -- ----------------------------
 INSERT INTO `tb_user_auth`
-VALUES (1, 1, 'admin@qq.com', '$2a$10$AkxkZaqcxEXdiNE1nrgW1.ms3aS9C5ImXMf8swkWUJuFGMqDl.TPW', 1, '127.0.0.1', '',
-        '2021-08-12 15:43:18', '2022-03-11 22:52:18', '2022-03-11 22:52:18');
+VALUES (1, 1, 'admin@qq.com', '$2a$10$AkxkZaqcxEXdiNE1nrgW1.ms3aS9C5ImXMf8swkWUJuFGMqDl.TPW', 1,
+        '127.0.0.1', '北京', null, null, '2021-08-12 15:43:18', '2022-03-11 22:52:18', '2022-03-11 22:52:18');
 INSERT INTO `tb_user_auth`
 VALUES (995, 1005, 'xiaainy@163.com', '$2a$10$K7KQJ8mED4NKLvaNlAOx5ey4NbcU1CUDrEJnL9zCWNIvnbjrhwOnK', 1,
-        '61.222.202.239', '台湾省', '2022-01-27 10:58:11', '2022-01-27 10:58:12', '2022-01-27 10:58:12');
+        '61.222.202.239', '台湾', null, null, '2022-01-27 10:58:11', '2022-01-27 10:58:12', '2022-01-27 10:58:12');
 
 -- ----------------------------
 -- Table structure for tb_user_info
@@ -1458,18 +1440,18 @@ VALUES (995, 1005, 'xiaainy@163.com', '$2a$10$K7KQJ8mED4NKLvaNlAOx5ey4NbcU1CUDrE
 DROP TABLE IF EXISTS `tb_user_info`;
 CREATE TABLE `tb_user_info`
 (
-    `id`          int                                                            NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+    `id`          int                                                            NOT NULL AUTO_INCREMENT COMMENT '用户id',
     `email`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   NULL     DEFAULT NULL COMMENT '邮箱号',
     `nickname`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   NOT NULL COMMENT '用户昵称',
     `avatar`      varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '用户头像',
     `intro`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NULL     DEFAULT NULL COMMENT '用户简介',
     `web_site`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NULL     DEFAULT NULL COMMENT '个人网站',
-    `is_disable`  tinyint(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否禁用',
+    `is_disable`  tinyint(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否禁用 0否 1是',
     `create_time` datetime                                                       NOT NULL COMMENT '创建时间',
     `update_time` datetime                                                       NULL     DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1005
+  AUTO_INCREMENT = 1006
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -1496,7 +1478,7 @@ CREATE TABLE `tb_user_role`
     `role_id` int NULL DEFAULT NULL COMMENT '角色id',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1002
+  AUTO_INCREMENT = 1003
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   ROW_FORMAT = DYNAMIC;
@@ -1508,30 +1490,3 @@ INSERT INTO `tb_user_role`
 VALUES (1001, 1, 1);
 INSERT INTO `tb_user_role`
 VALUES (1002, 1005, 2);
-
--- ----------------------------
--- Table structure for tb_website_config
--- ----------------------------
-DROP TABLE IF EXISTS `tb_website_config`;
-CREATE TABLE `tb_website_config`
-(
-    `id`          int                                                            NOT NULL AUTO_INCREMENT,
-    `config`      varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '配置信息',
-    `create_time` datetime                                                       NOT NULL COMMENT '创建时间',
-    `update_time` datetime                                                       NULL DEFAULT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci
-  ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of tb_website_config
--- ----------------------------
-INSERT INTO `tb_website_config`
-VALUES (1,
-        '{\"alipayQRCode\":\"https://static.talkxj.com/photos/13d83d77cc1f7e4e0437d7feaf56879f.png\",\"gitee\":\"\",\"github\":\"\",\"isChatRoom\":1,\"isCommentReview\":0,\"isEmailNotice\":1,\"isMessageReview\":0,\"isMusicPlayer\":1,\"isReward\":1,\"qq\":\"\",\"socialLoginList\":[\"qq\",\"weibo\"],\"socialUrlList\":[\"qq\",\"github\",\"gitee\"],\"touristAvatar\":\"https://static.talkxj.com/photos/0bca52afdb2b9998132355d716390c9f.png\",\"userAvatar\":\"https://static.talkxj.com/config/2cd793c8744199053323546875655f32.jpg\",\"websiteAuthor\":\"网站作者\",\"websiteAvatar\":\"https://static.talkxj.com/config/43a07ac1ca201143f7b938d0791124fc.png\",\"websiteCreateTime\":\"2019-12-10\",\"websiteIntro\":\"网站简介\",\"websiteName\":\"个人博客\",\"websiteNotice\":\"请前往后台管理->系统管理->网站管理处修改信息\",\"websiteRecordNo\":\"备案号\",\"websocketUrl\":\"ws://127.0.0.1:8080/websocket\",\"weiXinQRCode\":\"https://static.talkxj.com/photos/4f767ef84e55ab9ad42b2d20e51deca1.png\"}',
-        '2021-08-09 19:37:30', '2022-01-18 00:25:47');
-
-SET FOREIGN_KEY_CHECKS = 1;
