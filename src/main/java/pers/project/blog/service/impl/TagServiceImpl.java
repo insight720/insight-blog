@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.project.blog.dto.article.PageDTO;
 import pers.project.blog.dto.tag.ManageTagDTO;
 import pers.project.blog.dto.tag.TagDTO;
@@ -86,6 +87,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
 
     @Override
     @CacheEvict(cacheNames = TAG, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void removeTags(List<Integer> tagIdList) {
         // 查询标签下是否有文章
         boolean exists = new LambdaQueryChainWrapper<>(articleTagMapper)
@@ -111,6 +113,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
 
     @Override
     @CacheEvict(cacheNames = TAG, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public List<Tag> saveAndGetNewTags(Collection<String> newTagNames) {
         List<Tag> newTagList = newTagNames
                 .stream()

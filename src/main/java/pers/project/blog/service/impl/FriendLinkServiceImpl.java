@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.project.blog.dto.article.PageDTO;
 import pers.project.blog.dto.friendlink.AdminFriendLinkDTO;
 import pers.project.blog.dto.friendlink.FriendLinkDTO;
@@ -37,6 +38,7 @@ public class FriendLinkServiceImpl extends ServiceImpl<FriendLinkMapper, FriendL
 
     @Override
     @CacheEvict(cacheNames = FRIEND_LINK, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void removeFriendLinks(List<Integer> friendLinkIdList) {
         removeBatchByIds(friendLinkIdList);
     }

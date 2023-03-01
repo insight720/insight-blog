@@ -3,6 +3,7 @@ package pers.project.blog.service.impl;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.project.blog.dto.article.PageDTO;
 import pers.project.blog.dto.category.AdminCategoryDTO;
 import pers.project.blog.dto.category.CategoryDTO;
@@ -55,6 +56,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void removeCategories(List<Integer> categoryIdList) {
         // 判断分类下是否有文章
         boolean exists = new LambdaQueryChainWrapper<>(articleMapper)

@@ -77,8 +77,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    @Transactional(rollbackFor = Throwable.class)
     @CacheEvict(cacheNames = ROLE, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void saveOrUpdateRole(RoleVO roleVO) {
         Integer originalRoleId = roleVO.getId();
         List<Integer> menuIdList = roleVO.getMenuIdList();
@@ -123,8 +123,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    @Transactional(rollbackFor = Throwable.class)
     @CacheEvict(cacheNames = ROLE, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void removeRoles(List<Integer> roleIdList) {
         // 不能删除有用户关联的角色
         LambdaQueryWrapper<UserRole> queryWrapper = new LambdaQueryWrapper<>();

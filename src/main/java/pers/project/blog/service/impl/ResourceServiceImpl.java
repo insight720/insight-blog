@@ -69,8 +69,8 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    @Transactional(rollbackFor = Throwable.class)
     @CacheEvict(cacheNames = RESOURCE, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void saveOrUpdateResource(ResourceVO resourceVO) {
         // 新增或修改资源
         Resource resource = ConvertUtils.convert(resourceVO, Resource.class);
@@ -81,6 +81,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
 
     @Override
     @CacheEvict(cacheNames = RESOURCE, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void removeResource(Integer resourceId) {
         // 获取资源模块和子资源 ID 列表
         List<Integer> resourceIdList = getModuleAndChildrenIdList(resourceId);

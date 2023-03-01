@@ -5,6 +5,7 @@ import net.dreamlu.mica.core.exception.ServiceException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.constant.FilePathConst;
 import pers.project.blog.dto.article.PageDTO;
@@ -62,6 +63,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
 
     @Override
     @CacheEvict(cacheNames = TALK, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void removeTalks(List<Integer> talkIdList) {
         removeBatchByIds(talkIdList);
     }

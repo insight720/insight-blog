@@ -3,6 +3,7 @@ package pers.project.blog.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.project.blog.dto.article.PageDTO;
 import pers.project.blog.dto.bloginfo.WebsiteConfig;
 import pers.project.blog.dto.message.AdminMessageDTO;
@@ -52,11 +53,13 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void removeMessages(List<Integer> messageIdList) {
         removeBatchByIds(messageIdList);
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void updateMessagesReview(ReviewVO reviewVO) {
         Integer isReview = reviewVO.getIsReview();
         List<Message> messageList = reviewVO.getIdList()

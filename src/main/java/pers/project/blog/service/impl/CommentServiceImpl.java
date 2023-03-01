@@ -3,6 +3,7 @@ package pers.project.blog.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.project.blog.dto.article.PageDTO;
 import pers.project.blog.dto.bloginfo.WebsiteConfig;
 import pers.project.blog.dto.comment.*;
@@ -76,11 +77,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void removeComments(List<Integer> commentIdList) {
         removeBatchByIds(commentIdList);
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void updateCommentsReview(ReviewVO reviewVO) {
         Integer isReview = reviewVO.getIsReview();
         List<Comment> commentList = reviewVO.getIdList()

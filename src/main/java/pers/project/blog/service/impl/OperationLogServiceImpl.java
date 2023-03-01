@@ -3,6 +3,7 @@ package pers.project.blog.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.project.blog.dto.article.PageDTO;
 import pers.project.blog.dto.operationlog.OperationLogDTO;
 import pers.project.blog.entity.OperationLog;
@@ -40,6 +41,7 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void removeOperationLogs(List<Integer> operationLogIdList) {
         removeBatchByIds(operationLogIdList);
     }

@@ -116,6 +116,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void recoverOrRemoveArticlesLogically(TableLogicVO tableLogicVO) {
         Integer isDelete = tableLogicVO.getIsDelete();
         List<Article> articleList = tableLogicVO.getIdList()

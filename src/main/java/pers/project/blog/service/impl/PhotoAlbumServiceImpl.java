@@ -67,8 +67,8 @@ public class PhotoAlbumServiceImpl extends ServiceImpl<PhotoAlbumMapper, PhotoAl
     }
 
     @Override
-    @Transactional(rollbackFor = Throwable.class)
     @CacheEvict(cacheNames = PHOTO_ALBUM, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void removePhotoAlbum(Integer albumId) {
         // 判断相册下是否有照片，无照片则物理删除相册
         boolean exists = new LambdaQueryChainWrapper<>(photoMapper)

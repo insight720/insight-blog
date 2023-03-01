@@ -42,6 +42,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     private PhotoAlbumService photoAlbumService;
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void savePhoto(PhotoVO photoVO) {
         Integer albumId = photoVO.getAlbumId();
         List<Photo> photoList = photoVO
@@ -57,6 +58,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void removePhotos(List<Integer> photoIdList) {
         removeBatchByIds(photoIdList);
     }
@@ -116,6 +118,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void updatePhotoAlbum(MovePhotoVO movePhotoVO) {
         Integer albumId = movePhotoVO.getAlbumId();
         List<Photo> photoList = movePhotoVO.getPhotoIdList()

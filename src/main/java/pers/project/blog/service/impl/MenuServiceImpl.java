@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.project.blog.dto.menu.ManageMenuDTO;
 import pers.project.blog.dto.menu.MenuBranchDTO;
 import pers.project.blog.dto.menu.RoleMenuDTO;
@@ -110,6 +111,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
     @Override
     @CacheEvict(cacheNames = {MENU_WITH_HIDDEN, MENU_WITHOUT_HIDDEN}, allEntries = true)
+    @Transactional(rollbackFor = Throwable.class)
     public void removeMenu(Integer menuId) {
         // 菜单管理不能删除
         if (menuId.equals(MENU_MANAGE_ID)
