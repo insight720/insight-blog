@@ -11,6 +11,7 @@ import pers.project.blog.dto.bloginfo.WebsiteConfig;
 import pers.project.blog.dto.comment.EmailDTO;
 import pers.project.blog.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -31,12 +32,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = ServiceException.class)
     @ResponseStatus(HttpStatus.OK)
-    public Result<?> serviceException(ServiceException exception) {
+    public Result<?> serviceException(HttpServletRequest request, ServiceException exception) {
         Throwable cause = exception.getCause();
         if (cause != null) {
             // 有原因的服务异常可能包含预期外的错误
             tryNotify(cause);
             log.warn("服务异常原因: ", cause);
+            log.warn("服务异常 URI: {}", request.getRequestURI());
         }
         return Result.error(exception);
     }
@@ -45,10 +47,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Result<?> constraintViolationException(ConstraintViolationException exception) {
+    public Result<?> constraintViolationException(HttpServletRequest request,
+                                                  ConstraintViolationException exception) {
         // 参数验证异常: methodName.fieldName: message, methodName.fieldName: message
         String message = exception.getMessage();
         log.warn("参数验证异常: {}", message);
+        log.warn("参数验证异常 URI: {}", request.getRequestURI());
         // fieldName: message, fieldName: message
         String content = Arrays.stream(message.split(","))
                 .map(s -> s.trim().substring(s.indexOf('.') + 1))
@@ -58,7 +62,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Result<?> bindException(BindException exception) {
+    public Result<?> bindException(HttpServletRequest request, BindException exception) {
         // 参数验证异常: objectName.fieldName: message
         String objectName = exception.getBindingResult().getObjectName();
         String message = exception.getFieldErrors()
@@ -67,6 +71,7 @@ public class GlobalExceptionHandler {
                         objectName, fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.joining(", "));
         log.warn("参数验证异常: {}", message);
+        log.warn("参数验证异常 URI: {}", request.getRequestURI());
         return Result.error(message);
     }
 
@@ -74,9 +79,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result<?> throwable(Throwable throwable) {
+    public Result<?> throwable(HttpServletRequest request, Throwable throwable) {
         tryNotify(throwable);
         log.error("未知异常: ", throwable);
+        log.error("未知异常 URI: {}", request.getRequestURI());
         return Result.of(INTERNAL_SERVER_ERROR);
     }
 
