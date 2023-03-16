@@ -2,6 +2,8 @@ package pers.project.blog.util;
 
 
 import lombok.Data;
+import lombok.Lombok;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.cglib.beans.BeanCopier;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,9 +28,9 @@ public abstract class BeanCopierUtils {
     /**
      * 将给定源 Bean 的属性值复制到目标 Bean 中。
      * <p>
-     * 注意：属性类型和名称必须匹配，并且源 Bean 属性要有 Getter 方法，
-     * 目标 Bean 属性要有 Setter 方法。源 Bean 公开但目标 Bean
-     * 未公开的任何 Bean 属性都将被静默忽略。
+     * 注意：源 Bean 属性和目标 Bean 属性的名称及类型必须匹配，并且源 Bean
+     * 属性要有 Getter 方法，目标 Bean 属性要有 Setter 方法。源 Bean
+     * 公开但目标 Bean 未公开的任何 Bean 属性都将被静默忽略。
      *
      * @param source 源 Bean
      * @param target 目标 Bean
@@ -56,7 +58,7 @@ public abstract class BeanCopierUtils {
         try {
             target = tClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw Lombok.sneakyThrow(e);
         }
         if (source != null) {
             BeanCopierUtils.copyProperties(source, target);

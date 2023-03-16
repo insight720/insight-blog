@@ -1,7 +1,10 @@
 package pers.project.blog.exception;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
+import lombok.Lombok;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +31,43 @@ import static pers.project.blog.enums.ResultEnum.INTERNAL_SERVER_ERROR;
  */
 @Slf4j
 @RestControllerAdvice
+@SuppressWarnings("unused")
 public class GlobalExceptionHandler {
+
+    /**
+     * 受检查异常处理示例
+     * <p>
+     * 此项目将受检查异常包装到 RuntimeException 中重新抛出，
+     * 这样会使异常堆栈信息中增加无意义的 Caused by 内容。
+     * <p>
+     * 推荐改为以下两种处理方式中的一种。
+     */
+    private static void exampleOfCheckedExceptionHandling() {
+        reThrow();
+        sneakyThrows();
+    }
+
+    /**
+     * @see Lombok#sneakyThrow(Throwable)
+     * @see ExceptionUtils#rethrow(Throwable)
+     */
+    private static void reThrow() {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            throw Lombok.sneakyThrow(new Exception());
+            // 也可以使用 ExceptionUtils，更推荐 Lombok
+//            ExceptionUtils.rethrow(e);
+        }
+    }
+
+    /**
+     * @see SneakyThrows
+     */
+    @SneakyThrows
+    private static void sneakyThrows() {
+        throw new Exception();
+    }
 
     @ExceptionHandler(value = ServiceException.class)
     @ResponseStatus(HttpStatus.OK)
