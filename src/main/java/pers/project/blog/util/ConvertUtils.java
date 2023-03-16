@@ -29,8 +29,10 @@ public abstract class ConvertUtils {
      * @param source 源对象
      * @param tClass 目标类的 Class
      * @return 目标类对象
+     * @deprecated 推荐使用 {@link  BeanCopierUtils#copy(Object, Class)}，它效率更高。
      */
     @NotNull
+    @Deprecated
     public static <T> T convert(@Nullable Object source, @NotNull Class<T> tClass) {
         T t;
         try {
