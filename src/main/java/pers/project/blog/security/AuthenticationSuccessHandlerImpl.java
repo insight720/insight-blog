@@ -42,7 +42,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         BlogUserDetails userDetails = (BlogUserDetails) authentication.getPrincipal();
         // 异步更新用户登录信息
         updateLoginInfoAsync(userDetails);
-        UserDetailsDTO userDetailsDTO = ConvertUtils.convert
+        UserDetailsDTO userDetailsDTO = BeanCopierUtils.copy
                 (userDetails, UserDetailsDTO.class);
         // 响应 Spring Security 用户的部分信息
         WebUtils.renderJson(response, Result.ok(userDetailsDTO));

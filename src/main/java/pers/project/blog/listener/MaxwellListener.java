@@ -9,6 +9,7 @@ import pers.project.blog.constant.RabbitConst;
 import pers.project.blog.dto.article.ArticleSearchDTO;
 import pers.project.blog.dto.article.MaxwellDataDTO;
 import pers.project.blog.entity.Article;
+import pers.project.blog.util.BeanCopierUtils;
 import pers.project.blog.util.ConvertUtils;
 
 import javax.annotation.Resource;
@@ -42,7 +43,7 @@ public class MaxwellListener {
             // 判断操作类型，进行操作
             String type = maxwellDataDTO.getType();
             if (type.equals(INSERT) || type.equals(UPDATE)) {
-                articleRepository.save(ConvertUtils.convert(article, ArticleSearchDTO.class));
+                articleRepository.save(BeanCopierUtils.copy(article, ArticleSearchDTO.class));
             } else if (type.equals(DELETE)) {
                 articleRepository.deleteById(article.getId());
             }

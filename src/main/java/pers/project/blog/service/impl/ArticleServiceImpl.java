@@ -96,7 +96,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public void saveOrUpdateArticle(ArticleVO articleVO) {
-        Article article = ConvertUtils.convert(articleVO, Article.class);
+        Article article = BeanCopierUtils.copy(articleVO, Article.class);
         // 设置文章所属用户信息 ID
         article.setUserId(SecurityUtils.getUserInfoId());
         // 设置文章分类，草稿无分类
@@ -142,7 +142,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ArticleVO getAdminArticle(Integer articleId) {
         // 获取文章数据
         Article article = baseMapper.selectById(articleId);
-        ArticleVO articleVO = ConvertUtils.convert
+        ArticleVO articleVO = BeanCopierUtils.copy
                 (article, ArticleVO.class);
         // 获取分类数据
         Category category = categoryMapper.selectById
@@ -264,9 +264,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 .last(LIMIT_1)
                 .one();
         articleDTO.setLastArticle
-                (ConvertUtils.convert(previousArticle, ArticlePaginationDTO.class));
+                (BeanCopierUtils.copy(previousArticle, ArticlePaginationDTO.class));
         articleDTO.setNextArticle
-                (ConvertUtils.convert(nextArticle, ArticlePaginationDTO.class));
+                (BeanCopierUtils.copy(nextArticle, ArticlePaginationDTO.class));
         // 查询点赞量和浏览量
         Integer viewsCount = Optional
                 .ofNullable(RedisUtils.zScore(ARTICLE_VIEWS_COUNT, articleId))

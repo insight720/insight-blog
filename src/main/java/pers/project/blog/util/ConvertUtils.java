@@ -49,11 +49,11 @@ public abstract class ConvertUtils {
     /**
      * 用给定源集合生成目标类的列表
      * <p>
-     * <b>参见 {@link  ConvertUtils#convert(Object, Class)}</b> 的 Javadoc。
      *
      * @param collection 源集合
      * @param tClass     目标类的 Class
      * @return 目标类的列表
+     * @see BeanCopierUtils#copy(Object, Class)
      */
     @NotNull
     public static <T> List<T> convertList(@Nullable Collection<?> collection, @NotNull Class<T> tClass) {
@@ -62,13 +62,12 @@ public abstract class ConvertUtils {
 
     /**
      * 用给定源集合生成目标类的目标集合
-     * <p>
-     * <b>参见 {@link  ConvertUtils#convert(Object, Class)}</b> 的 Javadoc。
      *
      * @param collection 源集合
      * @param cSupplier  目标集合提供者
      * @param tClass     目标类的 Class
      * @return 目标类的目标集合
+     * @see BeanCopierUtils#copy(Object, Class)
      */
     @NotNull
     public static <T, C extends Collection<T>> C reCollect
@@ -78,7 +77,7 @@ public abstract class ConvertUtils {
         }
         return collection
                 .stream()
-                .map(element -> ConvertUtils.convert(element, tClass))
+                .map(element -> BeanCopierUtils.copy(element, tClass))
                 .collect(Collectors.toCollection(cSupplier));
     }
 

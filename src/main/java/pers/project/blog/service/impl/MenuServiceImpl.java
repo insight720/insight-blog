@@ -18,10 +18,7 @@ import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.MenuMapper;
 import pers.project.blog.mapper.RoleMenuMapper;
 import pers.project.blog.service.MenuService;
-import pers.project.blog.util.AsyncUtils;
-import pers.project.blog.util.ConvertUtils;
-import pers.project.blog.util.SecurityUtils;
-import pers.project.blog.util.StrRegexUtils;
+import pers.project.blog.util.*;
 import pers.project.blog.vo.menu.HiddenMenuVO;
 import pers.project.blog.vo.menu.MenuVO;
 
@@ -86,7 +83,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     @CacheEvict(cacheNames = {MENU_WITH_HIDDEN, MENU_WITHOUT_HIDDEN}, allEntries = true)
     public void saveOrUpdateMenu(MenuVO menuVO) {
-        saveOrUpdate(ConvertUtils.convert(menuVO, Menu.class));
+        saveOrUpdate(BeanCopierUtils.copy(menuVO, Menu.class));
     }
 
     @Override
@@ -188,13 +185,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 .stream()
                 .sorted(Comparator.comparingInt(Menu::getOrderNum))
                 .map(submenu -> {
-                    UserMenuDTO child = ConvertUtils.convert(submenu, UserMenuDTO.class);
+                    UserMenuDTO child = BeanCopierUtils.copy(submenu, UserMenuDTO.class);
                     // 隐藏状态字段名不一样
                     child.setHidden(TRUE_OF_INT.equals(submenu.getIsHidden()));
                     return child;
                 })
                 .collect(Collectors.toList());
-        UserMenuDTO userMenuDTO = ConvertUtils.convert(catalog, UserMenuDTO.class);
+        UserMenuDTO userMenuDTO = BeanCopierUtils.copy(catalog, UserMenuDTO.class);
         userMenuDTO.setHidden(TRUE_OF_INT.equals(catalog.getIsHidden()));
         userMenuDTO.setChildren(children);
         return userMenuDTO;
@@ -258,7 +255,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                     .stream()
                     .sorted(Comparator.comparingInt(ManageMenuDTO::getOrderNum))
                     .collect(Collectors.toList());
-            ManageMenuDTO parent = ConvertUtils.convert(branch, ManageMenuDTO.class);
+            ManageMenuDTO parent = BeanCopierUtils.copy(branch, ManageMenuDTO.class);
             parent.setChildren(children);
             return parent;
         }).sorted(Comparator.comparingInt(ManageMenuDTO::getOrderNum)).collect(Collectors.toList());

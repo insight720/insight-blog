@@ -2,8 +2,7 @@ package pers.project.blog.util;
 
 
 import lombok.Data;
-import lombok.Lombok;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import lombok.SneakyThrows;
 import org.springframework.cglib.beans.BeanCopier;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,13 +52,9 @@ public abstract class BeanCopierUtils {
      * @return 目标类对象
      * @see BeanCopierUtils#copyProperties(Object, Object)
      */
+    @SneakyThrows
     public static <T> T copy(Object source, Class<T> tClass) {
-        T target;
-        try {
-            target = tClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            throw Lombok.sneakyThrow(e);
-        }
+        T target = tClass.getDeclaredConstructor().newInstance();
         if (source != null) {
             BeanCopierUtils.copyProperties(source, target);
         }

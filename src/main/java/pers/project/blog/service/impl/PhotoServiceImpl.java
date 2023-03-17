@@ -15,6 +15,7 @@ import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.PhotoMapper;
 import pers.project.blog.service.PhotoAlbumService;
 import pers.project.blog.service.PhotoService;
+import pers.project.blog.util.BeanCopierUtils;
 import pers.project.blog.util.ConvertUtils;
 import pers.project.blog.util.PageUtils;
 import pers.project.blog.util.SecurityUtils;
@@ -99,7 +100,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
 
     @Override
     public void updatePhoto(PhotoUpdateVO photoUpdateVO) {
-        updateById(ConvertUtils.convert(photoUpdateVO, Photo.class));
+        updateById(BeanCopierUtils.copy(photoUpdateVO, Photo.class));
     }
 
     @Override

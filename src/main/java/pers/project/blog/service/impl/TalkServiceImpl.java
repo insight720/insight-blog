@@ -56,7 +56,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     @Override
     @CacheEvict(cacheNames = TALK, allEntries = true)
     public void saveOrUpdateTalk(TalkVO talkVO) {
-        Talk talk = ConvertUtils.convert(talkVO, Talk.class);
+        Talk talk = BeanCopierUtils.copy(talkVO, Talk.class);
         talk.setUserId(SecurityUtils.getUserInfoId());
         saveOrUpdate(talk);
     }

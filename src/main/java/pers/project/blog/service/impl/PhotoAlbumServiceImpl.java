@@ -21,6 +21,7 @@ import pers.project.blog.mapper.PhotoAlbumMapper;
 import pers.project.blog.mapper.PhotoMapper;
 import pers.project.blog.service.PhotoAlbumService;
 import pers.project.blog.strategy.context.UploadContext;
+import pers.project.blog.util.BeanCopierUtils;
 import pers.project.blog.util.ConvertUtils;
 import pers.project.blog.util.PageUtils;
 import pers.project.blog.vo.photoalbum.PhotoAlbumVO;
@@ -63,7 +64,7 @@ public class PhotoAlbumServiceImpl extends ServiceImpl<PhotoAlbumMapper, PhotoAl
                 throw new ServiceException("相册名已存在");
             }
         }
-        saveOrUpdate(ConvertUtils.convert(photoAlbumVO, PhotoAlbum.class));
+        saveOrUpdate(BeanCopierUtils.copy(photoAlbumVO, PhotoAlbum.class));
     }
 
     @Override
@@ -119,7 +120,7 @@ public class PhotoAlbumServiceImpl extends ServiceImpl<PhotoAlbumMapper, PhotoAl
     public ManageAlbumDTO getManageAlbum(Integer albumId) {
         // 查询相册信息
         PhotoAlbum photoAlbum = getById(albumId);
-        ManageAlbumDTO manageAlbumDTO = ConvertUtils.convert
+        ManageAlbumDTO manageAlbumDTO = BeanCopierUtils.copy
                 (photoAlbum, ManageAlbumDTO.class);
         // 查询相册的照片数量
         Long photosCount = new LambdaQueryChainWrapper<>(photoMapper)

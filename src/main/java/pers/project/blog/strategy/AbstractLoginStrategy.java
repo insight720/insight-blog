@@ -10,7 +10,7 @@ import pers.project.blog.entity.UserAuth;
 import pers.project.blog.exception.ServiceException;
 import pers.project.blog.security.BlogUserDetails;
 import pers.project.blog.service.UserAuthService;
-import pers.project.blog.util.ConvertUtils;
+import pers.project.blog.util.BeanCopierUtils;
 
 import java.util.Optional;
 
@@ -57,7 +57,7 @@ public abstract class AbstractLoginStrategy implements LoginStrategy {
                 (userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 返回所需用户信息
-        return ConvertUtils.convert(userDetails, UserDetailsDTO.class);
+        return BeanCopierUtils.copy(userDetails, UserDetailsDTO.class);
     }
 
     /**

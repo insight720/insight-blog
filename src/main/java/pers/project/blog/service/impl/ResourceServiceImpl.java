@@ -15,10 +15,7 @@ import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.ResourceMapper;
 import pers.project.blog.mapper.RoleResourceMapper;
 import pers.project.blog.service.ResourceService;
-import pers.project.blog.util.AsyncUtils;
-import pers.project.blog.util.ConvertUtils;
-import pers.project.blog.util.SecurityUtils;
-import pers.project.blog.util.StrRegexUtils;
+import pers.project.blog.util.*;
 import pers.project.blog.vo.resource.ResourceVO;
 
 import java.util.*;
@@ -73,7 +70,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     @Transactional(rollbackFor = Throwable.class)
     public void saveOrUpdateResource(ResourceVO resourceVO) {
         // 新增或修改资源
-        Resource resource = ConvertUtils.convert(resourceVO, Resource.class);
+        Resource resource = BeanCopierUtils.copy(resourceVO, Resource.class);
         saveOrUpdate(resource);
         // 清除 Spring Security 的授权凭据
         SecurityUtils.clearAuthorizationCredentials();
@@ -163,7 +160,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         return resourceModuleList.stream().map(module -> {
             List<ManageResourceDTO> children = ConvertUtils.convertList
                     (moduleIdChildrenMap.get(module.getId()), ManageResourceDTO.class);
-            ManageResourceDTO manageResourceDTO = ConvertUtils.convert
+            ManageResourceDTO manageResourceDTO = BeanCopierUtils.copy
                     (module, ManageResourceDTO.class);
             manageResourceDTO.setChildren(children);
             return manageResourceDTO;

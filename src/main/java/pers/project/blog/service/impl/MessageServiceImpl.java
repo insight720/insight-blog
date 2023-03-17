@@ -35,7 +35,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     @Override
     public void saveMessage(MessageVO messageVO) {
-        Message message = ConvertUtils.convert(messageVO, Message.class);
+        Message message = BeanCopierUtils.copy(messageVO, Message.class);
         // 判断是否需要审核
         Integer isMessageReview = ConfigUtils.getCache(WebsiteConfig::getIsMessageReview);
         message.setIsReview(isMessageReview.equals(TRUE_OF_INT) ?

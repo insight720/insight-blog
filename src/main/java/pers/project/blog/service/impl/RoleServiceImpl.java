@@ -21,10 +21,7 @@ import pers.project.blog.mapper.UserRoleMapper;
 import pers.project.blog.service.RoleMenuService;
 import pers.project.blog.service.RoleResourceService;
 import pers.project.blog.service.RoleService;
-import pers.project.blog.util.ConvertUtils;
-import pers.project.blog.util.PageUtils;
-import pers.project.blog.util.SecurityUtils;
-import pers.project.blog.util.StrRegexUtils;
+import pers.project.blog.util.*;
 import pers.project.blog.vo.role.DisableRoleVO;
 import pers.project.blog.vo.role.RoleVO;
 
@@ -96,7 +93,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             // 删除角色原来的映射
             removeSingleRoleMap(originalRoleId, menuIdList, resourceIdList);
         }
-        Role role = ConvertUtils.convert(roleVO, Role.class);
+        Role role = BeanCopierUtils.copy(roleVO, Role.class);
         saveOrUpdate(role);
         // 保存角色的新映射
         saveRoleMap(role.getId(), menuIdList, resourceIdList);

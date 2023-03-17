@@ -13,7 +13,7 @@ import pers.project.blog.handler.WebSocketHandler;
 import pers.project.blog.mapper.ChatRecordMapper;
 import pers.project.blog.service.ChatRecordService;
 import pers.project.blog.strategy.context.UploadContext;
-import pers.project.blog.util.ConvertUtils;
+import pers.project.blog.util.BeanCopierUtils;
 import pers.project.blog.util.TimeUtils;
 import pers.project.blog.util.WebUtils;
 import pers.project.blog.vo.bloginfo.VoiceVO;
@@ -68,7 +68,7 @@ public class ChatRecordServiceImpl extends ServiceImpl<ChatRecordMapper, ChatRec
         String contentUrl = UploadContext.executeStrategy(voiceVO.getFile(), FilePathConst.VOICE_DIR);
         voiceVO.setContent(contentUrl);
         // 保存记录
-        ChatRecord chatRecord = ConvertUtils.convert(voiceVO, ChatRecord.class);
+        ChatRecord chatRecord = BeanCopierUtils.copy(voiceVO, ChatRecord.class);
         save(chatRecord);
         // 发送消息
         WebSocketMessageDTO messageDTO = WebSocketMessageDTO.builder()

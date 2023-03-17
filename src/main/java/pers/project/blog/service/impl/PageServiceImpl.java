@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pers.project.blog.entity.Page;
 import pers.project.blog.mapper.PageMapper;
 import pers.project.blog.service.PageService;
+import pers.project.blog.util.BeanCopierUtils;
 import pers.project.blog.util.ConvertUtils;
 import pers.project.blog.vo.page.PageVO;
 
@@ -32,7 +33,7 @@ public class PageServiceImpl extends ServiceImpl<PageMapper, Page> implements Pa
     @Override
     @CacheEvict(cacheNames = PAGE, allEntries = true)
     public void saveOrUpdatePage(PageVO pageVO) {
-        saveOrUpdate(ConvertUtils.convert(pageVO, Page.class));
+        saveOrUpdate(BeanCopierUtils.copy(pageVO, Page.class));
     }
 
     @Override

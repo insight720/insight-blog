@@ -12,6 +12,7 @@ import pers.project.blog.dto.friendlink.FriendLinkDTO;
 import pers.project.blog.entity.FriendLink;
 import pers.project.blog.mapper.FriendLinkMapper;
 import pers.project.blog.service.FriendLinkService;
+import pers.project.blog.util.BeanCopierUtils;
 import pers.project.blog.util.ConvertUtils;
 import pers.project.blog.util.PageUtils;
 import pers.project.blog.util.StrRegexUtils;
@@ -33,7 +34,7 @@ public class FriendLinkServiceImpl extends ServiceImpl<FriendLinkMapper, FriendL
     @Override
     @CacheEvict(cacheNames = FRIEND_LINK, allEntries = true)
     public void saveOrUpdateFriendLink(FriendLinkVO friendLinkVO) {
-        saveOrUpdate(ConvertUtils.convert(friendLinkVO, FriendLink.class));
+        saveOrUpdate(BeanCopierUtils.copy(friendLinkVO, FriendLink.class));
     }
 
     @Override

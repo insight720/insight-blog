@@ -15,6 +15,7 @@ import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.ArticleTagMapper;
 import pers.project.blog.mapper.TagMapper;
 import pers.project.blog.service.TagService;
+import pers.project.blog.util.BeanCopierUtils;
 import pers.project.blog.util.ConvertUtils;
 import pers.project.blog.util.PageUtils;
 import pers.project.blog.util.StrRegexUtils;
@@ -82,7 +83,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
                 throw new ServiceException("标签名已存在");
             }
         }
-        saveOrUpdate(ConvertUtils.convert(tagVO, Tag.class));
+        saveOrUpdate(BeanCopierUtils.copy(tagVO, Tag.class));
     }
 
     @Override
