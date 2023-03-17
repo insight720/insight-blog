@@ -192,12 +192,10 @@
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
 
-        <!-- Guava -->
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <!-- Caffeine -->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,10 @@
 package pers.project.blog.handler;
 
-import com.google.common.collect.Interner;
-import com.google.common.collect.Interners;
+
+
+
+import cn.hutool.core.lang.intern.InternUtil;
+import cn.hutool.core.lang.intern.Interner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,7 +52,7 @@ public class WebSocketHandler {
     /**
      * 弱引用线程安全中间器。当 JVM 进行垃圾回收时，无论内存是否充足，都会回收被弱引用关联的对象。
      */
-    public static final Interner<String> weakInterner = Interners.newWeakInterner();
+    public static final Interner<String> weakInterner = InternUtil.createWeakInterner();
 
     /**
      * 聊天记录服务

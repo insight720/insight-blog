@@ -1,11 +1,11 @@
 package pers.project.blog.util;
 
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.cglib.beans.BeanCopier;
-
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * BeanCopier 工具类
@@ -15,8 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class BeanCopierUtils {
 
-    private static final ConcurrentHashMap<BeanCopierId, BeanCopier>
-            BEAN_COPIER_CACHE_MAP = new ConcurrentHashMap<>();
+    /**
+     * 推荐使用 Caffeine 缓存。
+     */
+    private static final Cache<BeanCopierId, BeanCopier>
+            BEAN_COPIER_CACHE = Caffeine.newBuilder().build();
 
     @Data
     private static class BeanCopierId {
@@ -34,11 +37,11 @@ public abstract class BeanCopierUtils {
      * @param source 源 Bean
      * @param target 目标 Bean
      */
+    @SuppressWarnings("all")
     public static void copyProperties(Object source, Object target) {
         BeanCopierId copierId = new BeanCopierId(source.getClass(), target.getClass());
-        // computeIfAbsent 以原子方式执行
-        BeanCopier beanCopier = BEAN_COPIER_CACHE_MAP.computeIfAbsent
-                (copierId, id -> BeanCopier.create(id.source, id.target, false));
+        BeanCopier beanCopier = BEAN_COPIER_CACHE.get(copierId,
+                id -> BeanCopier.create(id.source, id.target, false));
         beanCopier.copy(source, target, null);
     }
 
