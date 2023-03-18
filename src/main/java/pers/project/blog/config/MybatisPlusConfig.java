@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * MyBatis-Plus 配置类
  *
  * @author Luo Fei
- * @date 2022/12/23
+ * @version 2022/12/23
  */
 @Configuration
 public class MybatisPlusConfig {

@@ -22,7 +22,7 @@ import static pers.project.blog.enums.ArticelStateEnum.PUBLIC;
  * MySql 搜索策略
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 @Component
 @ConditionalOnProperty(prefix = "blog.search.strategy", name = "strategy", havingValue = "mysql")

@@ -9,7 +9,7 @@ import pers.project.blog.vo.bloginfo.VoiceVO;
  * 针对表【tb_chat_record】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2023-01-13
+ * @version 2023-01-13
  */
 public interface ChatRecordService extends IService<ChatRecord> {
 

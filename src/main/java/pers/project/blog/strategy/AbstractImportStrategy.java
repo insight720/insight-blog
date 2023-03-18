@@ -9,7 +9,7 @@ import pers.project.blog.vo.article.ArticleVO;
  * 抽象文章导入策略模板
  *
  * @author Luo Fei
- * @date 2023/2/5
+ * @version 2023/2/5
  */
 public abstract class AbstractImportStrategy implements ImportStrategy {
 

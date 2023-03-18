@@ -15,7 +15,7 @@ import static pers.project.blog.enums.ResultEnum.SUCCESS;
  * 响应结果
  *
  * @author Luo Fei
- * @date 2022/12/23
+ * @version 2022/12/23
  */
 @Data
 @Builder

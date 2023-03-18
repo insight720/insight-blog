@@ -26,7 +26,7 @@ import static pers.project.blog.enums.OperationLogEnum.UPLOAD;
  * 博客信息控制器
  *
  * @author Luo Fei
- * @date 2022/12/28
+ * @version 2022/12/28
  */
 @Tag(name = "博客信息模块")
 @Validated

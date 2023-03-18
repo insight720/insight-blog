@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 接口限流注解
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 @Documented
 @Target(ElementType.METHOD)

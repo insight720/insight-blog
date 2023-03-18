@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * 微博 Token 信息
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 @Data
 @Builder

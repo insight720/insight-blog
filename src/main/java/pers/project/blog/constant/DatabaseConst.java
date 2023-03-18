@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 数据库常量
  *
  * @author Luo Fei
- * @date 2023/2/8
+ * @version 2023/2/8
  */
 public abstract class DatabaseConst {
 

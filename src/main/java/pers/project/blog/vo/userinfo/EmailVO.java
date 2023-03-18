@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
  * 邮箱数据
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 @Data
 @Builder

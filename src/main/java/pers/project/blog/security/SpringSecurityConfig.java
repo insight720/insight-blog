@@ -31,7 +31,7 @@ import static pers.project.blog.security.SecurityConst.*;
  * Spring Security</a> 中文文档。
  *
  * @author Luo Fei
- * @date 2022/12/22
+ * @version 2022/12/22
  */
 @Configuration
 @EnableWebSecurity

@@ -6,7 +6,7 @@ import java.time.ZoneId;
  * 时间常量
  *
  * @author Luo Fei
- * @date 2022/12/29
+ * @version 2022/12/29
  */
 public abstract class TimeConst {
 

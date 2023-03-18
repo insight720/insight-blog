@@ -35,7 +35,7 @@ import static pers.project.blog.constant.WebSocketConst.X_FORWARDED_FOR;
  * WebSocket 处理程序
  *
  * @author Luo Fei
- * @date 2023/1/12
+ * @version 2023/1/12
  */
 @Slf4j
 @Component

@@ -40,7 +40,7 @@ import static pers.project.blog.constant.RedisConst.CODE_PREFIX;
  * 针对表【tb_user_info】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2022-12-25
+ * @version 2022-12-25
  */
 @Service
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements UserInfoService {

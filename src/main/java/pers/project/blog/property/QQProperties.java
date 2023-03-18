@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * QQ 配置属性
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 @Data
 @ConfigurationProperties(prefix = "blog.login.qq")

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * 撤回的消息数据
  *
  * @author Luo Fei
- * @date 2023/1/13
+ * @version 2023/1/13
  */
 @Data
 @Builder

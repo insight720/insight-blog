@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
  * 文章导入策略
  *
  * @author Luo Fei
- * @date 2023/1/7
+ * @version 2023/1/7
  */
 public interface ImportStrategy {
 

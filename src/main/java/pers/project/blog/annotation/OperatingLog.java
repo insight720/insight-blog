@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 操作日志注解
  *
  * @author Luo Fei
- * @date 2023/1/1
+ * @version 2023/1/1
  */
 @Documented
 @Target(ElementType.METHOD)

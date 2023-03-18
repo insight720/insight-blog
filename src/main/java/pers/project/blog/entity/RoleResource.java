@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  * 角色 ID 与 资源 ID 的映射
  *
  * @author Luo Fei
- * @date 2023-01-03
+ * @version 2023-01-03
  */
 @Data
 @Builder

@@ -10,7 +10,7 @@ import pers.project.blog.entity.UserAuth;
  * UserDetailsService</a> 文档。
  *
  * @author Luo Fei
- * @date 2023/1/27
+ * @version 2023/1/27
  */
 public interface BlogUserDetailsService extends UserDetailsService {
 

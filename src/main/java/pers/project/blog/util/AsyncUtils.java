@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * 异步工具类
  *
  * @author Luo Fei
- * @date 2023/1/27
+ * @version 2023/1/27
  */
 @Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

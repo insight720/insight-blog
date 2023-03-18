@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 分页常量
  *
  * @author Luo Fei
- * @date 2022/12/31
+ * @version 2022/12/31
  */
 public abstract class PageConst {
 

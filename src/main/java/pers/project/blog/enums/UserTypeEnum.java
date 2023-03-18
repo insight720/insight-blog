@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 用户类型枚举
  *
  * @author Luo Fei
- * @date 2022/12/29
+ * @version 2022/12/29
  */
 @Getter
 @AllArgsConstructor

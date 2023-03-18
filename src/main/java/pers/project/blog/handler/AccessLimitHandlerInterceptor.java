@@ -20,7 +20,7 @@ import static pers.project.blog.enums.ResultEnum.REQUEST_BLOCKED;
  * 接口限流处理拦截器
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 @Component
 public class AccessLimitHandlerInterceptor implements HandlerInterceptor {

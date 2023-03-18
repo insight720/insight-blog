@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 缓存常量
  *
  * @author Luo Fei
- * @date 2023/1/30
+ * @version 2023/1/30
  */
 public abstract class CacheConst {
 

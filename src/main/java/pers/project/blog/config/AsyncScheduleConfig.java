@@ -29,7 +29,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 异步调用和定时任务配置类
  *
  * @author Luo Fei
- * @date 2022/12/24
+ * @version 2022/12/24
  */
 @Slf4j
 @Configuration

@@ -15,7 +15,7 @@ import java.util.List;
  * 针对表【tb_message】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2022-12-29
+ * @version 2022-12-29
  */
 public interface MessageService extends IService<Message> {
 

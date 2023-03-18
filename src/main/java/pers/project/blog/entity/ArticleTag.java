@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  * 文章和标签得映射
  *
  * @author Luo Fei
- * @date 2023-01-05
+ * @version 2023-01-05
  */
 @Data
 @Builder

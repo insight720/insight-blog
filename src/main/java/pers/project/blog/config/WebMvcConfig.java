@@ -26,7 +26,7 @@ import static pers.project.blog.constant.GenericConst.ZERO;
  * Spring MVC 配置类
  *
  * @author Luo Fei
- * @date 2022/12/27
+ * @version 2022/12/27
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {

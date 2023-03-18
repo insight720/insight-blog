@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * 分类或标签文章预览数据
  *
  * @author Luo Fei
- * @date 2023/2/6
+ * @version 2023/2/6
  */
 @Data
 @Builder

@@ -21,7 +21,7 @@ import java.io.IOException;
  * 参见 {@link AuthenticationSuccessHandler} 的 Javadoc。
  *
  * @author Luo Fei
- * @date 2022/12/23
+ * @version 2022/12/23
  */
 @Slf4j
 @Component

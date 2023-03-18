@@ -49,7 +49,7 @@ import static pers.project.blog.enums.ArticelStateEnum.PUBLIC;
  * 针对表【tb_article】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2022-12-29
+ * @version 2022-12-29
  */
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {

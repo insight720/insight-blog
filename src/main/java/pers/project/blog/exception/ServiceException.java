@@ -6,7 +6,7 @@ package pers.project.blog.exception;
  * （用异常实现正常的服务逻辑）
  *
  * @author Luo Fei
- * @date 2023/1/2
+ * @version 2023/1/2
  */
 public class ServiceException extends RuntimeException {
 

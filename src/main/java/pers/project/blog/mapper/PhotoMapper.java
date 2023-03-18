@@ -8,7 +8,7 @@ import pers.project.blog.entity.Photo;
  * 针对表【tb_photo(照片)】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2023-01-10
+ * @version 2023-01-10
  */
 @Mapper
 public interface PhotoMapper extends BaseMapper<Photo> {

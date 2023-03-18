@@ -14,7 +14,7 @@ import java.util.List;
  * 针对表【tb_article】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2022-12-29
+ * @version 2022-12-29
  */
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {

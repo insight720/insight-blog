@@ -13,7 +13,7 @@ import java.util.List;
  * 针对表【tb_friend_link】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2023-01-06
+ * @version 2023-01-06
  */
 public interface FriendLinkService extends IService<FriendLink> {
 

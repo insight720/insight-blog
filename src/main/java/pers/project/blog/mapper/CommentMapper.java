@@ -18,7 +18,7 @@ import java.util.List;
  * 针对表【tb_comment】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2023-01-10
+ * @version 2023-01-10
  */
 @Mapper
 public interface CommentMapper extends BaseMapper<Comment> {

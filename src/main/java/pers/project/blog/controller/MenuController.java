@@ -24,7 +24,7 @@ import static pers.project.blog.enums.OperationLogEnum.*;
  * 菜单控制器
  *
  * @author Luo Fei
- * @date 2022/12/27
+ * @version 2022/12/27
  */
 @Tag(name = "菜单模块")
 @Validated

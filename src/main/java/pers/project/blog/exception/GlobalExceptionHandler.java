@@ -27,7 +27,7 @@ import static pers.project.blog.enums.ResultEnum.INTERNAL_SERVER_ERROR;
  * 全局异常处理程序
  *
  * @author Luo Fei
- * @date 2023/1/6
+ * @version 2023/1/6
  */
 @Slf4j
 @RestControllerAdvice

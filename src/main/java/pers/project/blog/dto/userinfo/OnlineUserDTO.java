@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * 在线用户数据
  *
  * @author Luo Fei
- * @date 2023/1/2
+ * @version 2023/1/2
  */
 @Data
 @Builder

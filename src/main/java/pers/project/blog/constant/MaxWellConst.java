@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * MaxWell 常量
  *
  * @author Luo Fei
- * @date 2023/2/7
+ * @version 2023/2/7
  */
 public abstract class MaxWellConst {
 

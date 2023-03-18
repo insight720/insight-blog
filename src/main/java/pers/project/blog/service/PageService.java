@@ -10,7 +10,7 @@ import java.util.List;
  * 针对表【tb_page】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2023-01-06
+ * @version 2023-01-06
  */
 public interface PageService extends IService<Page> {
 

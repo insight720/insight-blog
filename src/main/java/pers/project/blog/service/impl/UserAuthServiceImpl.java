@@ -40,7 +40,7 @@ import static pers.project.blog.enums.UserTypeEnum.VISITOR;
  * 针对表【tb_user_auth】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2022-12-23
+ * @version 2022-12-23
  */
 @Service
 public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuth> implements UserAuthService {

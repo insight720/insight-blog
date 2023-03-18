@@ -13,7 +13,7 @@ import java.util.Date;
  * 音频数据
  *
  * @author Luo Fei
- * @date 2023/1/12
+ * @version 2023/1/12
  */
 @Data
 @Builder

@@ -14,7 +14,7 @@ import java.util.List;
  * 针对表【tb_menu】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2022-12-28
+ * @version 2022-12-28
  */
 public interface MenuService extends IService<Menu> {
 

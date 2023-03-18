@@ -21,7 +21,7 @@ import static pers.project.blog.enums.ResultEnum.*;
  * 参见 {@link AuthenticationFailureHandler} 的 Javadoc。
  *
  * @author Luo Fei
- * @date 2022/12/23
+ * @version 2022/12/23
  */
 @Slf4j
 @Component

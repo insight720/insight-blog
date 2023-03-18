@@ -12,7 +12,7 @@ import java.util.List;
  * 针对表【tb_tag】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2022-12-30
+ * @version 2022-12-30
  */
 @Mapper
 public interface TagMapper extends BaseMapper<Tag> {

@@ -11,7 +11,7 @@ import java.util.List;
  * 针对表【tb_menu】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2022-12-28
+ * @version 2022-12-28
  */
 @Mapper
 public interface MenuMapper extends BaseMapper<Menu> {

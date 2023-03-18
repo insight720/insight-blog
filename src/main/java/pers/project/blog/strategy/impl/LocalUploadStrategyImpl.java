@@ -17,7 +17,7 @@ import java.nio.file.Files;
  * 本地上传策略
  *
  * @author Luo Fei
- * @date 2023/1/4
+ * @version 2023/1/4
  */
 @Component
 @ConditionalOnProperty(prefix = "blog.upload", name = "strategy", havingValue = "local")

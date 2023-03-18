@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Session 配置属性
  *
  * @author Luo Fei
- * @date 2023/2/8
+ * @version 2023/2/8
  */
 @Data
 @Component

@@ -14,7 +14,7 @@ import pers.project.blog.vo.userinfo.UserRoleVO;
  * 针对表【tb_user_info】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2022-12-25
+ * @version 2022-12-25
  */
 public interface UserInfoService extends IService<UserInfo> {
 

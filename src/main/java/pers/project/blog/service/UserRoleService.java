@@ -7,7 +7,7 @@ import pers.project.blog.entity.UserRole;
  * 针对表【tb_user_role】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2023-01-01
+ * @version 2023-01-01
  */
 public interface UserRoleService extends IService<UserRole> {
 

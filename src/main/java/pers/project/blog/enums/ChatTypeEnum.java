@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 聊天类型枚举
  *
  * @author Luo Fei
- * @date 2023/1/13
+ * @version 2023/1/13
  */
 @Getter
 @AllArgsConstructor

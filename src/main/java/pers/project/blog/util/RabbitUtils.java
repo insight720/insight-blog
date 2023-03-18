@@ -16,7 +16,7 @@ import static pers.project.blog.constant.RabbitConst.ROUTING_KEY;
  * RabbitMq 工具类
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 @Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

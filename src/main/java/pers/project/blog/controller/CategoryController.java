@@ -24,7 +24,7 @@ import static pers.project.blog.enums.OperationLogEnum.SAVE_OR_UPDATE;
  * 分类控制器
  *
  * @author Luo Fei
- * @date 2023/1/8
+ * @version 2023/1/8
  */
 @Tag(name = "分类模块")
 @RestController

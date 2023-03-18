@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 用户账号信息
  *
  * @author Luo Fei
- * @date 2022-12-25
+ * @version 2022-12-25
  */
 @Data
 @Builder

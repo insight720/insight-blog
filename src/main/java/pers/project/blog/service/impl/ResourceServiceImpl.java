@@ -29,7 +29,7 @@ import static pers.project.blog.constant.GenericConst.FALSE_OF_INT;
  * 针对表【tb_resource】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-02
+ * @version 2023-01-02
  */
 @Service
 public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> implements ResourceService {

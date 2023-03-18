@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 文章导入策略名常量
  *
  * @author Luo Fei
- * @date 2023/2/5
+ * @version 2023/2/5
  */
 public abstract class ImportConst {
 

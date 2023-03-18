@@ -13,7 +13,7 @@ import static pers.project.blog.constant.GenericConst.EMPTY_STR;
  * 字符串和正则表达式工具类
  *
  * @author Luo Fei
- * @date 2022/12/23
+ * @version 2022/12/23
  */
 public abstract class StrRegexUtils {
 

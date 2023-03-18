@@ -24,7 +24,7 @@ import static pers.project.blog.enums.OperationLogEnum.SAVE_OR_UPDATE;
  * 友链控制器
  *
  * @author Luo Fei
- * @date 2023/1/6
+ * @version 2023/1/6
  */
 @Tag(name = "友链模块")
 @Validated

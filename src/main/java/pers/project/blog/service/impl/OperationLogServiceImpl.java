@@ -19,7 +19,7 @@ import java.util.List;
  * 针对表【tb_operation_log】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-01
+ * @version 2023-01-01
  */
 @Service
 public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, OperationLog> implements OperationLogService {

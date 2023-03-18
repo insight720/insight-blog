@@ -27,7 +27,7 @@ import static pers.project.blog.constant.ImportConst.HEXO;
  * Hexo 文章导入策略
  *
  * @author Luo Fei
- * @date 2023/1/8
+ * @version 2023/1/8
  */
 @Component(HEXO)
 public class HexoImportStrategyImpl extends AbstractImportStrategy {

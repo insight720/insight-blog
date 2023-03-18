@@ -4,7 +4,7 @@ package pers.project.blog.security;
  * Spring Security 常量
  *
  * @author Luo Fei
- * @date 2023/2/1
+ * @version 2023/2/1
  */
 public abstract class SecurityConst {
 

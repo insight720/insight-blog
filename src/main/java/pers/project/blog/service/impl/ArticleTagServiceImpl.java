@@ -10,7 +10,7 @@ import pers.project.blog.service.ArticleTagService;
  * 针对表【tb_article_tag】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-05
+ * @version 2023-01-05
  */
 @Service
 public class ArticleTagServiceImpl extends ServiceImpl<ArticleTagMapper, ArticleTag> implements ArticleTagService {

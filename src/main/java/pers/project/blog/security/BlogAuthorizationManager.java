@@ -10,7 +10,7 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
  * AuthorizationManager</a> 的文档。
  *
  * @author Luo Fei
- * @date 2023/1/27
+ * @version 2023/1/27
  */
 public interface BlogAuthorizationManager
         extends AuthorizationManager<RequestAuthorizationContext> {

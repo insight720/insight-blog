@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * 前台查看评论所需数据
  *
  * @author Luo Fei
- * @date 2023/2/4
+ * @version 2023/2/4
  */
 @Data
 @Builder

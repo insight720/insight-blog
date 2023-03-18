@@ -33,7 +33,7 @@ import static pers.project.blog.constant.GenericConst.TRUE_OF_INT;
  * AuthorizationManager</a> 的文档。
  *
  * @author Luo Fei
- * @date 2023/1/26
+ * @version 2023/1/26
  */
 @Component
 public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {

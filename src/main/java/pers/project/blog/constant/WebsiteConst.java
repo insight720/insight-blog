@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 网站常量
  *
  * @author Luo Fei
- * @date 2023/1/3
+ * @version 2023/1/3
  */
 public abstract class WebsiteConst {
 

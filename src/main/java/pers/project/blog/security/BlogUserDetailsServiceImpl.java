@@ -32,7 +32,7 @@ import static pers.project.blog.constant.RedisConst.*;
  * UserDetailsService</a> 文档。
  *
  * @author Luo Fei
- * @date 2022/12/25
+ * @version 2022/12/25
  */
 @Service
 public class BlogUserDetailsServiceImpl implements BlogUserDetailsService {

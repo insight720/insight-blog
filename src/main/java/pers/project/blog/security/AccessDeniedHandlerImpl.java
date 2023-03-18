@@ -21,7 +21,7 @@ import java.io.IOException;
  * 参见 {@link AccessDeniedHandler} 的 Javadoc。
  *
  * @author Luo Fei
- * @date 2022/12/24
+ * @version 2022/12/24
  */
 @Slf4j
 @Component

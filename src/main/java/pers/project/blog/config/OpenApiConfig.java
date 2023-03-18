@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Profile;
  * OpenAPI 配置类
  *
  * @author Luo Fei
- * @date 2022/12/27
+ * @version 2022/12/27
  */
 @Profile("dev")
 @Configuration

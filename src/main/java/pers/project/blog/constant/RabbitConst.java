@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * RabbitMQ 常量
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 public abstract class RabbitConst {
 

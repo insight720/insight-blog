@@ -27,7 +27,7 @@ import static pers.project.blog.constant.LoginConst.*;
  * QQ 登录策略
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 @Component
 @EnableConfigurationProperties(QQProperties.class)

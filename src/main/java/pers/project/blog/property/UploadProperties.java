@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * <b>注意：所有路径相关属性末尾不带分隔符</b>
  *
  * @author Luo Fei
- * @date 2023/1/4
+ * @version 2023/1/4
  */
 @Data
 @ConfigurationProperties(prefix = "blog.upload")

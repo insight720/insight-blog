@@ -17,7 +17,7 @@ import static pers.project.blog.constant.FilePathConst.DOT;
  * 文件 IO 工具类
  *
  * @author Luo Fei
- * @date 2023/1/3
+ * @version 2023/1/3
  */
 public abstract class FileIoUtils {
 

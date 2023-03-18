@@ -28,7 +28,7 @@ import static pers.project.blog.constant.GenericConst.TRUE_OF_INT;
  * 针对表【tb_message】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2022-12-29
+ * @version 2022-12-29
  */
 @Service
 public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> implements MessageService {

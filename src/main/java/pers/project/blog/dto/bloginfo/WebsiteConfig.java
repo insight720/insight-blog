@@ -12,7 +12,7 @@ import java.util.List;
  * 网站配置信息
  *
  * @author Luo Fei
- * @date 2023/1/3
+ * @version 2023/1/3
  */
 @Data
 @Builder

@@ -10,7 +10,7 @@ import java.io.InputStream;
  * 抽象上传策略模板
  *
  * @author Luo Fei
- * @date 2023/1/3
+ * @version 2023/1/3
  */
 public abstract class AbstractUploadStrategy implements UploadStrategy {
 

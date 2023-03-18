@@ -29,7 +29,7 @@ import java.util.function.Function;
  * Web 工具类
  *
  * @author Luo Fei
- * @date 2022/12/26
+ * @version 2022/12/26
  */
 @Component
 @SuppressWarnings("unused")

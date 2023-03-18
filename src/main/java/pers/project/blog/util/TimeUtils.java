@@ -14,7 +14,7 @@ import static pers.project.blog.constant.TimeConst.*;
  * 时间工具类
  *
  * @author Luo Fei
- * @date 2022/12/29
+ * @version 2022/12/29
  */
 @SuppressWarnings("unused")
 public abstract class TimeUtils {

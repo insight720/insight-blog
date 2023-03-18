@@ -13,7 +13,7 @@ import java.util.List;
  * 针对表【tb_photo(照片)】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2023-01-10
+ * @version 2023-01-10
  */
 public interface PhotoService extends IService<Photo> {
 

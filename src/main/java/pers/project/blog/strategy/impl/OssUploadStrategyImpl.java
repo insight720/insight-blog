@@ -14,7 +14,7 @@ import java.io.InputStream;
  * OSS 上传策略
  *
  * @author Luo Fei
- * @date 2023/1/4
+ * @version 2023/1/4
  */
 @Component
 @EnableConfigurationProperties(UploadProperties.OssUpload.class)

@@ -21,7 +21,7 @@ import static pers.project.blog.constant.MaxWellConst.*;
  * Maxwell 监听器
  *
  * @author Luo Fei
- * @date 2023/1/16
+ * @version 2023/1/16
  */
 @Component
 @RabbitListener(queues = RabbitConst.MAXWELL_QUEUE)

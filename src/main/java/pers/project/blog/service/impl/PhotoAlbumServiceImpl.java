@@ -36,7 +36,7 @@ import static pers.project.blog.constant.GenericConst.*;
  * 针对表【tb_photo_album(相册)】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-10
+ * @version 2023-01-10
  */
 @Service
 public class PhotoAlbumServiceImpl extends ServiceImpl<PhotoAlbumMapper, PhotoAlbum> implements PhotoAlbumService {

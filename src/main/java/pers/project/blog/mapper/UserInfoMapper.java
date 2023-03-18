@@ -13,7 +13,7 @@ import java.util.Set;
  * 针对表【tb_user_info】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2022-12-25
+ * @version 2022-12-25
  */
 @Mapper
 public interface UserInfoMapper extends BaseMapper<UserInfo> {

@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 文章搜索配置属性
  *
  * @author Luo Fei
- * @date 2023/2/6
+ * @version 2023/2/6
  */
 @Data
 @ConfigurationProperties(prefix = "blog.search")

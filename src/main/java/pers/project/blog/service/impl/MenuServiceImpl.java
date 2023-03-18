@@ -37,7 +37,7 @@ import static pers.project.blog.constant.WebsiteConst.*;
  * 针对表【tb_menu】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2022-12-28
+ * @version 2022-12-28
  */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {

@@ -26,7 +26,7 @@ import static pers.project.blog.constant.CacheConst.FRIEND_LINK;
  * 针对表【tb_friend_link】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-06
+ * @version 2023-01-06
  */
 @Service
 public class FriendLinkServiceImpl extends ServiceImpl<FriendLinkMapper, FriendLink> implements FriendLinkService {

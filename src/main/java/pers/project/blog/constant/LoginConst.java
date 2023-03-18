@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 社交登录常量
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 public abstract class LoginConst {
 

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * 后台查看相册照片或回收站照片的数据
  *
  * @author Luo Fei
- * @date 2023/2/3
+ * @version 2023/2/3
  */
 @Data
 @Builder

@@ -25,7 +25,7 @@ import static pers.project.blog.enums.OperationLogEnum.UPDATE;
  * 用户账号控制器
  *
  * @author Luo Fei
- * @date 2022/12/29
+ * @version 2022/12/29
  */
 @Tag(name = "用户账号模块")
 @Validated

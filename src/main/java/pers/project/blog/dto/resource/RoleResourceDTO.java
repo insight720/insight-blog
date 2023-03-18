@@ -11,7 +11,7 @@ import java.util.List;
  * 角色资源数据
  *
  * @author Luo Fei
- * @date 2023/1/30
+ * @version 2023/1/30
  */
 @Data
 @Builder

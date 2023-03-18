@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
  * 用户认证数据
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 @Data
 @Builder

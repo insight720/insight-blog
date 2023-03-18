@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Spring Security 会话事件监听器
  *
  * @author Luo Fei
- * @date 2023/2/7
+ * @version 2023/2/7
  */
 @Component
 public class SessionEventListener {

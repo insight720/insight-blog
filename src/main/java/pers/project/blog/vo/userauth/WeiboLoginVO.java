@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
  * 微博登录信息
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 @Data
 @Builder

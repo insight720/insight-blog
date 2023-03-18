@@ -13,7 +13,7 @@ import java.util.List;
  * 针对表【tb_role】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2022-12-22
+ * @version 2022-12-22
  */
 @Mapper
 public interface RoleMapper extends BaseMapper<Role> {

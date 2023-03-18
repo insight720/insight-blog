@@ -7,7 +7,7 @@ import lombok.Getter;
  * 登录方式枚举
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 @Getter
 @AllArgsConstructor

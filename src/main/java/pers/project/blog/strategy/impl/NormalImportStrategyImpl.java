@@ -19,7 +19,7 @@ import static pers.project.blog.constant.ImportConst.NORMAL;
  * 普通文章导入策略
  *
  * @author Luo Fei
- * @date 2023/1/7
+ * @version 2023/1/7
  */
 @Component(NORMAL)
 public class NormalImportStrategyImpl extends AbstractImportStrategy {

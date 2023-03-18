@@ -11,7 +11,7 @@ import java.util.Map;
  * Maxwell 数据
  *
  * @author Luo Fei
- * @date 2023/1/16
+ * @version 2023/1/16
  */
 @Data
 @Builder

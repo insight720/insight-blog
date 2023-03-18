@@ -8,7 +8,7 @@ import java.util.List;
  * 文章搜索策略
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 public interface SearchStrategy {
 

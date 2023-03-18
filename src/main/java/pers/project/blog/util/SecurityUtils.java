@@ -26,7 +26,7 @@ import static pers.project.blog.constant.GenericConst.*;
  * Spring Security 工具类
  *
  * @author Luo Fei
- * @date 2023/1/27
+ * @version 2023/1/27
  */
 @Component
 @SuppressWarnings("unused")

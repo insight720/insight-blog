@@ -14,7 +14,7 @@ import static pers.project.blog.constant.CacheConst.CACHE_NAME_PREFIX;
  * 缓存配置类
  *
  * @author Luo Fei
- * @date 2023/1/31
+ * @version 2023/1/31
  */
 @Configuration
 @EnableCaching

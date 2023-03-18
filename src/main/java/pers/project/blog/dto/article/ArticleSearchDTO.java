@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  * Elasticsearch 文章搜索数据
  *
  * @author Luo Fei
- * @date 2023/1/13
+ * @version 2023/1/13
  */
 @Data
 @Builder

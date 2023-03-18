@@ -13,7 +13,7 @@ import java.util.List;
  * 搜索策略上下文
  *
  * @author Luo Fei
- * @date 2023/1/14
+ * @version 2023/1/14
  */
 @Component
 @EnableConfigurationProperties(SearchProperties.class)

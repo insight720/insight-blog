@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 通用常量
  *
  * @author Luo Fei
- * @date 2023/1/24
+ * @version 2023/1/24
  */
 public abstract class GenericConst {
 

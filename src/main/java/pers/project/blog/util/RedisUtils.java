@@ -26,7 +26,7 @@ import static pers.project.blog.constant.GenericConst.TRUE_OF_LONG;
  * 参见 <a href="http://redisdoc.com/">Redis 命令参考</a>。
  *
  * @author Luo Fei
- * @date 2022/12/25
+ * @version 2022/12/25
  */
 @Component
 @SuppressWarnings("all")

@@ -27,7 +27,7 @@ import static pers.project.blog.constant.GenericConst.TWELVE;
  * 针对表【tb_chat_record】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-13
+ * @version 2023-01-13
  */
 @Service
 public class ChatRecordServiceImpl extends ServiceImpl<ChatRecordMapper, ChatRecord> implements ChatRecordService {

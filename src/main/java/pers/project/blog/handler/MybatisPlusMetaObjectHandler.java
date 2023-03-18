@@ -14,7 +14,7 @@ import static pers.project.blog.constant.DatabaseConst.UPDATE_TIME;
  * MyBatis-Plus 字段自动填充处理程序
  *
  * @author Luo Fei
- * @date 2022/12/23
+ * @version 2022/12/23
  */
 @Component
 public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {

@@ -18,7 +18,7 @@ import java.io.IOException;
  * LogoutSuccessHandler</a> 的文档。
  *
  * @author Luo Fei
- * @date 2022/12/24
+ * @version 2022/12/24
  */
 @Slf4j
 @Component

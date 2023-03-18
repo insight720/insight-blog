@@ -7,7 +7,7 @@ import lombok.Getter;
  * 操作日志枚举
  *
  * @author Luo Fei
- * @date 2023/1/1
+ * @version 2023/1/1
  */
 @Getter
 @AllArgsConstructor

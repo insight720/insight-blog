@@ -24,7 +24,7 @@ import static pers.project.blog.enums.OperationLogEnum.*;
  * 相册控制器
  *
  * @author Luo Fei
- * @date 2023/1/10
+ * @version 2023/1/10
  */
 @Tag(name = "相册模块")
 @Validated

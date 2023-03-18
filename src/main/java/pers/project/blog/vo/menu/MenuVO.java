@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  * 菜单数据
  *
  * @author Luo Fei
- * @date 2023/1/3
+ * @version 2023/1/3
  */
 @Data
 @Builder

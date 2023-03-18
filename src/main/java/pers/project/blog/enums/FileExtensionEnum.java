@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 文件扩展名枚举（扩展名不带 "."）
  *
  * @author Luo Fei
- * @date 2023/1/4
+ * @version 2023/1/4
  */
 @Getter
 @AllArgsConstructor

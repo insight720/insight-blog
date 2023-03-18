@@ -37,7 +37,7 @@ import static pers.project.blog.enums.CommentTypeEnum.TALK;
  * 针对表【tb_comment】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-10
+ * @version 2023-01-10
  */
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {

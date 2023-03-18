@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * Redis 键常量
  *
  * @author Luo Fei
- * @date 2022/12/26
+ * @version 2022/12/26
  */
 public abstract class RedisConst {
 

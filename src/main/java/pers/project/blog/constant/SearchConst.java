@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * 文章搜索常量
  *
  * @author Luo Fei
- * @date 2023/2/6
+ * @version 2023/2/6
  */
 public abstract class SearchConst {
 

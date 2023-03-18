@@ -15,7 +15,7 @@ import java.util.Map;
  * 菜单分支是目录或者一级菜单。
  *
  * @author Luo Fei
- * @date 2023/1/29
+ * @version 2023/1/29
  */
 @Data
 @Builder

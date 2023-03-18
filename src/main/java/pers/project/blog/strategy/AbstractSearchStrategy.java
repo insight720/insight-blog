@@ -11,7 +11,7 @@ import java.util.List;
  * 抽象文章搜索策略模板
  *
  * @author Luo Fei
- * @date 2023/2/6
+ * @version 2023/2/6
  */
 public abstract class AbstractSearchStrategy implements SearchStrategy {
 

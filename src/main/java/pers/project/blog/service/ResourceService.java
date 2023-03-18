@@ -12,7 +12,7 @@ import java.util.List;
  * 针对表【tb_resource】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2023-01-02
+ * @version 2023-01-02
  */
 public interface ResourceService extends IService<Resource> {
 

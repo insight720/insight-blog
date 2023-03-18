@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
  * 资源数据
  *
  * @author Luo Fei
- * @date 2023/1/3
+ * @version 2023/1/3
  */
 @Data
 @Builder

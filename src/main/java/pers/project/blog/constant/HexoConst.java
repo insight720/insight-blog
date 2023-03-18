@@ -4,7 +4,7 @@ package pers.project.blog.constant;
  * Hexo 文章常量
  *
  * @author Luo Fei
- * @date 2023/1/8
+ * @version 2023/1/8
  */
 public abstract class HexoConst {
 

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * 用户搜索数据
  *
  * @author Luo Fei
- * @date 2023/2/1
+ * @version 2023/2/1
  */
 @Data
 @Builder

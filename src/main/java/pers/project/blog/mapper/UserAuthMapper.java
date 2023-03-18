@@ -13,7 +13,7 @@ import java.util.List;
  * 针对表【tb_user_auth】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2022-12-23
+ * @version 2022-12-23
  */
 @Mapper
 public interface UserAuthMapper extends BaseMapper<UserAuth> {

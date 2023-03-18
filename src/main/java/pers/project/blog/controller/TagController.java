@@ -24,7 +24,7 @@ import static pers.project.blog.enums.OperationLogEnum.SAVE_OR_UPDATE;
  * 标签控制器
  *
  * @author Luo Fei
- * @date 2023/1/8
+ * @version 2023/1/8
  */
 @Tag(name = "标签模块")
 @Validated

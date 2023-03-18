@@ -14,7 +14,7 @@ import java.util.function.Function;
  * 网站配置工具类
  *
  * @author Luo Fei
- * @date 2023/2/4
+ * @version 2023/2/4
  */
 @Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

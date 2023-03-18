@@ -33,7 +33,7 @@ import static pers.project.blog.constant.GenericConst.ZERO_L;
  * 针对表【tb_tag】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2022-12-30
+ * @version 2022-12-30
  */
 @Service
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagService {

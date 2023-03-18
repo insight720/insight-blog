@@ -10,7 +10,7 @@ import pers.project.blog.vo.bloginfo.InfoAboutMeVO;
  * 博客信息服务
  *
  * @author Luo Fei
- * @date 2022/12/28
+ * @version 2022/12/28
  */
 public interface BlogInfoService {
 

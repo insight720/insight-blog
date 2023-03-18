@@ -27,7 +27,7 @@ import static pers.project.blog.constant.TimeConst.*;
  * 地域分布统计定时任务
  *
  * @author Luo Fei
- * @date 2023/1/16
+ * @version 2023/1/16
  */
 @Component
 public class AreaCountSchedule {

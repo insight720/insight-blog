@@ -24,7 +24,7 @@ import static pers.project.blog.constant.TimeConst.BEIJING_TIME;
  * 访问量统计定时任务
  *
  * @author Luo Fei
- * @date 2023/1/16
+ * @version 2023/1/16
  */
 @Component
 public class VisitCountSchedule {

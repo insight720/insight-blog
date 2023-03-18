@@ -39,7 +39,7 @@ import static pers.project.blog.constant.RedisConst.TALK_LIKE_PREFIX;
  * 针对表【tb_talk】的数据库操作 Service 实现
  *
  * @author Luo Fei
- * @date 2023-01-11
+ * @version 2023-01-11
  */
 @Service
 public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements TalkService {

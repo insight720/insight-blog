@@ -3,9 +3,11 @@ package pers.project.blog.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
+import pers.project.blog.handler.CustomizedFastJsonRedisSerializer;
 import pers.project.blog.property.SessionProperties;
 import pers.project.blog.util.StrRegexUtils;
 
@@ -15,7 +17,7 @@ import javax.annotation.Resource;
  * Spring Session 配置类
  *
  * @author Luo Fei
- * @date 2023/2/7
+ * @version 2023/2/7
  */
 @Slf4j
 @Configuration
@@ -39,7 +41,20 @@ public class SpringSessionConfig {
         return serializer;
     }
 
-    // 不能配置 JSON 序列化，Spring Security 框架内的组件存在 JSON 序列化问题
+    /**
+     * 配置 Fastjson 序列化
+     */
+    @Bean
+    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
+        // acceptNames 中是需要支持 FastJson autoType 的类
+        String[] acceptNames = {
+                "org.springframework.security.core.context.SecurityContextImpl",
+                "org.springframework.security.authentication.UsernamePasswordAuthenticationToken",
+                "org.springframework.security.core.authority.SimpleGrantedAuthority",
+                "org.springframework.security.web.authentication.WebAuthenticationDetails"
+        };
+        return new CustomizedFastJsonRedisSerializer(acceptNames);
+    }
 
 }
 

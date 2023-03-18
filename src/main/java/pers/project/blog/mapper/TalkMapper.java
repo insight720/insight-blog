@@ -13,7 +13,7 @@ import java.util.List;
  * 针对表【tb_talk】的数据库操作 Mapper
  *
  * @author Luo Fei
- * @date 2023-01-11
+ * @version 2023-01-11
  */
 @Mapper
 public interface TalkMapper extends BaseMapper<Talk> {

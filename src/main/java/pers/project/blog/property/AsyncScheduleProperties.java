@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 异步调用和定时任务的配置属性
  *
  * @author Luo Fei
- * @date 2022/12/24
+ * @version 2022/12/24
  */
 @Data
 @ConfigurationProperties(prefix = "blog.async-schedule")

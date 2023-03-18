@@ -12,7 +12,7 @@ import java.util.Set;
  * Spring Security 用户的部分信息
  *
  * @author Luo Fei
- * @date 2022/12/23
+ * @version 2022/12/23
  */
 @Data
 @Builder

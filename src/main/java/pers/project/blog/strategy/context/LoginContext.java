@@ -12,7 +12,7 @@ import java.util.Map;
  * 社交登录上下文
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 @Component
 public final class LoginContext {

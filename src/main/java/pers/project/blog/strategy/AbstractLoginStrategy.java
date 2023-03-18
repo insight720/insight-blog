@@ -18,7 +18,7 @@ import java.util.Optional;
  * 抽象社交登录策略模板
  *
  * @author Luo Fei
- * @date 2023/1/15
+ * @version 2023/1/15
  */
 public abstract class AbstractLoginStrategy implements LoginStrategy {
 

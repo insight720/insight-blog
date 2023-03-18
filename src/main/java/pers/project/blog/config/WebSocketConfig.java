@@ -10,7 +10,7 @@ import javax.websocket.server.ServerEndpoint;
  * WebSocket 配置类
  *
  * @author Luo Fei
- * @date 2023/1/12
+ * @version 2023/1/12
  */
 @Configuration
 public class WebSocketConfig {

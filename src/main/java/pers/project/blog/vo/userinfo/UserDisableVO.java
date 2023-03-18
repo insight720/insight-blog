@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * 用户禁用状态
  *
  * @author Luo Fei
- * @date 2023/1/1
+ * @version 2023/1/1
  */
 @Data
 @Builder

@@ -13,7 +13,7 @@ import java.util.Map;
  * 资源模块数据
  *
  * @author Luo Fei
- * @date 2023/1/30
+ * @version 2023/1/30
  */
 @Data
 @Builder

@@ -14,7 +14,7 @@ import java.util.List;
  * 针对表【tb_talk】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2023-01-11
+ * @version 2023-01-11
  */
 public interface TalkService extends IService<Talk> {
 

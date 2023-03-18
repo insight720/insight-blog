@@ -14,7 +14,7 @@ import java.util.List;
  * 针对表【tb_tag】的数据库操作 Service
  *
  * @author Luo Fei
- * @date 2022-12-30
+ * @version 2022-12-30
  */
 public interface TagService extends IService<Tag> {
 

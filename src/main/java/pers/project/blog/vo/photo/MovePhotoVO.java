@@ -13,7 +13,7 @@ import java.util.List;
  * 移动照片数据
  *
  * @author Luo Fei
- * @date 2023/2/3
+ * @version 2023/2/3
  */
 @Data
 @Builder

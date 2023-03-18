@@ -23,7 +23,7 @@ import static pers.project.blog.enums.OperationLogEnum.SAVE_OR_UPDATE;
  * 资源控制器
  *
  * @author Luo Fei
- * @date 2023/1/2
+ * @version 2023/1/2
  */
 @Tag(name = "资源模块")
 @Validated

@@ -6,7 +6,7 @@ package pers.project.blog.constant;
  * <b>注意：目录 URI 不以 / 开始，以 / 结尾。</b>
  *
  * @author Luo Fei
- * @date 2023/1/5
+ * @version 2023/1/5
  */
 public class FilePathConst {
 
