@@ -21,6 +21,7 @@ import pers.project.blog.security.BlogUserDetails;
  * @version 2023/3/19
  * @see GenericFastJsonRedisSerializer
  */
+@SuppressWarnings("unused")
 public class CustomizedFastJsonRedisSerializer implements RedisSerializer<Object> {
 
     private final FastJsonConfig config = new FastJsonConfig();

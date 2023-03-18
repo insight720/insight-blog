@@ -50,7 +50,6 @@ public class SpringSessionConfig {
         String[] acceptNames = {
                 "org.springframework.security.core.context.SecurityContextImpl",
                 "org.springframework.security.authentication.UsernamePasswordAuthenticationToken",
-                "org.springframework.security.core.authority.SimpleGrantedAuthority",
                 "org.springframework.security.web.authentication.WebAuthenticationDetails"
         };
         return new CustomizedFastJsonRedisSerializer(acceptNames);

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pers.project.blog.constant.GenericConst;
 
@@ -122,13 +121,13 @@ public class BlogUserDetails implements UserDetails {
     private Set<Object> talkLikeSet;
 
     @Override
-    public List<SimpleGrantedAuthority> getAuthorities() {
+    public List<CustomizedGrantedAuthority> getAuthorities() {
         if (CollectionUtils.isEmpty(roleList)) {
             return new ArrayList<>();
         }
         return roleList.stream()
                 .sorted(Comparator.naturalOrder())
-                .map(SimpleGrantedAuthority::new)
+                .map(CustomizedGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 

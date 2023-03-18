@@ -2,7 +2,6 @@ package pers.project.blog.security;
 
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -86,10 +85,10 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
         ANONYMOUS.set(FALSE);
         try {
             // 获取用户权限列表
-            List<SimpleGrantedAuthority> grantedList = ConvertUtils.castList
+            List<CustomizedGrantedAuthority> grantedList = ConvertUtils.castList
                     (authentication.get().getAuthorities());
             // 获取可用权限列表
-            Set<SimpleGrantedAuthority> availableSet
+            Set<CustomizedGrantedAuthority> availableSet
                     = getAvailableAuthorities(requestContext);
             // 判断是否授权
             authorized = ANONYMOUS.get()
@@ -100,7 +99,7 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
         return new AuthorizationDecision(authorized);
     }
 
-    private Set<SimpleGrantedAuthority> getAvailableAuthorities
+    private Set<CustomizedGrantedAuthority> getAvailableAuthorities
             (RequestAuthorizationContext requestContext) {
         READ_LOCK.lock();
         if (invalid) {
@@ -122,7 +121,7 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
             }
         }
         // Read safely
-        Set<SimpleGrantedAuthority> availableAuthorities;
+        Set<CustomizedGrantedAuthority> availableAuthorities;
         try {
             availableAuthorities = processResourceRoleList(requestContext);
         } finally {
@@ -131,7 +130,7 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
         return availableAuthorities;
     }
 
-    private Set<SimpleGrantedAuthority> processResourceRoleList
+    private Set<CustomizedGrantedAuthority> processResourceRoleList
             (RequestAuthorizationContext requestContext) {
         // 获取用户请求信息
         HttpServletRequest request = requestContext.getRequest();
@@ -148,7 +147,7 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
                     ANONYMOUS.set(TRUE);
                 }
                 return roleList.stream()
-                        .map(SimpleGrantedAuthority::new)
+                        .map(CustomizedGrantedAuthority::new)
                         .collect(Collectors.toSet());
             }
         }
