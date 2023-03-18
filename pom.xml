@@ -4,6 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
+        <!-- 不要随意升级依赖版本，否则可能产生兼容问题，例如 ES 版本不对应 -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.6</version>
@@ -21,6 +22,13 @@
     </properties>
 
     <dependencies>
+        <!-- 防止找不到包（写项目时由 IDEA 添加，建议不用） -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -93,6 +101,8 @@
             <version>5.8.11</version>
         </dependency>
 
+        <!-- 无法使用 knife4j-openapi3-spring-boot-starter，原因不明 -->
+        <!-- https://doc.xiaominfo.com/docs/quick-start#openapi3 -->
         <!-- OpenAPI3 -->
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
         <dependency>
@@ -154,7 +164,7 @@
             <version>0.2.0</version>
         </dependency>
 
-        <!-- ES -->
+        <!-- ES （版本与安装的 ES 版本一致，否则可能产生问题 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
@@ -172,7 +182,7 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
-        <!-- IP2Region -->
+        <!-- IP2Region（不要升级到 3.x，需要 JDK17）-->
         <!-- https://mvnrepository.com/artifact/net.dreamlu/mica-ip2region -->
         <dependency>
             <groupId>net.dreamlu</groupId>
