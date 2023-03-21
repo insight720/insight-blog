@@ -42,6 +42,15 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
      */
     private static final ThreadLocal<Boolean> ANONYMOUS = new ThreadLocal<>();
 
+    /**
+     * Ant 风格的路径匹配器。
+     * <p>
+     * 此类是线程安全的，默认情况下会缓存已解析过的路径模式。
+     *
+     * @see AntPathMatcher#setCachePatterns(boolean)
+     */
+    private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+
     private static final ReadWriteLock READ_WRITE_LOCK = new ReentrantReadWriteLock(true);
     private static final Lock READ_LOCK = READ_WRITE_LOCK.readLock();
     private static final Lock WRITE_LOCK = READ_WRITE_LOCK.writeLock();
@@ -57,6 +66,7 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
 
     @Resource
     private RoleMapper roleMapper;
+
 
     private static void clearResourceRoleList() {
         WRITE_LOCK.lock();
@@ -137,10 +147,9 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
         String url = request.getRequestURI();
         String method = request.getMethod();
         // 确定用户请求的可用权限
-        AntPathMatcher matcher = new AntPathMatcher();
         for (ResourceRoleDTO resource : resourceRoleList) {
-            if (matcher.match(resource.getUrl(), url)
-                    && matcher.match(resource.getRequestMethod(), method)) {
+            if (pathMatcher.match(resource.getUrl(), url)
+                    && pathMatcher.match(resource.getRequestMethod(), method)) {
                 List<String> roleList = resource.getRoleList();
                 // 匿名可访问资源
                 if (TRUE_OF_INT.equals(resource.getIsAnonymous())) {
