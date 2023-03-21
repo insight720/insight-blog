@@ -1,6 +1,5 @@
 package pers.project.blog.security;
 
-import com.alibaba.fastjson2.annotation.JSONField;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -132,26 +131,22 @@ public class BlogUserDetails implements UserDetails {
     }
 
     @Override
-    @JSONField(serialize = false, deserialize = false)
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    @JSONField(serialize = false, deserialize = false)
     public boolean isAccountNonLocked() {
         // 权限角色列表为空，则用户账号锁定（一般是权限角色被禁用）
         return CollectionUtils.isNotEmpty(roleList);
     }
 
     @Override
-    @JSONField(serialize = false, deserialize = false)
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    @JSONField(serialize = false, deserialize = false)
     public boolean isEnabled() {
         return GenericConst.FALSE_OF_INT.equals(isDisable);
     }
