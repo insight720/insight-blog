@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 import static pers.project.blog.constant.RabbitConst.*;
 
@@ -36,21 +38,24 @@ public class RabbitConfig {
             if (!ack) {
                 String message = String.format("消息发送给 Exchange 失败: %s Cause [%s]",
                         correlationData, cause);
-                throw new RuntimeException(message);
+                log.error(message);
             }
         };
         rabbitTemplate.setConfirmCallback(confirmCallback);
         // 消息发送给 Queue 的失败回调
         RabbitTemplate.ReturnsCallback returnsCallback = (ReturnedMessage returned) -> {
             String message = String.format("消息发送给 Queue 失败: %s", returned);
-            throw new RuntimeException(message);
+            log.error(message);
         };
         rabbitTemplate.setReturnsCallback(returnsCallback);
     }
 
     @Bean
     public Queue maxWellQueue() {
-        return QueueBuilder.durable(MAXWELL_QUEUE).build();
+        Map<String, Object> arguments = new HashMap<>();
+        arguments.put(X_DEAD_LETTER_EXCHANGE, DEAD_LETTER_EXCHANGE);
+        arguments.put(X_DEAD_LETTER_ROUTING_KEY, ROUTING_KEY);
+        return QueueBuilder.durable(MAXWELL_QUEUE).withArguments(arguments).build();
     }
 
     @Bean
@@ -65,7 +70,10 @@ public class RabbitConfig {
 
     @Bean
     public Queue emailQueue() {
-        return QueueBuilder.durable(EMAIL_QUEUE).build();
+        Map<String, Object> arguments = new HashMap<>();
+        arguments.put(X_DEAD_LETTER_EXCHANGE, DEAD_LETTER_EXCHANGE);
+        arguments.put(X_DEAD_LETTER_ROUTING_KEY, ROUTING_KEY);
+        return QueueBuilder.durable(EMAIL_QUEUE).withArguments(arguments).build();
     }
 
     @Bean
@@ -77,5 +85,24 @@ public class RabbitConfig {
     public Binding emailBinding() {
         return BindingBuilder.bind(emailQueue()).to(emailExchange());
     }
+
+    // region Dead letter
+    // 仅将发送失败的消息传入死信队列，不再做其他处理
+    @Bean
+    public FanoutExchange deadLetterExchange() {
+        return ExchangeBuilder.fanoutExchange(DEAD_LETTER_EXCHANGE).build();
+    }
+
+    @Bean
+    public Queue deadLetterQueue() {
+        return QueueBuilder.durable(DEAD_LETTER_QUEUE).build();
+    }
+
+    @Bean
+    public Binding deadLetterBinding() {
+        return BindingBuilder.bind(deadLetterQueue()).to(deadLetterExchange());
+    }
+
+    // endregion
 
 }

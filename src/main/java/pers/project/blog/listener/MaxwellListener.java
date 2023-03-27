@@ -1,6 +1,7 @@
 package pers.project.blog.listener;
 
 import com.rabbitmq.client.Channel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -23,6 +24,7 @@ import static pers.project.blog.constant.MaxWellConst.*;
  * @author Luo Fei
  * @version 2023/1/16
  */
+@Slf4j
 @Component
 @RabbitListener(queues = RabbitConst.MAXWELL_QUEUE)
 public class MaxwellListener {
@@ -48,8 +50,8 @@ public class MaxwellListener {
                 articleRepository.deleteById(article.getId());
             }
         } catch (Exception cause) {
-            channel.basicReject(deliveryTag, true);
-            throw new RuntimeException("ES 文章数据操作异常", cause);
+            channel.basicReject(deliveryTag, false);
+            log.error("ES 文章数据操作异常", cause);
         }
         channel.basicAck(deliveryTag, false);
     }

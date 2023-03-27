@@ -1,6 +1,7 @@
 package pers.project.blog.listener;
 
 import com.rabbitmq.client.Channel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -22,6 +23,7 @@ import java.io.IOException;
  * @author Luo Fei
  * @version 2023/1/16
  */
+@Slf4j
 @Component
 @RabbitListener(queues = RabbitConst.EMAIL_QUEUE)
 public class EmailListener {
@@ -45,8 +47,8 @@ public class EmailListener {
         try {
             javaMailSender.send(mailMessage);
         } catch (MailException cause) {
-            channel.basicReject(deliveryTag, true);
-            throw new RuntimeException("邮件发送异常", cause);
+            channel.basicReject(deliveryTag, false);
+            log.error("邮件发送异常", cause);
         }
         channel.basicAck(deliveryTag, false);
     }

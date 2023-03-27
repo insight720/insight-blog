@@ -100,4 +100,7 @@ logging:
     pers.project.blog: info
     org.apache.ibatis: info
   file:
-    path: /docker/blog/log
+    path:
+  logback:
+    rollingpolicy:
+      max-history: 15
