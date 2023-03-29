@@ -8,7 +8,7 @@ import java.io.InputStream;
  * 上传策略接口
  *
  * @author Luo Fei
- * @version 2023/1/3
+ * @version 2023/03/29
  */
 public interface UploadStrategy {
 

@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.property.UploadProperties;
 import pers.project.blog.strategy.AbstractUploadStrategy;
-import pers.project.blog.util.FileIoUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -23,7 +23,7 @@ import java.io.InputStream;
  * OSS 上传策略
  *
  * @author Luo Fei
- * @version 2023/1/4
+ * @version 2023/03/29
  */
 @Component
 @EnableConfigurationProperties(UploadProperties.CosUpload.class)
@@ -41,23 +41,26 @@ public class CosUploadStrategyImpl extends AbstractUploadStrategy {
     }
 
     @Override
-    public Boolean exists(String fileUri) {
+    public boolean exists(String fileUri) {
         return cosClient.doesObjectExist(cosUpload.getBucketName(), fileUri);
     }
 
     @Override
-    public void upload(InputStream inputStream, String directoryUri, String fileName) throws IOException {
+    public void upload(MultipartFile file, InputStream inputStream,
+                       String directoryUri, String fileName) throws IOException {
         String bucketName = cosUpload.getBucketName();
         String fileUri = directoryUri + fileName;
         ObjectMetadata metadata = new ObjectMetadata();
-        // 输入是可预见长度的流，否则缓冲整个流计算内容长度
-        if (inputStream instanceof FileInputStream
+        if (file != null) {
+            String contentType = file.getContentType();
+            if (contentType != null) {
+                metadata.setContentType(contentType);
+            }
+            metadata.setContentLength(file.getSize());
+        } else if (inputStream instanceof FileInputStream
                 || inputStream instanceof ByteArrayInputStream) {
+            // 文件大小可预知
             metadata.setContentLength(inputStream.available());
-        } else {
-            byte[] contentBytes = FileIoUtils.readBytes(inputStream);
-            metadata.setContentLength(contentBytes.length);
-            inputStream = new ByteArrayInputStream(contentBytes);
         }
         cosClient.putObject(bucketName, fileUri, inputStream, metadata);
     }
@@ -68,6 +71,7 @@ public class CosUploadStrategyImpl extends AbstractUploadStrategy {
     }
 
     private COSClient getCosClient() {
+        // COS 客户端只能单例使用，可以移动到配置类
         COSCredentials cosCredentials = new BasicCOSCredentials
                 (cosUpload.getSecretId(), cosUpload.getSecretKey());
         ClientConfig clientConfig = new ClientConfig(new Region(cosUpload.getRegion()));

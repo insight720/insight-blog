@@ -33,6 +33,7 @@ public abstract class FileIoUtils {
     public static String getNewFileName(@NotNull MultipartFile multipartFile) {
         String md5DigestAsHex;
         try {
+            // 这里已经计算过内容的 MD5 值，可以在上传时进行 Base64 编码并加入到上传请求中，但改动太大
             md5DigestAsHex = DigestUtils.md5DigestAsHex(multipartFile.getInputStream());
         } catch (IOException cause) {
             throw new RuntimeException("获取新文件名异常", cause);

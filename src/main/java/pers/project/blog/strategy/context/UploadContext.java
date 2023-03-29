@@ -13,7 +13,7 @@ import java.io.InputStream;
  * 上传策略上下文
  *
  * @author Luo Fei
- * @version 2023/1/4
+ * @version 2023/03/29
  */
 @Component
 @EnableConfigurationProperties(UploadProperties.class)
@@ -32,7 +32,7 @@ public final class UploadContext {
     /**
      * 执行文件上传策略
      *
-     * @param multipartFile 多部分请求中收到的上传文件
+     * @param multipartFile 上传文件
      * @param directoryUri  上传目录 URI
      *                      <P>（以分隔符结尾，不以分隔符开始）
      * @return 文件访问 URL

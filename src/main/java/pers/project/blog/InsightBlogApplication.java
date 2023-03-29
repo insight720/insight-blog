@@ -11,7 +11,7 @@ import java.time.ZoneId;
  * 主启动类
  *
  * @author Luo Fei
- * @version 2022-12-22
+ * @version 2022/12/22
  */
 @Slf4j
 @SpringBootApplication

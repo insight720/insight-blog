@@ -2,6 +2,7 @@ package pers.project.blog.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -87,6 +88,7 @@ public class SpringSecurityConfig {
      * 参见 {@link WebSecurity} 的 Javadoc。
      */
     @Bean
+    @Profile("dev")
     public WebSecurityCustomizer ignoringCustomizer() {
         return (web) -> web.ignoring().mvcMatchers(IGNORING_PATTENS);
     }

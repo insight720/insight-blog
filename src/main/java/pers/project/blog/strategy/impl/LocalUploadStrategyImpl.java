@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import pers.project.blog.enums.FileExtensionEnum;
 import pers.project.blog.property.UploadProperties;
 import pers.project.blog.strategy.AbstractUploadStrategy;
@@ -17,7 +18,7 @@ import java.nio.file.Files;
  * 本地上传策略
  *
  * @author Luo Fei
- * @version 2023/1/4
+ * @version 2023/03/29
  */
 @Component
 @ConditionalOnProperty(prefix = "blog.upload", name = "strategy", havingValue = "local")
@@ -32,13 +33,14 @@ public class LocalUploadStrategyImpl extends AbstractUploadStrategy {
     }
 
     @Override
-    public Boolean exists(String fileUri) {
+    public boolean exists(String fileUri) {
         String fileUrl = localUploadProperties.getUploadUrl() + fileUri;
         return new File(fileUrl).exists();
     }
 
     @Override
-    public void upload(InputStream inputStream, String directoryUri, String fileName) throws Exception {
+    public void upload(MultipartFile multipartFile, InputStream inputStream,
+                       String directoryUri, String fileName) throws Exception {
         // 判断目录是否存在，不存在则创建
         String directoryUrl = localUploadProperties.getUploadUrl() + directoryUri;
         File directory = new File(directoryUrl);

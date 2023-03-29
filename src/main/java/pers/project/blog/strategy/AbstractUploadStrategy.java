@@ -10,7 +10,7 @@ import java.io.InputStream;
  * 抽象上传策略模板
  *
  * @author Luo Fei
- * @version 2023/1/3
+ * @version 2023/03/29
  */
 public abstract class AbstractUploadStrategy implements UploadStrategy {
 
@@ -21,7 +21,7 @@ public abstract class AbstractUploadStrategy implements UploadStrategy {
             String newFileName = FileIoUtils.getNewFileName(multipartFile);
             String fileUri = directoryUri + newFileName;
             if (!exists(fileUri)) {
-                upload(inputStream, directoryUri, newFileName);
+                upload(multipartFile, inputStream, directoryUri, newFileName);
             }
             return getFileAccessUrl(fileUri);
         } catch (Exception cause) {
@@ -32,8 +32,9 @@ public abstract class AbstractUploadStrategy implements UploadStrategy {
     @Override
     public String uploadFile(InputStream inputStream, String directoryUri, String fileName) {
         try {
-            upload(inputStream, directoryUri, fileName);
             String fileUri = directoryUri + fileName;
+            // 不调用 exist，fileUri 可能重复但内容不同
+            upload(null, inputStream, directoryUri, fileName);
             return getFileAccessUrl(fileUri);
         } catch (Exception cause) {
             throw new ServiceException("文件上传异常", cause);
@@ -48,16 +49,21 @@ public abstract class AbstractUploadStrategy implements UploadStrategy {
      * @param fileUri 文件 Uri
      * @return 存在则返回 true
      */
-    public abstract Boolean exists(String fileUri);
+    public abstract boolean exists(String fileUri);
 
     /**
      * 上传
+     * <p>
+     * 为了修正错误并避免改动太大，file 参数是后加的，所以 file 和 inputStream 只用其中一个。
+     * <p>
+     * 改动后该方法抽取得不太好，如果重写可以重新设计抽象结构。
      *
-     * @param inputStream  输入流
+     * @param file         上传的文件（可能为 null）
+     * @param inputStream  输入流（不为 null）
      * @param directoryUri 上传目录 URI
      * @param fileName     文件名（包含扩展名）
      */
-    public abstract void upload(InputStream inputStream, String directoryUri, String fileName) throws Exception;
+    public abstract void upload(MultipartFile file, InputStream inputStream, String directoryUri, String fileName) throws Exception;
 
     /**
      * 获取访问文件的 URL
