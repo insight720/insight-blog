@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 
@@ -103,14 +105,17 @@ public class WebUtils {
     }
 
     /**
-     * 获取当前的 HTTP 请求
+     * 获取 {@code HttpServletRequest}
+     * <p>
+     * 如果当前不在 HTTP 请求中，则返回 null。
      *
-     * @return HTTP 请求
+     * @return 当前 HTTP 请求（可能为 null）
      */
     public static HttpServletRequest getCurrentRequest() {
-        return (HttpServletRequest) RequestContextHolder
-                .currentRequestAttributes()
-                .resolveReference(RequestAttributes.REFERENCE_REQUEST);
+        return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
+                .map(ServletRequestAttributes.class::cast)
+                .map(ServletRequestAttributes::getRequest)
+                .orElse(null);
     }
 
     /**

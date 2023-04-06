@@ -3,18 +3,24 @@ package pers.project.blog.util;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pers.project.blog.constant.RedisConst;
+import pers.project.blog.exception.ServiceException;
 import pers.project.blog.security.BlogAuthorizationManager;
 import pers.project.blog.security.BlogUserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
@@ -28,6 +34,7 @@ import static pers.project.blog.constant.GenericConst.*;
  * @author Luo Fei
  * @version 2023/1/27
  */
+@Slf4j
 @Component
 @SuppressWarnings("unused")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -94,8 +101,18 @@ public class SecurityUtils {
      */
     @NotNull
     public static BlogUserDetails getUserDetails() {
-        return (BlogUserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // instanceof 可以判空
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof BlogUserDetails) {
+                return (BlogUserDetails) principal;
+            }
+        }
+        String requestUri = Optional.ofNullable(WebUtils.getCurrentRequest())
+                .map(HttpServletRequest::getRequestURI).orElse("null");
+        log.warn("The user is not logged on, but the path {} requested", requestUri);
+        throw new ServiceException("用户未登录");
     }
 
     /**

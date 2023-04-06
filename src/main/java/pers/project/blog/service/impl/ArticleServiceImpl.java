@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import pers.project.blog.enums.FileExtensionEnum;
 import pers.project.blog.exception.ServiceException;
 import pers.project.blog.mapper.ArticleMapper;
 import pers.project.blog.mapper.CategoryMapper;
+import pers.project.blog.security.BlogUserDetails;
 import pers.project.blog.service.ArticleService;
 import pers.project.blog.service.ArticleTagService;
 import pers.project.blog.service.TagService;
@@ -51,6 +53,7 @@ import static pers.project.blog.enums.ArticelStateEnum.PUBLIC;
  * @author Luo Fei
  * @version 2022-12-29
  */
+@Slf4j
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
@@ -220,6 +223,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ArticleDTO getArticle(Integer articleId) {
+        // 查询 ID 对应的文章数据
+        ArticleDTO articleDTO = baseMapper.getArticle(articleId);
+        if (articleDTO == null) {
+            Integer userAuthId = null;
+            try {
+                userAuthId = SecurityUtils.getInfo(BlogUserDetails::getId);
+            } catch (ServiceException ignored) {
+                // 忽略用户未登录的情况
+            }
+            log.warn("Request to view non-existent article, articleId: {}, userAuthId: {}",
+                    articleId, userAuthId);
+            throw new ServiceException("文章不存在，可能已被博主删除");
+        }
         // 更新文章浏览量
         HttpSession session = WebUtils.getCurrentSession();
         AsyncUtils.runAsync(() -> updateArticleViewsCount(session, articleId));
@@ -240,8 +256,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                     .list();
             return ConvertUtils.convertList(articleList, ArticleRecommendDTO.class);
         });
-        // 查询 ID 对应的文章数据
-        ArticleDTO articleDTO = baseMapper.getArticle(articleId);
         // 查询上一篇和下一篇文章数据
         Article previousArticle = lambdaQuery()
                 .select(Article::getId,
