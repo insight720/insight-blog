@@ -2,12 +2,12 @@ package pers.project.blog.security;
 
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import pers.project.blog.dto.role.ResourceRoleDTO;
 import pers.project.blog.mapper.RoleMapper;
-import pers.project.blog.util.ConvertUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -67,7 +67,6 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
     @Resource
     private RoleMapper roleMapper;
 
-
     private static void clearResourceRoleList() {
         WRITE_LOCK.lock();
         try {
@@ -95,21 +94,21 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
         ANONYMOUS.set(FALSE);
         try {
             // 获取用户权限列表
-            List<CustomizedGrantedAuthority> grantedList = ConvertUtils.castList
-                    (authentication.get().getAuthorities());
+            List<String> grantedList = authentication.get().getAuthorities()
+                    .stream().map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
             // 获取可用权限列表
-            Set<CustomizedGrantedAuthority> availableSet
-                    = getAvailableAuthorities(requestContext);
+            Set<String> availableSet = getAvailableAuthorities(requestContext);
             // 判断是否授权
             authorized = ANONYMOUS.get()
-                    || grantedList.stream().anyMatch(availableSet::contains);
+                         || grantedList.stream().anyMatch(availableSet::contains);
         } finally {
             ANONYMOUS.remove();
         }
         return new AuthorizationDecision(authorized);
     }
 
-    private Set<CustomizedGrantedAuthority> getAvailableAuthorities
+    private Set<String> getAvailableAuthorities
             (RequestAuthorizationContext requestContext) {
         READ_LOCK.lock();
         if (invalid) {
@@ -131,7 +130,7 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
             }
         }
         // Read safely
-        Set<CustomizedGrantedAuthority> availableAuthorities;
+        Set<String> availableAuthorities;
         try {
             availableAuthorities = processResourceRoleList(requestContext);
         } finally {
@@ -140,7 +139,7 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
         return availableAuthorities;
     }
 
-    private Set<CustomizedGrantedAuthority> processResourceRoleList
+    private Set<String> processResourceRoleList
             (RequestAuthorizationContext requestContext) {
         // 获取用户请求信息
         HttpServletRequest request = requestContext.getRequest();
@@ -149,15 +148,13 @@ public class BlogAuthorizationManagerImpl implements BlogAuthorizationManager {
         // 确定用户请求的可用权限
         for (ResourceRoleDTO resource : resourceRoleList) {
             if (pathMatcher.match(resource.getUrl(), url)
-                    && pathMatcher.match(resource.getRequestMethod(), method)) {
+                && pathMatcher.match(resource.getRequestMethod(), method)) {
                 List<String> roleList = resource.getRoleList();
                 // 匿名可访问资源
                 if (TRUE_OF_INT.equals(resource.getIsAnonymous())) {
                     ANONYMOUS.set(TRUE);
                 }
-                return roleList.stream()
-                        .map(CustomizedGrantedAuthority::new)
-                        .collect(Collectors.toSet());
+                return new HashSet<>(roleList);
             }
         }
         return new HashSet<>();
